@@ -239,6 +239,44 @@ fn classes() -> Vec<Class> {
             subclass_of: &["https://uor.foundation/observable/HolonomyObservable"],
             disjoint_with: &[],
         },
+        // Amendment 18: Analytical Observables
+        Class {
+            id: "https://uor.foundation/observable/Jacobian",
+            label: "Jacobian",
+            comment: "Fiber-by-fiber curvature decomposition. J_k measures the \
+                      discrete derivative of the incompatibility metric at fiber \
+                      position k: J_k = |d_R(x, succ(x)) - d_H(x, succ(x))| \
+                      restricted to position k.",
+            subclass_of: &["https://uor.foundation/observable/CurvatureObservable"],
+            disjoint_with: &[],
+        },
+        Class {
+            id: "https://uor.foundation/observable/TopologicalObservable",
+            label: "TopologicalObservable",
+            comment: "An observable measuring a topological invariant of the \
+                      resolution space. Topological observables are invariant \
+                      under continuous deformations of the constraint configuration.",
+            subclass_of: &["https://uor.foundation/observable/Observable"],
+            disjoint_with: &[],
+        },
+        Class {
+            id: "https://uor.foundation/observable/BettiNumber",
+            label: "BettiNumber",
+            comment: "The rank of a homology group of the constraint nerve. \
+                      β_k = rank(H_k(N(C))) counts the k-dimensional holes \
+                      in the constraint configuration.",
+            subclass_of: &["https://uor.foundation/observable/TopologicalObservable"],
+            disjoint_with: &[],
+        },
+        Class {
+            id: "https://uor.foundation/observable/SpectralGap",
+            label: "SpectralGap",
+            comment: "The smallest positive eigenvalue of the constraint nerve \
+                      Laplacian. Controls the convergence rate of iterative \
+                      resolution: larger gap = faster convergence.",
+            subclass_of: &["https://uor.foundation/observable/TopologicalObservable"],
+            disjoint_with: &[],
+        },
     ]
 }
 
@@ -282,6 +320,35 @@ fn properties() -> Vec<Property> {
             functional: true,
             domain: Some("https://uor.foundation/observable/Observable"),
             range: OWL_THING,
+        },
+        // Amendment 18: Analytical Observable properties
+        Property {
+            id: "https://uor.foundation/observable/fiberPosition",
+            label: "fiberPosition",
+            comment: "The fiber position k at which this Jacobian entry is measured.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/observable/Jacobian"),
+            range: XSD_NON_NEGATIVE_INTEGER,
+        },
+        Property {
+            id: "https://uor.foundation/observable/derivativeValue",
+            label: "derivativeValue",
+            comment: "The discrete derivative value at this fiber position.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/observable/Jacobian"),
+            range: XSD_DECIMAL,
+        },
+        Property {
+            id: "https://uor.foundation/observable/dimension",
+            label: "dimension",
+            comment: "The dimension k of the topological observable (e.g., the \
+                      degree of the Betti number or the dimension of the spectral gap).",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/observable/TopologicalObservable"),
+            range: XSD_NON_NEGATIVE_INTEGER,
         },
     ]
 }

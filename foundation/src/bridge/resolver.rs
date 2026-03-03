@@ -54,6 +54,14 @@ pub trait ResolutionState<P: Primitives> {
     fn suggestion(&self) -> &[Self::RefinementSuggestion];
     /// The rate at which fibers are being pinned per iteration. A higher rate indicates faster convergence toward a complete resolution.
     fn convergence_rate(&self) -> P::Decimal;
+    /// Associated type for `ConstraintNerve`.
+    type ConstraintNerve: ConstraintNerve<P>;
+    /// The constraint nerve associated with this resolution state.
+    fn constraint_nerve(&self) -> &Self::ConstraintNerve;
+    /// The residual Shannon entropy of the resolution state: S = freeCount × ln 2. Measures remaining uncertainty.
+    fn residual_entropy(&self) -> P::Decimal;
+    /// Whether all Betti numbers of the constraint nerve are zero, indicating no topological obstructions to resolution.
+    fn topologically_complete(&self) -> P::Boolean;
 }
 
 /// A suggestion from the resolver for how to refine an incomplete resolution: which metric axis to explore, which class to narrow to, and which fibers to target.
@@ -68,3 +76,6 @@ pub trait RefinementSuggestion<P: Primitives> {
     /// The fiber coordinates this suggestion targets for pinning.
     fn target_fibers(&self) -> &[Self::FiberCoordinate];
 }
+
+/// The simplicial complex whose vertices are constraints and where a k-simplex exists iff the corresponding k+1 constraints have nonempty intersection. The nerve's topology governs resolution convergence: trivial homology ↔ smooth convergence, non-trivial homology ↔ potential stalls.
+pub trait ConstraintNerve<P: Primitives> {}

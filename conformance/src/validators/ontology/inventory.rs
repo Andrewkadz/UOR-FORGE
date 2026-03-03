@@ -2,9 +2,9 @@
 //!
 //! Verifies that the built ontology artifact contains the correct counts:
 //! - 14 namespaces (3 Kernel / 8 Bridge / 3 User)
-//! - 98 classes
-//! - 166 namespace-level properties + 1 global annotation = 167 via property_count()
-//! - 18 named individuals (each with required property assertions)
+//! - 103 classes
+//! - 176 namespace-level properties + 1 global annotation = 177 via property_count()
+//! - 255 named individuals (each with required property assertions)
 
 use std::path::Path;
 
@@ -16,9 +16,9 @@ use crate::report::{ConformanceReport, TestResult};
 
 /// Expected inventory counts for the UOR Foundation ontology.
 const EXPECTED_NAMESPACES: usize = 14;
-const EXPECTED_CLASSES: usize = 98;
-const EXPECTED_PROPERTIES: usize = 167;
-const EXPECTED_INDIVIDUALS: usize = 18;
+const EXPECTED_CLASSES: usize = 103;
+const EXPECTED_PROPERTIES: usize = 177;
+const EXPECTED_INDIVIDUALS: usize = 255;
 
 /// Validates the ontology inventory counts in the built JSON-LD artifact.
 ///
@@ -36,6 +36,9 @@ pub fn validate(artifacts: &Path) -> Result<ConformanceReport> {
 
     // Hardening: individual completeness
     validate_individual_completeness(&mut report);
+
+    // Hardening: identity completeness (all op:Identity individuals have lhs/rhs/forAll)
+    validate_identity_completeness(&mut report);
 
     // Validate the built JSON-LD artifact
     let json_path = artifacts.join("uor.foundation.json");
@@ -236,6 +239,16 @@ fn validate_individual_completeness(report: &mut ConformanceReport) {
             "https://uor.foundation/morphism/criticalComposition",
             &["morphism/lawComponents", "morphism/lawResult"],
         ),
+        // AD_1: addressing bijection — lhs, rhs, forAll
+        (
+            "https://uor.foundation/op/AD_1",
+            &["op/lhs", "op/rhs", "op/forAll"],
+        ),
+        // AD_2: embedding coherence — lhs, rhs, forAll
+        (
+            "https://uor.foundation/op/AD_2",
+            &["op/lhs", "op/rhs", "op/forAll"],
+        ),
     ];
 
     let mut all_found = true;
@@ -272,6 +285,76 @@ fn validate_individual_completeness(report: &mut ConformanceReport) {
                 "All {} named individuals have required property assertions",
                 requirements.len()
             ),
+        ));
+    }
+}
+
+/// Validates that all `op:Identity` individuals have lhs, rhs, and forAll properties,
+/// and that every expected algebra prefix group is represented.
+fn validate_identity_completeness(report: &mut ConformanceReport) {
+    let ontology = uor_ontology::Ontology::full();
+    let validator = "ontology/inventory/identity_completeness";
+
+    let op_module = match ontology.find_namespace("op") {
+        Some(m) => m,
+        None => {
+            report.push(TestResult::fail(validator, "op namespace not found"));
+            return;
+        }
+    };
+
+    let identity_type = "https://uor.foundation/op/Identity";
+    let identities: Vec<_> = op_module
+        .individuals
+        .iter()
+        .filter(|i| i.type_ == identity_type)
+        .collect();
+
+    let mut all_valid = true;
+    for ind in &identities {
+        let has_lhs = ind
+            .properties
+            .iter()
+            .any(|(k, _)| *k == "https://uor.foundation/op/lhs");
+        let has_rhs = ind
+            .properties
+            .iter()
+            .any(|(k, _)| *k == "https://uor.foundation/op/rhs");
+        let has_forall = ind
+            .properties
+            .iter()
+            .any(|(k, _)| *k == "https://uor.foundation/op/forAll");
+        if !has_lhs || !has_rhs || !has_forall {
+            report.push(TestResult::fail(
+                validator,
+                format!("Identity {} missing lhs/rhs/forAll", ind.id),
+            ));
+            all_valid = false;
+        }
+    }
+
+    // Verify expected algebra prefix groups are all present
+    let expected_prefixes = [
+        "R_A", "R_M", "B_", "X_", "D_", "U_", "AG_", "CA_", "C_", "CDI", "CL_", "CM_", "CR_",
+        "F_", "FL_", "FPM_", "FS_", "RE_", "IR_", "SF_", "RD_", "SE_", "OO_", "CB_", "OB_M",
+        "OB_C", "OB_H", "OB_P", "CT_", "CF_", "HG_", "T_C", "T_I", "T_E", "T_A", "AU_", "EF_",
+        "AD_", "AA_", "AM_", "TH_", "AR_", "PD_", "RC_", "DC_", "HA_", "IT_", "phi_",
+    ];
+    for prefix in &expected_prefixes {
+        let has = identities.iter().any(|i| i.label.starts_with(prefix));
+        if !has {
+            report.push(TestResult::fail(
+                validator,
+                format!("No identity with prefix {} found", prefix),
+            ));
+            all_valid = false;
+        }
+    }
+
+    if all_valid {
+        report.push(TestResult::pass(
+            validator,
+            format!("{} identity individuals validated", identities.len()),
         ));
     }
 }

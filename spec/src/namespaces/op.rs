@@ -496,6 +496,2689 @@ fn individuals() -> Vec<Individual> {
                 ),
             ],
         },
+        // Amendment 13: Address Resolution identities
+        Individual {
+            id: "https://uor.foundation/op/AD_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AD_1",
+            comment: "Addressing bijection: addresses(glyph(d)) = d. \
+                      Round-trip from datum through glyph and back is identity.",
+            properties: &[
+                (
+                    "https://uor.foundation/op/lhs",
+                    IndividualValue::Str("addresses(glyph(d))"),
+                ),
+                (
+                    "https://uor.foundation/op/rhs",
+                    IndividualValue::Str("d"),
+                ),
+                (
+                    "https://uor.foundation/op/forAll",
+                    IndividualValue::Str("d ∈ R_n"),
+                ),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AD_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AD_2",
+            comment: "Embedding coherence: glyph(ι(addresses(a))) = ι_addr(a). \
+                      The addressing diagram commutes through embeddings.",
+            properties: &[
+                (
+                    "https://uor.foundation/op/lhs",
+                    IndividualValue::Str("glyph(ι(addresses(a)))"),
+                ),
+                (
+                    "https://uor.foundation/op/rhs",
+                    IndividualValue::Str("ι_addr(a)"),
+                ),
+                (
+                    "https://uor.foundation/op/forAll",
+                    IndividualValue::Str("a ∈ Addr(R_n), ι : R_n → R_{n'}"),
+                ),
+            ],
+        },
+        // Amendment 14: Ring Algebra Laws — Additive group (6)
+        Individual {
+            id: "https://uor.foundation/op/R_A1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_A1",
+            comment: "Additive associativity: add(x, add(y, z)) = add(add(x, y), z).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("add(x, add(y, z))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("add(add(x, y), z)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/R_A2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_A2",
+            comment: "Additive identity: add(x, 0) = x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("add(x, 0)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/R_A3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_A3",
+            comment: "Additive inverse: add(x, neg(x)) = 0.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("add(x, neg(x))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/R_A4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_A4",
+            comment: "Additive commutativity: add(x, y) = add(y, x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("add(x, y)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("add(y, x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/R_A5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_A5",
+            comment: "Subtraction definition: sub(x, y) = add(x, neg(y)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("sub(x, y)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("add(x, neg(y))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/R_A6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_A6",
+            comment: "Negation involution: neg(neg(x)) = x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(neg(x))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        // Amendment 14: Multiplicative monoid (5)
+        Individual {
+            id: "https://uor.foundation/op/R_M1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_M1",
+            comment: "Multiplicative associativity: mul(x, mul(y, z)) = mul(mul(x, y), z).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("mul(x, mul(y, z))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("mul(mul(x, y), z)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/R_M2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_M2",
+            comment: "Multiplicative identity: mul(x, 1) = x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("mul(x, 1)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/R_M3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_M3",
+            comment: "Multiplicative commutativity: mul(x, y) = mul(y, x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("mul(x, y)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("mul(y, x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/R_M4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_M4",
+            comment: "Distributivity: mul(x, add(y, z)) = add(mul(x, y), mul(x, z)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("mul(x, add(y, z))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("add(mul(x, y), mul(x, z))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/R_M5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "R_M5",
+            comment: "Annihilation: mul(x, 0) = 0.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("mul(x, 0)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        // Amendment 14: Boolean algebra (13)
+        Individual {
+            id: "https://uor.foundation/op/B_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_1",
+            comment: "XOR associativity: xor(x, xor(y, z)) = xor(xor(x, y), z).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("xor(x, xor(y, z))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("xor(xor(x, y), z)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_2",
+            comment: "XOR identity: xor(x, 0) = x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("xor(x, 0)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_3",
+            comment: "XOR self-inverse: xor(x, x) = 0.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("xor(x, x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_4",
+            comment: "AND associativity: and(x, and(y, z)) = and(and(x, y), z).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("and(x, and(y, z))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("and(and(x, y), z)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_5",
+            comment: "AND identity: and(x, 2^n - 1) = x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("and(x, 2^n - 1)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_6",
+            comment: "AND annihilation: and(x, 0) = 0.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("and(x, 0)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_7",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_7",
+            comment: "OR associativity: or(x, or(y, z)) = or(or(x, y), z).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("or(x, or(y, z))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("or(or(x, y), z)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_8",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_8",
+            comment: "OR identity: or(x, 0) = x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("or(x, 0)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_9",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_9",
+            comment: "Absorption: and(x, or(x, y)) = x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("and(x, or(x, y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_10",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_10",
+            comment: "AND distributes over OR: and(x, or(y, z)) = or(and(x, y), and(x, z)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("and(x, or(y, z))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("or(and(x, y), and(x, z))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_11",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_11",
+            comment: "De Morgan 1: bnot(and(x, y)) = or(bnot(x), bnot(y)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(and(x, y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("or(bnot(x), bnot(y))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_12",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_12",
+            comment: "De Morgan 2: bnot(or(x, y)) = and(bnot(x), bnot(y)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(or(x, y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("and(bnot(x), bnot(y))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/B_13",
+            type_: "https://uor.foundation/op/Identity",
+            label: "B_13",
+            comment: "Bnot involution: bnot(bnot(x)) = x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(bnot(x))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        // Amendment 14: Cross-structure (7)
+        Individual {
+            id: "https://uor.foundation/op/X_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "X_1",
+            comment: "Neg via subtraction: neg(x) = sub(0, x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("sub(0, x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/X_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "X_2",
+            comment: "Complement via XOR: bnot(x) = xor(x, 2^n - 1).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("xor(x, 2^n - 1)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/X_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "X_3",
+            comment: "Succ via addition: succ(x) = add(x, 1).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("succ(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("add(x, 1)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/X_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "X_4",
+            comment: "Pred via subtraction: pred(x) = sub(x, 1).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("pred(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("sub(x, 1)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/X_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "X_5",
+            comment: "Neg-bnot bridge: neg(x) = add(bnot(x), 1).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("add(bnot(x), 1)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/X_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "X_6",
+            comment: "Complement predecessor: bnot(x) = pred(neg(x)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("pred(neg(x))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/X_7",
+            type_: "https://uor.foundation/op/Identity",
+            label: "X_7",
+            comment: "XOR-add bridge: xor(x, y) = add(x, y) - 2 * and(x, y) (in Z before mod).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("xor(x, y)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("add(x, y) - 2 * and(x, y)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ Z (before mod)")),
+            ],
+        },
+        // Amendment 14: Dihedral group (4, D-2 omitted as duplicate of R-A6)
+        Individual {
+            id: "https://uor.foundation/op/D_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "D_1",
+            comment: "Rotation order: succ^[2^n](x) = x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("succ^{2^n}(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/D_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "D_3",
+            comment: "Conjugation: neg(succ(neg(x))) = pred(x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(succ(neg(x)))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("pred(x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/D_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "D_4",
+            comment: "Reverse composition: bnot(neg(x)) = pred(x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(neg(x))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("pred(x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/D_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "D_5",
+            comment: "Group closure: D_[2^n] = [succ^k, neg ∘ succ^k : 0 ≤ k < 2^n].",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("D_{2^n}")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("{succ^k, neg ∘ succ^k : 0 ≤ k < 2^n}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        // Amendment 14: Unit group (5)
+        Individual {
+            id: "https://uor.foundation/op/U_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "U_1",
+            comment: "Unit group decomposition: R_n× ≅ Z/2 × Z/2^[n-2] for n ≥ 3.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("R_n×")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Z/2 × Z/2^{n-2}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 3")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/U_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "U_2",
+            comment: "Unit group special cases: R_1× ≅ [1]; R_2× ≅ Z/2.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("R_1× ≅ {1}; R_2× ≅ Z/2")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("special cases for small n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ∈ {1, 2}")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/U_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "U_3",
+            comment: "Multiplicative order: ord(u) = lcm(ord((-1)^a), ord(3^b)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("ord(u)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("lcm(ord((-1)^a), ord(3^b))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("u = (-1)^a · 3^b ∈ R_n×")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/U_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "U_4",
+            comment: "Resonance period: ord_g(2) divides φ(g).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("ord_g(2)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("divides φ(g)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("g odd")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/U_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "U_5",
+            comment: "Step formula derivation: step_g = 2 * ((g - (2^n mod g)) mod g) + 1.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("step_g")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("2 * ((g - (2^n mod g)) mod g) + 1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("g odd, g > 1")),
+            ],
+        },
+        // Amendment 14: Affine group (4)
+        Individual {
+            id: "https://uor.foundation/op/AG_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AG_1",
+            comment: "Scaling not dihedral: μ_u ∉ D_[2^n] for u ≠ ±1.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("μ_u")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("∉ D_{2^n}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("u ∈ R_n×, u ≠ ±1")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AG_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AG_2",
+            comment: "Affine group: Aff(R_n) = R_n× ⋉ R_n.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Aff(R_n)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("R_n× ⋉ R_n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AG_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AG_3",
+            comment: "Affine group order: |Aff(R_n)| = 2^[2n-1].",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("|Aff(R_n)|")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("2^{2n-1}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AG_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AG_4",
+            comment: "Subgroup inclusion: D_[2^n] ⊂ Aff(R_n) with u ∈ [±1].",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("D_{2^n}")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("⊂ Aff(R_n), u ∈ {±1}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        // Amendment 14: Carry algebra (6)
+        Individual {
+            id: "https://uor.foundation/op/CA_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CA_1",
+            comment: "Addition decomposition: add(x,y)_k = xor(x_k, xor(y_k, c_k(x,y))).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("add(x,y)_k")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("xor(x_k, xor(y_k, c_k(x,y)))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n, 0 ≤ k < n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CA_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CA_2",
+            comment: "Carry recurrence: c_[k+1](x,y) = or(and(x_k,y_k), and(xor(x_k,y_k), c_k)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("c_{k+1}(x,y)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("or(and(x_k,y_k), and(xor(x_k,y_k), c_k))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CA_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CA_3",
+            comment: "Carry commutativity: c(x, y) = c(y, x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("c(x, y)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("c(y, x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CA_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CA_4",
+            comment: "Zero carry: c(x, 0) = 0 at all positions.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("c(x, 0)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, all positions")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CA_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CA_5",
+            comment: "Negation carry: c(x, neg(x))_k = 1 for k > v_2(x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("c(x, neg(x))_k")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, k > v_2(x)")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CA_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CA_6",
+            comment: "Carry-incompatibility link: d_Δ(x, y) > 0 iff ∃ k : c_k(x,y) = 1.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_Δ(x, y) > 0")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("∃ k : c_k(x,y) = 1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        // Amendment 15: Constraint, Fiber & Partition Laws — Constraint composition (6)
+        Individual {
+            id: "https://uor.foundation/op/C_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "C_1",
+            comment: "Constraint pin union: pins of a composite constraint equal \
+                      the union of component pins.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("pins(compose(A, B))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("pins(A) ∪ pins(B)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/C_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "C_2",
+            comment: "Constraint composition commutativity.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(A, B)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("compose(B, A)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/C_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "C_3",
+            comment: "Constraint composition associativity.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(compose(A,B), C)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("compose(A, compose(B,C))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B, C")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/C_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "C_4",
+            comment: "Constraint composition idempotence.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(A, A)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("A")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint A")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/C_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "C_5",
+            comment: "Constraint composition identity element.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(A, ε)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("A")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint A, identity ε")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/C_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "C_6",
+            comment: "Constraint composition annihilator.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(A, Ω)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Ω")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint A, annihilator Ω")),
+            ],
+        },
+        // Amendment 15: Constraint dependence (1)
+        Individual {
+            id: "https://uor.foundation/op/CDI",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CDI",
+            comment: "Constraint-depth invariant: carry complexity of the residue \
+                      representation equals the type depth.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("carry(residue(T))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("depth(T)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+            ],
+        },
+        // Amendment 15: Constraint lattice (5)
+        Individual {
+            id: "https://uor.foundation/op/CL_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CL_1",
+            comment: "Constraint quotient lattice isomorphism to power set.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Constraint/≡")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("2^{[n]}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint equivalence classes")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CL_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CL_2",
+            comment: "Lattice join equals constraint composition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("A ∨ B")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("compose(A, B)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CL_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CL_3",
+            comment: "Lattice meet pins the intersection of component pins.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("pins(A ∧ B)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("pins(A) ∩ pins(B)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CL_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CL_4",
+            comment: "Constraint lattice distributivity.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("(A ∨ B) ∧ C")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("(A ∧ C) ∨ (B ∧ C)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B, C")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CL_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CL_5",
+            comment: "Constraint lattice complement existence.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("A ∧ A̅ = ε, A ∨ A̅ = Ω")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("∃ A̅ (complement)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint A")),
+            ],
+        },
+        // Amendment 15: Constraint minimization (3)
+        Individual {
+            id: "https://uor.foundation/op/CM_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CM_1",
+            comment: "Constraint redundancy criterion.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("C_i redundant in {C_1,...,C_k}")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("pins(C_i) ⊆ ∪_{j≠i} pins(C_j)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint set {C_1,...,C_k}")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CM_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CM_2",
+            comment: "Minimal cover via greedy irredundant removal.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("minimal cover")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("irredundant sub-collection (greedy removal)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("CompositeConstraint")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CM_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CM_3",
+            comment: "Minimum constraint count to cover n fibers.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("min constraints to cover n fibers")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("⌈n / max_k pins_per_constraint_k⌉")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n fibers, constraint set")),
+            ],
+        },
+        // Amendment 15: Constraint cost (5)
+        Individual {
+            id: "https://uor.foundation/op/CR_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CR_1",
+            comment: "Residue constraint cost is the step formula.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("cost(ResidueConstraint(m, r))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("step_m = 2 × ((−2^n) mod m) + 1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ResidueConstraint")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CR_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CR_2",
+            comment: "Carry constraint cost is the popcount of the pattern.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("cost(CarryConstraint(p))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("popcount(p)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("CarryConstraint")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CR_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CR_3",
+            comment: "Depth constraint cost is sum of residue and carry costs.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("cost(DepthConstraint(d_min, d_max))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("cost(residue) + cost(carry)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("DepthConstraint")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CR_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CR_4",
+            comment: "Composite constraint cost is subadditive.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("cost(compose(A, B))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ cost(A) + cost(B)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CR_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CR_5",
+            comment: "Optimal resolution order is increasing cost.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("optimal resolution order")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("increasing cost order")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint set")),
+            ],
+        },
+        // Amendment 15: Fiber monotone (4)
+        Individual {
+            id: "https://uor.foundation/op/F_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "F_1",
+            comment: "Fiber monotonicity: a pinned fiber cannot be unpinned.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("pinned fiber")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("cannot be unpinned")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberCoordinate")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/F_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "F_2",
+            comment: "Fiber budget upper bound: at most n pin operations to close.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("pin operations to close")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/F_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "F_3",
+            comment: "Fiber budget conservation: pinned + free = total fibers.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("pinnedCount + freeCount")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("totalFibers = n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/F_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "F_4",
+            comment: "Fiber budget closure: closed iff all fibers pinned.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("isClosed")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("freeCount = 0 ⇔ pinnedCount = n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget")),
+            ],
+        },
+        // Amendment 15: Fiber lattice (4)
+        Individual {
+            id: "https://uor.foundation/op/FL_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FL_1",
+            comment: "Fiber lattice bottom: all fibers free.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("⊥")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("all fibers free (freeCount = n)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget lattice")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FL_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FL_2",
+            comment: "Fiber lattice top: all fibers pinned.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("⊤")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("all fibers pinned (pinnedCount = n)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget lattice")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FL_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FL_3",
+            comment: "Fiber lattice join is union of pinnings.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("join(S₁, S₂)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("union of pinnings from S₁ and S₂")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget states S₁, S₂")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FL_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FL_4",
+            comment: "Fiber lattice height equals n.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("lattice height")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget lattice")),
+            ],
+        },
+        // Amendment 15: Fiber-partition map (7)
+        Individual {
+            id: "https://uor.foundation/op/FPM_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FPM_1",
+            comment: "Unit partition membership: x is a unit iff fiber_0(x) = 1 (x is odd).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("x ∈ Unit")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("fiber_0(x) = 1 (x is odd)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FPM_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FPM_2",
+            comment: "Exterior partition membership: x is exterior iff x is not in the carrier of T.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("x ∈ Exterior")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x ∉ carrier(T)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, type T")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FPM_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FPM_3",
+            comment: "Irreducible partition membership: x is irreducible iff \
+                      x is not a unit, exterior, or reducible.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("x ∈ Irreducible")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x ∉ Unit ∪ Exterior AND no non-trivial factorization")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FPM_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FPM_4",
+            comment: "Reducible partition membership: x is reducible iff x is \
+                      not a unit, exterior, or irreducible.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("x ∈ Reducible")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x ∉ Unit ∪ Exterior ∪ Irreducible")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FPM_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FPM_5",
+            comment: "2-adic decomposition: every element factors as 2^{v(x)} times an odd unit.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("x = 2^{v(x)} ⋅ u")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("u odd, v(x) = min position of 1-bit")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FPM_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FPM_6",
+            comment: "Stratum size formula.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("|{x: v(x) = k}|")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("2^{n−k−1} for 0 < k < n; 1 for k = n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FPM_7",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FPM_7",
+            comment: "Base type partition cardinalities.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("base type partition")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("|Unit| = 2^{n−1}; |Irr| = 2^{n−2}; |Red| = 2^{n−2}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("R_n, n ≥ 3")),
+            ],
+        },
+        // Amendment 15: Fiber position semantics (7)
+        Individual {
+            id: "https://uor.foundation/op/FS_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FS_1",
+            comment: "Fiber extraction: fiber_k(x) is the k-th bit of x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("fiber_k(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("(x >> k) AND 1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, 0 ≤ k < n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FS_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FS_2",
+            comment: "Fiber 0 is parity.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("fiber_0(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x mod 2 (parity)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FS_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FS_3",
+            comment: "Progressive fiber determination: fiber_k given lower fibers \
+                      determines x mod 2^{k+1}.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("fiber_k(x) given fibers 0..k−1")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("determines x mod 2^{k+1}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FS_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FS_4",
+            comment: "Cumulative fiber determination: fibers 0..k together determine x mod 2^{k+1}.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("fibers 0..k together")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("determine x mod 2^{k+1}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FS_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FS_5",
+            comment: "Complete fiber determination: all n fibers determine x uniquely.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("all n fibers")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("determine x uniquely")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FS_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FS_6",
+            comment: "Stratum from fibers: v_2(x) is the minimum k where fiber_k(x) = 1.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("stratum(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("v_2(x) = min{k : fiber_k(x) = 1}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/FS_7",
+            type_: "https://uor.foundation/op/Identity",
+            label: "FS_7",
+            comment: "Depth bound: depth(x) ≤ v_2(x) for irreducible elements.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("depth(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ v_2(x) for irreducible elements")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, base type")),
+            ],
+        },
+        // Amendment 16: Resolution & Observable Laws — Strategy equivalence (1)
+        Individual {
+            id: "https://uor.foundation/op/RE_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "RE_1",
+            comment: "Resolution strategy equivalence: dihedral, canonical-form, and \
+                      evaluation resolvers all compute the same partition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Π_D(T)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Π_C(T) = Π_E(T)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+            ],
+        },
+        // Amendment 16: Iterative resolution (4)
+        Individual {
+            id: "https://uor.foundation/op/IR_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IR_1",
+            comment: "Resolution monotonicity: pinned count never decreases.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("pinnedCount(state_{i+1})")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≥ pinnedCount(state_i)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("resolution states")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/IR_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IR_2",
+            comment: "Resolution convergence bound: at most n iterations.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("iterations to converge")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("resolution loop")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/IR_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IR_3",
+            comment: "Convergence rate definition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("convergenceRate")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("pinnedCount / iterationCount")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ResolutionState")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/IR_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IR_4",
+            comment: "Resolution termination: loop terminates if constraint set spans all fibers.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("constraint set spans all fibers")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("loop terminates")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("complete constraint set")),
+            ],
+        },
+        // Amendment 16: Step formula (2)
+        Individual {
+            id: "https://uor.foundation/op/SF_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SF_1",
+            comment: "Optimal resolution level for a factor: n ≡ 0 (mod ord_g(2)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("n ≡ 0 (mod ord_g(2))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("factor g has optimal resolution at level n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("factor g, quantum n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/SF_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SF_2",
+            comment: "Constraint ordering by step cost: smaller step_g first.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("constraints with smaller step_g")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("are more constraining, apply first")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint ordering")),
+            ],
+        },
+        // Amendment 16: Determinism (2)
+        Individual {
+            id: "https://uor.foundation/op/RD_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "RD_1",
+            comment: "Resolution determinism: same type and constraint sequence yield unique partition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("same type T and constraint sequence")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("unique resolved partition")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n, [C₁,...,Cₖ]")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/RD_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "RD_2",
+            comment: "Order independence: complete constraint sets yield the same partition regardless of order.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("complete constraint set, any order")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("same final partition")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("closing constraint set")),
+            ],
+        },
+        // Amendment 16: Strategy proofs (4)
+        Individual {
+            id: "https://uor.foundation/op/SE_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SE_1",
+            comment: "Evaluation resolver directly computes the set-theoretic partition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("EvaluationResolver")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("directly computes set-theoretic partition")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/SE_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SE_2",
+            comment: "Dihedral factorization resolver yields the same partition via orbit decomposition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("DihedralFactorizationResolver")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("orbit decomposition yields same partition")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/SE_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SE_3",
+            comment: "Canonical form resolver yields the same partition via confluent rewrite.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("CanonicalFormResolver")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("confluent rewrite → same partition")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/SE_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SE_4",
+            comment: "All three strategies compute the same set-theoretic partition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Π_D(T) = Π_C(T) = Π_E(T)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("all compute same set-theoretic partition")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+            ],
+        },
+        // Amendment 16: Optimal ordering (5)
+        Individual {
+            id: "https://uor.foundation/op/OO_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OO_1",
+            comment: "Benefit of a constraint is the number of new pins it provides.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("benefit(C_i, S)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("|pins(C_i) ∖ S|")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint C_i, pinned set S")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OO_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OO_2",
+            comment: "Constraint cost is step or popcount depending on type.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("cost(C_i)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("step_{m_i} or popcount(p_i)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ResidueConstraint or CarryConstraint")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OO_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OO_3",
+            comment: "Greedy selection maximizes benefit-to-cost ratio.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("greedy selection")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("argmax benefit(C_i, S) / cost(C_i)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("each resolution step")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OO_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OO_4",
+            comment: "Greedy approximation achieves (1 − 1/e) ≈ 63% of optimal.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("greedy approximation")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("(1 − 1/e) ≈ 63% of optimal")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("weighted set cover")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OO_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OO_5",
+            comment: "Tiebreaker: prefer vertical (residue) before horizontal (carry).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("equal cost tiebreaker")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("prefer vertical (residue) before horizontal (carry)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("cost-tied constraints")),
+            ],
+        },
+        // Amendment 16: Convergence bounds (6)
+        Individual {
+            id: "https://uor.foundation/op/CB_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CB_1",
+            comment: "Minimum convergence rate: 1 fiber per iteration (worst case).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("min convergenceRate")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("1 fiber per iteration")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("worst case")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CB_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CB_2",
+            comment: "Maximum convergence rate: n fibers in 1 iteration (best case).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("max convergenceRate")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("n fibers in 1 iteration")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("best case")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CB_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CB_3",
+            comment: "Expected residue constraint rate: ⌊log_2(m)⌋ fibers per constraint.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("expected rate (residue)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("⌊log_2(m)⌋ fibers per constraint")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ResidueConstraint(m, r)")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CB_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CB_4",
+            comment: "Stall detection: convergenceRate < 1 for 2 iterations suggests insufficiency.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("convergenceRate < 1 for 2 iterations")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("constraint set may be insufficient")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("stall detection")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CB_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CB_5",
+            comment: "Sufficiency criterion: pin union covers all fiber positions.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("∪_i pins(C_i) = {0,...,n−1}")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("constraint set closes budget")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("sufficiency criterion")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CB_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CB_6",
+            comment: "Iteration bound for k constraints: at most min(k, n) iterations.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("iterations for k constraints")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ min(k, n)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("well-formed model")),
+            ],
+        },
+        // Amendment 16: Metric identities (6)
+        Individual {
+            id: "https://uor.foundation/op/OB_M1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_M1",
+            comment: "Ring metric triangle inequality.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_R(x, z)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ d_R(x, y) + d_R(y, z)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_M2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_M2",
+            comment: "Hamming metric triangle inequality.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_H(x, z)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ d_H(x, y) + d_H(y, z)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_M3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_M3",
+            comment: "Incompatibility metric is the absolute difference of ring and Hamming metrics.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_Δ(x, y)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("|d_R(x, y) − d_H(x, y)|")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_M4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_M4",
+            comment: "Negation preserves ring metric.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_R(neg(x), neg(y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("d_R(x, y)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_M5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_M5",
+            comment: "Bitwise complement preserves Hamming metric.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_H(bnot(x), bnot(y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("d_H(x, y)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_M6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_M6",
+            comment: "Successor preserves ring metric but may change Hamming metric.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_R(succ(x), succ(y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("d_R(x, y) but d_H may differ")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        // Amendment 16: Commutator identities (3)
+        Individual {
+            id: "https://uor.foundation/op/OB_C1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_C1",
+            comment: "Negation-complement commutator is constant 2.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("[neg, bnot](x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("2")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_C2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_C2",
+            comment: "Negation-translation commutator.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("[neg, add(•,k)](x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("−2k mod 2^n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, constant k")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_C3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_C3",
+            comment: "Complement-XOR commutator is trivial.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("[bnot, xor(•,k)](x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, constant k")),
+            ],
+        },
+        // Amendment 16: Holonomy (3)
+        Individual {
+            id: "https://uor.foundation/op/OB_H1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_H1",
+            comment: "Additive paths have trivial monodromy (abelian ⇒ path-independent).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("closed additive path monodromy")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("trivial (abelian ⇒ path-independent)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("additive group")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_H2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_H2",
+            comment: "Dihedral generator paths have monodromy in D_{2^n}.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("closed {neg,bnot} path monodromy")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("∈ D_{2^n}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("dihedral generators")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_H3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_H3",
+            comment: "Successor-only closed path winding number.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("succ-only path WindingNumber")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("path length / 2^n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("closed succ path")),
+            ],
+        },
+        // Amendment 16: Observable composition (3)
+        Individual {
+            id: "https://uor.foundation/op/OB_P1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_P1",
+            comment: "Path length is additive under concatenation.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("PathLength(p₁ ⋅ p₂)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("PathLength(p₁) + PathLength(p₂)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("paths p₁, p₂")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_P2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_P2",
+            comment: "Total variation is subadditive under concatenation.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("TotalVariation(p₁ ⋅ p₂)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ TotalVariation(p₁) + TotalVariation(p₂)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("paths p₁, p₂")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/OB_P3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "OB_P3",
+            comment: "Cascade length is additive under sequential composition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("CascadeLength(c₁ ; c₂)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("CascadeLength(c₁) + CascadeLength(c₂)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("cascades c₁, c₂")),
+            ],
+        },
+        // Amendment 16: Catastrophe thresholds (4)
+        Individual {
+            id: "https://uor.foundation/op/CT_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CT_1",
+            comment: "Catastrophe boundaries are powers of 2.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("catastrophe boundaries")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("g = 2^k for 1 ≤ k ≤ n−1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("stratum transitions")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CT_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CT_2",
+            comment: "Odd prime catastrophe transitions visibility via residue constraints.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("odd prime catastrophe")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("ResidueConstraint(p, •) transitions visibility")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("odd prime p")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CT_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CT_3",
+            comment: "Catastrophe threshold is normalized step cost.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("CatastropheThreshold(g)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("step_g / n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("factor g")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CT_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CT_4",
+            comment: "Composite catastrophe threshold is max of component thresholds.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("composite catastrophe g = p⋅q")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("max(step_p, step_q) / n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("composite g")),
+            ],
+        },
+        // Amendment 16: Curvature-cost (4)
+        Individual {
+            id: "https://uor.foundation/op/CF_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CF_1",
+            comment: "Curvature flux is the sum of incompatibility along a path.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("CurvatureFlux(γ)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ |d_R(x_i, x_{i+1}) − d_H(x_i, x_{i+1})|")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("path γ")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CF_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CF_2",
+            comment: "Resolution cost is bounded below by curvature flux of optimal path.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("ResolutionCost(T)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≥ CurvatureFlux(γ_opt)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("type T")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CF_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CF_3",
+            comment: "Successor curvature flux: trailing_ones(x) for most x, n−1 at maximum.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("CurvatureFlux(x, succ(x))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("trailing_ones(x) for t < n; n−1 for x = 2^n−1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CF_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CF_4",
+            comment: "Total successor curvature flux over R_n equals 2^n − 2.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Σ_{x ∈ R_n} CurvatureFlux(x, succ(x))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("2^n − 2")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        // Amendment 16: Complete holonomy (5)
+        Individual {
+            id: "https://uor.foundation/op/HG_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "HG_1",
+            comment: "Additive holonomy is trivial (abelian group).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("additive holonomy")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("trivial (abelian ⇒ path-independent)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("additive group")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/HG_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "HG_2",
+            comment: "Dihedral generator holonomy group is D_{2^n}.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("{neg, bnot, succ, pred} holonomy")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("D_{2^n}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("dihedral generators")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/HG_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "HG_3",
+            comment: "Unit multiplication holonomy equals the unit group.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("{mul(•, u) : u ∈ R_n×} holonomy")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("R_n× ≅ Z/2 × Z/2^{n−2}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("unit group")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/HG_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "HG_4",
+            comment: "Full holonomy group is the affine group.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Hol(R_n)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Aff(R_n) = R_n× ⋉ R_n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/HG_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "HG_5",
+            comment: "Holonomy group decomposition into dihedral and non-trivial units.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Hol(R_n) decomposition")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("D_{2^n} ⋅ {mul(•,u) : u ∈ R_n×, u ≠ ±1}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        // Amendment 17: Transform, Addressing & Thermodynamic Laws — Category laws (4)
+        Individual {
+            id: "https://uor.foundation/op/T_C1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_C1",
+            comment: "Category left identity: compose(id, f) = f.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(id, f)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("f")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("f ∈ Transform")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_C2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_C2",
+            comment: "Category right identity: compose(f, id) = f.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(f, id)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("f")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("f ∈ Transform")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_C3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_C3",
+            comment: "Category associativity of transform composition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(f, compose(g, h))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("compose(compose(f, g), h)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("f, g, h ∈ Transform")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_C4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_C4",
+            comment: "Composability condition: f composesWith g iff target(f) = source(g).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("f composesWith g")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("target(f) = source(g)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("f, g ∈ Transform")),
+            ],
+        },
+        // Amendment 17: Isometry laws (5)
+        Individual {
+            id: "https://uor.foundation/op/T_I1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_I1",
+            comment: "Negation is a ring-metric isometry.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_R(neg(x), neg(y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("d_R(x, y)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_I2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_I2",
+            comment: "Bitwise complement is a Hamming-metric isometry.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_H(bnot(x), bnot(y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("d_H(x, y)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_I3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_I3",
+            comment: "Successor as composed isometries: succ = neg ∘ bnot preserves d_R but not d_H.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("succ = neg ∘ bnot")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("preserves d_R but not d_H")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_I4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_I4",
+            comment: "Ring isometries form a group under composition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("ring isometries")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("form a group under composition")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("Isometry")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_I5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_I5",
+            comment: "CurvatureObservable measures failure of ring isometry to be Hamming isometry.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("CurvatureObservable")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("measures failure of ring isometry to be Hamming isometry")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("Isometry")),
+            ],
+        },
+        // Amendment 17: Embedding laws (4)
+        Individual {
+            id: "https://uor.foundation/op/T_E1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_E1",
+            comment: "Embedding injectivity.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("ι(x) = ι(y)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("x = y")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n (injectivity)")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_E2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_E2",
+            comment: "Embedding is a ring homomorphism.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("ι(add(x,y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("add(ι(x), ι(y)); ι(mul(x,y)) = mul(ι(x), ι(y))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_E3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_E3",
+            comment: "Embedding transitivity: composition of embeddings is an embedding.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("ι₂ ∘ ι₁ : R_n → R_k")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("is an embedding (transitivity)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ι₁: R_n → R_m, ι₂: R_m → R_k")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_E4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_E4",
+            comment: "Embedding address coherence: glyph ∘ ι ∘ addresses is well-defined.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("glyph ∘ ι ∘ addresses")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("well-defined")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("embedding ι")),
+            ],
+        },
+        // Amendment 17: Group action (4)
+        Individual {
+            id: "https://uor.foundation/op/T_A1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_A1",
+            comment: "Dihedral group acts on constraints by transforming them.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("g ∈ D_{2^n} on Constraint C")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("g⋅C (transformed constraint)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("g ∈ D_{2^n}, C ∈ Constraint")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_A2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_A2",
+            comment: "Dihedral group action on partitions permutes components.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("g ∈ D_{2^n} on Partition")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("permutes components")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("g ∈ D_{2^n}")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_A3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_A3",
+            comment: "Dihedral orbits determine irreducibility boundaries.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("D_{2^n} orbits on R_n")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("determine irreducibility boundaries")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("DihedralFactorizationResolver")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/T_A4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "T_A4",
+            comment: "Fixed points of negation are {0, 2^{n−1}}; bnot has no fixed points.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("fixed points of neg")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("{0, 2^{n−1}}; bnot has none (n > 0)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("R_n")),
+            ],
+        },
+        // Amendment 17: Automorphism group (5)
+        Individual {
+            id: "https://uor.foundation/op/AU_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AU_1",
+            comment: "Automorphism group consists of unit multiplications.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Aut(R_n)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("{μ_u : x ↦ mul(u, x) | u ∈ R_n×}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AU_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AU_2",
+            comment: "Automorphism group is isomorphic to the unit group.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Aut(R_n)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≅ R_n× ≅ Z/2 × Z/2^{n−2}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 3")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AU_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AU_3",
+            comment: "Automorphism group order is 2^{n−1}.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("|Aut(R_n)|")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("2^{n−1}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AU_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AU_4",
+            comment: "Intersection of automorphism group with dihedral group is {id, neg}.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Aut(R_n) ∩ D_{2^n}")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("{id, neg}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AU_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AU_5",
+            comment: "Affine group is generated by D_{2^n} and μ_3.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Aff(R_n)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("⟨D_{2^n}, μ_3⟩")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+            ],
+        },
+        // Amendment 17: Embedding functors (7)
+        Individual {
+            id: "https://uor.foundation/op/EF_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "EF_1",
+            comment: "Embedding functor action on morphisms.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(f)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("ι ∘ f ∘ ι⁻¹ on Im(ι)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m, f ∈ Cat(R_n)")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/EF_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "EF_2",
+            comment: "Embedding functor preserves composition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(f ∘ g)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("F_ι(f) ∘ F_ι(g)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/EF_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "EF_3",
+            comment: "Embedding functor preserves identities.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(id_{R_n})")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("id_{Im(ι)}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/EF_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "EF_4",
+            comment: "Embedding functor composition is functorial.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("F_{ι₂ ∘ ι₁}")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("F_{ι₂} ∘ F_{ι₁}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ι₁: R_n → R_m, ι₂: R_m → R_k")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/EF_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "EF_5",
+            comment: "Embedding functor preserves ring isometries.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(ring isometry)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("ring isometry at level m")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/EF_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "EF_6",
+            comment: "Embedding functor maps dihedral subgroup into target dihedral group.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(D_{2^n})")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("⊆ D_{2^m} as subgroup")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/EF_7",
+            type_: "https://uor.foundation/op/Identity",
+            label: "EF_7",
+            comment: "Embedding functor maps unit group into target unit group.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(R_n×)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("⊆ R_m× as subgroup")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m")),
+            ],
+        },
+        // Amendment 17: Address arithmetic (6)
+        Individual {
+            id: "https://uor.foundation/op/AA_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AA_1",
+            comment: "Braille glyph encoding: 6-bit blocks to Braille characters.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("glyph(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("[braille(x[0:5]), braille(x[6:11]), ...]")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n (6-bit blocks)")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AA_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AA_2",
+            comment: "Braille XOR homomorphism: Braille encoding commutes with XOR.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("braille(a ⊕ b)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("braille(a) ⊕ braille(b)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("a, b ∈ {0,1}^6")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AA_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AA_3",
+            comment: "Braille complement: glyph of bnot(x) is character-wise complement of glyph(x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("glyph(bnot(x))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("complement each Braille character of glyph(x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AA_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AA_4",
+            comment: "Addition does not lift to address space: no glyph homomorphism for add.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("glyph(add(x, y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≠ f(glyph(x), glyph(y)) in general")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AA_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AA_5",
+            comment: "Liftable operations are exactly the Boolean operations.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("liftable operations")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("{xor, and, or, bnot}; NOT {add, sub, mul, neg, succ, pred}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("operations on R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AA_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AA_6",
+            comment: "Negation decomposes into liftable bnot and non-liftable succ.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(x) = succ(bnot(x))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("bnot lifts, succ does not")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        // Amendment 17: Address metric (4)
+        Individual {
+            id: "https://uor.foundation/op/AM_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AM_1",
+            comment: "Address metric is sum of per-character Hamming distances.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_addr(a, b)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ_i popcount(braille_i(a) ⊕ braille_i(b))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("addresses a, b")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AM_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AM_2",
+            comment: "Address metric equals Hamming metric on ring elements.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_addr(glyph(x), glyph(y))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("d_H(x, y)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AM_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AM_3",
+            comment: "Address metric does not preserve ring metric in general.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_addr")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("does NOT preserve d_R in general")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("addresses")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AM_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AM_4",
+            comment: "Address incompatibility metric.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("d_Δ(x, y)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("|d_R(x,y) − d_addr(glyph(x), glyph(y))|")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+            ],
+        },
+        // Amendment 17: Thermodynamic (10)
+        Individual {
+            id: "https://uor.foundation/op/TH_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "TH_1",
+            comment: "Entropy of a fiber budget state.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("S(state)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("freeCount × ln 2")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("state ∈ FiberBudget")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/TH_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "TH_2",
+            comment: "Maximum entropy: unconstrained state has S = n × ln 2.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("S(⊥)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("n × ln 2")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("unconstrained type")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/TH_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "TH_3",
+            comment: "Zero entropy: fully resolved state has S = 0.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("S(⊤)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("fully resolved type")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/TH_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "TH_4",
+            comment: "Landauer bound on total resolution cost.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("total resolution cost")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("n × k_B T × ln 2")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("Landauer bound")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/TH_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "TH_5",
+            comment: "Critical inverse temperature for UOR fiber system.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("β*")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("ln 2")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("UOR fiber system")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/TH_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "TH_6",
+            comment: "Constraint application removes entropy; convergence rate equals cooling rate.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("constraint application")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("removes entropy; convergenceRate = cooling rate")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("resolution loop")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/TH_7",
+            type_: "https://uor.foundation/op/Identity",
+            label: "TH_7",
+            comment: "CatastropheThreshold is the temperature of a partition phase transition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("CatastropheThreshold")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("temperature of partition phase transition")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("partition bifurcation")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/TH_8",
+            type_: "https://uor.foundation/op/Identity",
+            label: "TH_8",
+            comment: "Step formula as free-energy cost of a constraint boundary.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("step_g")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("free-energy cost of constraint boundary")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint boundary g")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/TH_9",
+            type_: "https://uor.foundation/op/Identity",
+            label: "TH_9",
+            comment: "Computational hardness maps to type incompleteness (high temperature).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("computational hardness")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("type incompleteness (high temperature)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("type specification")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/TH_10",
+            type_: "https://uor.foundation/op/Identity",
+            label: "TH_10",
+            comment: "Type resolution is measurement; cost ≥ entropy removed.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("type resolution")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("measurement; cost ≥ entropy removed")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("resolution process")),
+            ],
+        },
+        // Amendment 17: Adiabatic (5)
+        Individual {
+            id: "https://uor.foundation/op/AR_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AR_1",
+            comment: "Adiabatic schedule: decreasing freeCount, cost-per-fiber ordering.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("adiabatic schedule")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("decreasing freeCount × cost-per-fiber order")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint ordering")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AR_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AR_2",
+            comment: "Adiabatic cost is sum of constraint costs in optimal order.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Cost_adiabatic")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ_i cost(C_{σ(i)}) where σ is optimal")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("optimal ordering")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AR_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AR_3",
+            comment: "Adiabatic cost satisfies Landauer bound.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Cost_adiabatic")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≥ n × k_B T × ln 2")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("Landauer bound")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AR_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AR_4",
+            comment: "Adiabatic efficiency η ≤ 1.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("η = (n × ln 2) / Cost_adiabatic")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ 1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("adiabatic efficiency")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/AR_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "AR_5",
+            comment: "Greedy vs adiabatic cost difference: ≤ 5% for n ≤ 16.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("greedy vs adiabatic difference")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ 5% for n ≤ 16")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("empirical, Q0–Q4")),
+            ],
+        },
+        // Amendment 17: Phase diagram (5)
+        Individual {
+            id: "https://uor.foundation/op/PD_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "PD_1",
+            comment: "Phase space definition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("phase space")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("{(n, g) : n ∈ Z₊, g constraint boundary}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("UOR phase diagram")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/PD_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "PD_2",
+            comment: "Phase boundaries occur where g divides 2^n − 1 or g is a power of 2.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("phase boundaries")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("g | (2^n − 1) or g = 2^k")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("(n, g) plane")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/PD_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "PD_3",
+            comment: "Parity boundary divides R_n into equal halves.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("parity boundary")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("|Unit| = 2^{n−1}, |non-Unit| = 2^{n−1}")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("g = 2")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/PD_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "PD_4",
+            comment: "Resonance lines in the phase diagram.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("resonance lines")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("n = k ⋅ ord_g(2)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("(n, g) plane")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/PD_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "PD_5",
+            comment: "Phase count at level n is at most 2^n (typically O(n)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("phase count at level n")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ 2^n (typical O(n))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("quantum level n")),
+            ],
+        },
+        // Amendment 17: Reversible computation (5)
+        Individual {
+            id: "https://uor.foundation/op/RC_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "RC_1",
+            comment: "Reversible pinning stores prior state in ancilla fiber.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("reversible pinning of fiber k")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("store prior state in ancilla fiber k'")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberCoordinate k")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/RC_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "RC_2",
+            comment: "Reversible pinning has zero total entropy change.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("reversible pinning entropy")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("ΔS_total = 0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("reversible strategy")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/RC_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "RC_3",
+            comment: "Deferred Landauer cost at ancilla erasure.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("deferred Landauer cost")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("n × k_B T × ln 2 at ancilla erasure")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ancilla cleanup")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/RC_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "RC_4",
+            comment: "Reversible total cost equals irreversible total cost (redistributed).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("reversible total cost")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("= irreversible total cost (redistributed)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("reversible strategy")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/RC_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "RC_5",
+            comment: "Quantum UOR: superposed fibers, cost proportional to winning path.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("quantum UOR")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("superposed fibers, cost ∝ winning path")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("hypothetical quantum")),
+            ],
+        },
+        // Amendment 19: Analytical Identities — Differential calculus (11)
+        Individual {
+            id: "https://uor.foundation/op/DC_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_1",
+            comment: "Ring derivative: ∂_R f(x) = f(succ(x)) - f(x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("∂_R f(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("f(succ(x)) - f(x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("f : R_n → R_n, x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/DC_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_2",
+            comment: "Hamming derivative: ∂_H f(x) = f(bnot(x)) - f(x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("∂_H f(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("f(bnot(x)) - f(x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("f : R_n → R_n, x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/DC_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_3",
+            comment: "Hamming derivative of identity: ∂_H id(x) = -(2x + 1) mod 2^n.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("∂_H id(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("bnot(x) - x = -(2x + 1) mod 2^n")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/DC_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_4",
+            comment: "Commutator from derivatives: [neg, bnot](x) = ∂_R neg(x) - ∂_H neg(x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("[neg, bnot](x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("∂_R neg(x) - ∂_H neg(x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/DC_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_5",
+            comment: "Carry dependence: the difference ∂_R f - ∂_H f decomposes into carry contributions.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("∂_R f - ∂_H f")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ carry contributions")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("f : R_n → R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/DC_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_6",
+            comment: "Jacobian definition: J_k(x) = ∂_R f_k(x) where f_k = fiber_k.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("J_k(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("∂_R f_k(x) where f_k = fiber_k")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, 0 ≤ k < n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/DC_7",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_7",
+            comment: "Top-fiber anomaly: J_{n-1}(x) may differ from lower fibers.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("J_{n-1}(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("may differ from lower fibers")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/DC_8",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_8",
+            comment: "Rank-curvature identity: rank(J(x)) = d_H(x, succ(x)) - 1 for generic x.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("rank(J(x))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("= d_H(x, succ(x)) - 1 for generic x")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/DC_9",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_9",
+            comment: "Total curvature from Jacobian: κ(x) = Σ_k J_k(x).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("κ(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ_k J_k(x)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/DC_10",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_10",
+            comment: "Curvature-weighted ordering: optimal next constraint maximizes J_k over free fibers.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("optimal next constraint")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("argmax J_k over free fibers")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("resolution step")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/DC_11",
+            type_: "https://uor.foundation/op/Identity",
+            label: "DC_11",
+            comment: "Curvature equipartition: Σ_{x} J_k(x) ≈ (2^n - 2)/n for each k.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Σ_{x} J_k(x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≈ (2^n - 2)/n for each k")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("0 ≤ k < n")),
+            ],
+        },
+        // Amendment 19: Homological algebra (3)
+        Individual {
+            id: "https://uor.foundation/op/HA_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "HA_1",
+            comment: "Constraint nerve: N(C) is the simplicial complex on constraints.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("N(C)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("simplicial complex on constraints")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint set C")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/HA_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "HA_2",
+            comment: "Stall iff non-trivial homology: resolution stalls ⟺ H_k(N(C)) ≠ 0 for some k > 0.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("resolution stalls")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("⟺ H_k(N(C)) ≠ 0 for some k > 0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint set C")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/HA_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "HA_3",
+            comment: "Betti-entropy theorem: S_residual ≥ Σ_k β_k × ln 2.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("S_residual")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≥ Σ_k β_k × ln 2")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint configuration C")),
+            ],
+        },
+        // Amendment 19: Index theorem (7)
+        Individual {
+            id: "https://uor.foundation/op/IT_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IT_2",
+            comment: "Euler-Poincaré formula for constraint nerve.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("χ(N(C))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ_k (-1)^k β_k")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint nerve N(C)")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/IT_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IT_3",
+            comment: "Spectral Euler characteristic.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("χ(N(C))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ_k (-1)^k dim(H_k)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint nerve N(C)")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/IT_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IT_6",
+            comment: "Spectral gap bounds convergence rate from below.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("λ_1(N(C))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("lower bounds convergence rate")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint nerve N(C)")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/IT_7a",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IT_7a",
+            comment: "UOR index theorem (topological form): total curvature minus Euler \
+                      characteristic equals residual entropy in bits.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("Σ κ_k - χ(N(C))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("= S_residual / ln 2")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint configuration C")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/IT_7b",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IT_7b",
+            comment: "UOR index theorem (entropy-topology duality).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("S_residual")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("= (Σ κ_k - χ) × ln 2")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint configuration C")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/IT_7c",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IT_7c",
+            comment: "UOR index theorem (spectral cost bound): resolution cost ≥ n - χ(N(C)).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("resolution cost")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≥ n - χ(N(C))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint configuration C")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/IT_7d",
+            type_: "https://uor.foundation/op/Identity",
+            label: "IT_7d",
+            comment: "UOR index theorem (completeness criterion): resolution is complete \
+                      iff χ(N(C)) = n and all Betti numbers vanish.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("resolution complete")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("⟺ χ(N(C)) = n and all β_k = 0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint nerve N(C)")),
+            ],
+        },
+        // Amendment 20: Inter-algebra Map Formalization (6)
+        Individual {
+            id: "https://uor.foundation/op/phi_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "phi_1",
+            comment: "Ring → Constraints map: negation transforms a residue constraint.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₁(neg, ResidueConstraint(m,r))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("ResidueConstraint(m, m-r)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ring op, constraint")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/phi_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "phi_2",
+            comment: "Constraints → Fibers map: composition maps to union of fiber pinnings.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₂(compose(A,B))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("φ₂(A) ∪ φ₂(B)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/phi_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "phi_3",
+            comment: "Fibers → Partition map: a closed fiber state determines a unique 4-component partition.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₃(closed fiber state)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("unique 4-component partition")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("closed FiberBudget")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/phi_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "phi_4",
+            comment: "Resolution pipeline: φ₄ = φ₃ ∘ φ₂ ∘ φ₁ is the composite resolution map.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₄(T, x)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("φ₃(φ₂(φ₁(T, x)))")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n, x ∈ R_n")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/phi_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "phi_5",
+            comment: "Operations → Observables map: negation preserves d_R, may change d_H.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₅(neg)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("preserves d_R, may change d_H")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("op ∈ Operation")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/phi_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "phi_6",
+            comment: "Observables → Refinement map: observables on a state yield a refinement suggestion.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₆(state, observables)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("RefinementSuggestion")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ResolutionState")),
+            ],
+        },
         // Amendment 4: D2n individual
         Individual {
             id: "https://uor.foundation/op/D2n",

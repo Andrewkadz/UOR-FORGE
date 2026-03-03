@@ -314,6 +314,17 @@ fn properties() -> Vec<Property> {
             domain: Some("https://uor.foundation/morphism/Transform"),
             range: XSD_STRING,
         },
+        // Amendment 13: Address Resolution
+        Property {
+            id: "https://uor.foundation/morphism/addressCoherence",
+            label: "addressCoherence",
+            comment: "Certificate that this embedding's addressing diagram commutes: \
+                      glyph ∘ ι ∘ addresses is well-defined and injective.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/morphism/Embedding"),
+            range: "https://uor.foundation/op/Identity",
+        },
     ]
 }
 

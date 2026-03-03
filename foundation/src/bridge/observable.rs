@@ -92,3 +92,23 @@ pub trait ParallelTransport<P: Primitives>: HolonomyObservable<P> {}
 
 /// An element of the dihedral group D_{2^n} acting on the type space. Each dihedral element induces an isometry of 𝒯_n.
 pub trait DihedralElement<P: Primitives>: HolonomyObservable<P> {}
+
+/// Fiber-by-fiber curvature decomposition. J_k measures the discrete derivative of the incompatibility metric at fiber position k: J_k = |d_R(x, succ(x)) - d_H(x, succ(x))| restricted to position k.
+pub trait Jacobian<P: Primitives>: CurvatureObservable<P> {
+    /// The fiber position k at which this Jacobian entry is measured.
+    fn fiber_position(&self) -> P::NonNegativeInteger;
+    /// The discrete derivative value at this fiber position.
+    fn derivative_value(&self) -> P::Decimal;
+}
+
+/// An observable measuring a topological invariant of the resolution space. Topological observables are invariant under continuous deformations of the constraint configuration.
+pub trait TopologicalObservable<P: Primitives>: Observable<P> {
+    /// The dimension k of the topological observable (e.g., the degree of the Betti number or the dimension of the spectral gap).
+    fn dimension(&self) -> P::NonNegativeInteger;
+}
+
+/// The rank of a homology group of the constraint nerve. β_k = rank(H_k(N(C))) counts the k-dimensional holes in the constraint configuration.
+pub trait BettiNumber<P: Primitives>: TopologicalObservable<P> {}
+
+/// The smallest positive eigenvalue of the constraint nerve Laplacian. Controls the convergence rate of iterative resolution: larger gap = faster convergence.
+pub trait SpectralGap<P: Primitives>: TopologicalObservable<P> {}

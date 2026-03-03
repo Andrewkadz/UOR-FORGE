@@ -99,6 +99,18 @@ fn classes() -> Vec<Class> {
                 "https://uor.foundation/resolver/ResolutionState",
             ],
         },
+        // Amendment 18: Constraint Nerve
+        Class {
+            id: "https://uor.foundation/resolver/ConstraintNerve",
+            label: "ConstraintNerve",
+            comment: "The simplicial complex whose vertices are constraints and \
+                      where a k-simplex exists iff the corresponding k+1 constraints \
+                      have nonempty intersection. The nerve's topology governs \
+                      resolution convergence: trivial homology ↔ smooth convergence, \
+                      non-trivial homology ↔ potential stalls.",
+            subclass_of: &[OWL_THING],
+            disjoint_with: &[],
+        },
     ]
 }
 
@@ -229,6 +241,36 @@ fn properties() -> Vec<Property> {
             functional: true,
             domain: Some("https://uor.foundation/resolver/ResolutionState"),
             range: XSD_DECIMAL,
+        },
+        // Amendment 18: Analytical resolver properties
+        Property {
+            id: "https://uor.foundation/resolver/constraintNerve",
+            label: "constraintNerve",
+            comment: "The constraint nerve associated with this resolution state.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/resolver/ResolutionState"),
+            range: "https://uor.foundation/resolver/ConstraintNerve",
+        },
+        Property {
+            id: "https://uor.foundation/resolver/residualEntropy",
+            label: "residualEntropy",
+            comment: "The residual Shannon entropy of the resolution state: \
+                      S = freeCount × ln 2. Measures remaining uncertainty.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/resolver/ResolutionState"),
+            range: XSD_DECIMAL,
+        },
+        Property {
+            id: "https://uor.foundation/resolver/topologicallyComplete",
+            label: "topologicallyComplete",
+            comment: "Whether all Betti numbers of the constraint nerve are zero, \
+                      indicating no topological obstructions to resolution.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/resolver/ResolutionState"),
+            range: XSD_BOOLEAN,
         },
     ]
 }

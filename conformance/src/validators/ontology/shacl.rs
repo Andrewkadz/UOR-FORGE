@@ -1,6 +1,6 @@
 //! SHACL validator.
 //!
-//! Validates the 15 OWL instance test graphs against the UOR SHACL shapes.
+//! Validates the 18 OWL instance test graphs against the UOR SHACL shapes.
 //! Each test graph is defined as a Turtle string in `tests/fixtures/`.
 //! Validation checks structural constraints without a full SHACL engine:
 //! - Required properties are present
@@ -10,7 +10,7 @@
 use crate::report::{ConformanceReport, TestResult};
 use crate::tests;
 
-/// Runs all 15 SHACL instance conformance tests.
+/// Runs all 18 SHACL instance conformance tests.
 pub fn validate() -> ConformanceReport {
     let mut report = ConformanceReport::new();
 
@@ -85,6 +85,21 @@ pub fn validate() -> ConformanceReport {
         tests::fixtures::TEST15_BOOLEAN_SAT,
         &mut report,
     );
+    run_test(
+        "test16_algebraic_identities",
+        tests::fixtures::TEST16_ALGEBRAIC_IDENTITIES,
+        &mut report,
+    );
+    run_test(
+        "test17_inter_algebra_maps",
+        tests::fixtures::TEST17_INTER_ALGEBRA_MAPS,
+        &mut report,
+    );
+    run_test(
+        "test18_analytical_completeness",
+        tests::fixtures::TEST18_ANALYTICAL_COMPLETENESS,
+        &mut report,
+    );
 
     report
 }
@@ -127,6 +142,9 @@ fn run_test(name: &str, turtle_src: &str, report: &mut ConformanceReport) {
         "test13_canonical_form" => validate_canonical_form(turtle_src),
         "test14_content_addressing" => validate_content_addressing(turtle_src),
         "test15_boolean_sat" => validate_boolean_sat(turtle_src),
+        "test16_algebraic_identities" => validate_algebraic_identities(turtle_src),
+        "test17_inter_algebra_maps" => validate_inter_algebra_maps(turtle_src),
+        "test18_analytical_completeness" => validate_analytical_completeness(turtle_src),
         _ => Ok(()),
     };
 
@@ -371,6 +389,56 @@ fn validate_boolean_sat(src: &str) -> Result<(), String> {
     check_contains(src, "state:Binding", "Missing state:Binding")?;
     check_contains(src, "cert:certifies", "Missing cert:certifies")?;
     check_contains(src, "trace:certifiedBy", "Missing trace:certifiedBy")?;
+    Ok(())
+}
+
+fn validate_algebraic_identities(src: &str) -> Result<(), String> {
+    check_contains(src, "op:Identity", "Missing op:Identity type assertion")?;
+    check_contains(src, "op:lhs", "Missing op:lhs property")?;
+    check_contains(src, "op:rhs", "Missing op:rhs property")?;
+    check_contains(src, "op:forAll", "Missing op:forAll property")?;
+    check_contains(src, "op:R_A1", "Missing ring identity R_A1")?;
+    check_contains(src, "op:B_1", "Missing Boolean identity B_1")?;
+    check_contains(src, "op:C_1", "Missing constraint identity C_1")?;
+    check_contains(src, "op:F_1", "Missing fiber identity F_1")?;
+    check_contains(src, "op:RE_1", "Missing resolution identity RE_1")?;
+    check_contains(src, "op:OB_M1", "Missing observable identity OB_M1")?;
+    check_contains(src, "op:T_C1", "Missing transform identity T_C1")?;
+    check_contains(src, "op:AD_1", "Missing addressing identity AD_1")?;
+    check_contains(src, "op:TH_1", "Missing thermodynamic identity TH_1")?;
+    check_contains(src, "op:CA_1", "Missing carry identity CA_1")?;
+    Ok(())
+}
+
+fn validate_inter_algebra_maps(src: &str) -> Result<(), String> {
+    check_contains(src, "op:Identity", "Missing op:Identity type assertion")?;
+    check_contains(src, "op:phi_1", "Missing phi_1 (Ring → Constraints)")?;
+    check_contains(src, "op:phi_2", "Missing phi_2 (Constraints → Fibers)")?;
+    check_contains(src, "op:phi_3", "Missing phi_3 (Fibers → Partition)")?;
+    check_contains(src, "op:phi_4", "Missing phi_4 (Resolution Pipeline)")?;
+    check_contains(src, "op:phi_5", "Missing phi_5 (Operations → Observables)")?;
+    check_contains(src, "op:phi_6", "Missing phi_6 (Observables → Refinement)")?;
+    Ok(())
+}
+
+fn validate_analytical_completeness(src: &str) -> Result<(), String> {
+    check_contains(src, "obs:Jacobian", "Missing obs:Jacobian class")?;
+    check_contains(
+        src,
+        "obs:TopologicalObservable",
+        "Missing obs:TopologicalObservable",
+    )?;
+    check_contains(src, "obs:BettiNumber", "Missing obs:BettiNumber class")?;
+    check_contains(src, "obs:SpectralGap", "Missing obs:SpectralGap class")?;
+    check_contains(
+        src,
+        "resolver:ConstraintNerve",
+        "Missing resolver:ConstraintNerve",
+    )?;
+    check_contains(src, "op:DC_1", "Missing differential calculus identity DC_1")?;
+    check_contains(src, "op:HA_1", "Missing homological identity HA_1")?;
+    check_contains(src, "op:IT_7a", "Missing index theorem identity IT_7a")?;
+    check_contains(src, "op:IT_7d", "Missing completeness criterion IT_7d")?;
     Ok(())
 }
 

@@ -43,6 +43,10 @@ pub trait Embedding<P: Primitives>: Transform<P> {
     fn source_quantum(&self) -> P::PositiveInteger;
     /// The quantum level n' of the target ring for an embedding. Must satisfy n' > n (embeddings go to larger rings).
     fn target_quantum(&self) -> P::PositiveInteger;
+    /// Associated type for `Identity`.
+    type Identity: crate::kernel::op::Identity<P>;
+    /// Certificate that this embedding's addressing diagram commutes: glyph ∘ ι ∘ addresses is well-defined and injective.
+    fn address_coherence(&self) -> &Self::Identity;
 }
 
 /// The mechanism by which a group applies transforms systematically to a set. Each group element induces a transform of the set. The dihedral action on type space is an action by isometries — every element of D_{2^n} produces an isometric transform of 𝒯_n.

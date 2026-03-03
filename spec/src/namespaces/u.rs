@@ -94,5 +94,34 @@ fn properties() -> Vec<Property> {
             domain: Some("https://uor.foundation/u/Address"),
             range: XSD_NON_NEGATIVE_INTEGER,
         },
+        // Amendment 13: Address Resolution
+        Property {
+            id: "https://uor.foundation/u/addresses",
+            label: "addresses",
+            comment: "The datum that this address references. Inverse of schema:glyph.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/u/Address"),
+            range: OWL_THING,
+        },
+        Property {
+            id: "https://uor.foundation/u/digest",
+            label: "digest",
+            comment: "The content hash string extracted from this address.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/u/Address"),
+            range: XSD_STRING,
+        },
+        Property {
+            id: "https://uor.foundation/u/quantum",
+            label: "quantum",
+            comment: "The quantum level n of this address. The address encodes a \
+                      datum in R_n = Z/(2^n)Z.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/u/Address"),
+            range: XSD_POSITIVE_INTEGER,
+        },
     ]
 }

@@ -12,6 +12,12 @@ pub trait Address<P: Primitives> {
     fn glyph(&self) -> &P::String;
     /// The number of Braille glyphs in an address string.
     fn length(&self) -> P::NonNegativeInteger;
+    /// The datum that this address references. Inverse of schema:glyph.
+    fn addresses(&self) -> &P::String;
+    /// The content hash string extracted from this address.
+    fn digest(&self) -> &P::String;
+    /// The quantum level n of this address. The address encodes a datum in R_n = Z/(2^n)Z.
+    fn quantum(&self) -> P::PositiveInteger;
 }
 
 /// A single Braille cell encoding 6 bits of an address. The bijection between Braille cells and 6-bit values is the foundational encoding of the UOR content-addressing scheme.

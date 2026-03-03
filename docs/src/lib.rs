@@ -27,7 +27,7 @@
 //!   concepts/
 //!     ring.html
 //!     content-addressing.html
-//!     ... (7 pages)
+//!     ... (19 pages)
 //!   guides/
 //!     implementing-prism.html
 //!     conformance.html
@@ -121,6 +121,10 @@ pub fn generate(out_dir: &Path, readme_path: &Path) -> Result<()> {
 <li><a href="canonical-form.html">Canonical Form — Term rewriting to normal form</a></li>
 <li><a href="observables.html">Observables — Tri-metric classification taxonomy</a></li>
 <li><a href="evaluation.html">Evaluation — Boolean SAT via ring arithmetic</a></li>
+<li><a href="algebraic-laws.html">Algebraic Laws — The 7 algebras and their identities</a></li>
+<li><a href="differential-calculus.html">Differential Calculus — Discrete derivatives and the Jacobian</a></li>
+<li><a href="analytical-completeness.html">Analytical Completeness — Constraint nerve, Betti numbers, and the index theorem</a></li>
+<li><a href="addressing.html">Addressing — Content-address resolution and Boolean homomorphism</a></li>
 </ul>"#,
         &site_nav_html,
         &docs_nav_html,
@@ -269,6 +273,10 @@ fn build_docs_sidebar_html(base_path: &str) -> String {
 <li><a href="{base_path}/docs/concepts/canonical-form.html">Canonical Form</a></li>
 <li><a href="{base_path}/docs/concepts/observables.html">Observables</a></li>
 <li><a href="{base_path}/docs/concepts/evaluation.html">Evaluation</a></li>
+<li><a href="{base_path}/docs/concepts/algebraic-laws.html">Algebraic Laws</a></li>
+<li><a href="{base_path}/docs/concepts/differential-calculus.html">Differential Calculus</a></li>
+<li><a href="{base_path}/docs/concepts/analytical-completeness.html">Analytical Completeness</a></li>
+<li><a href="{base_path}/docs/concepts/addressing.html">Addressing</a></li>
 </ul>
 </li>
 <li class="nav-group"><span>Guides</span>
@@ -628,9 +636,9 @@ mod tests {
     fn index_has_all_terms() {
         let index = OntologyIndex::from_spec();
         assert_eq!(index.modules.len(), 14);
-        assert_eq!(index.classes.len(), 98);
-        assert_eq!(index.properties.len(), 166);
-        assert_eq!(index.individuals.len(), 18);
+        assert_eq!(index.classes.len(), 103);
+        assert_eq!(index.properties.len(), 176);
+        assert_eq!(index.individuals.len(), 255);
     }
 
     #[test]

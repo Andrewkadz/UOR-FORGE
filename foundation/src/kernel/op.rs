@@ -75,6 +75,2376 @@ pub mod critical_identity {
     ];
 }
 
+/// Addressing bijection: addresses(glyph(d)) = d. Round-trip from datum through glyph and back is identity.
+pub mod ad_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "d ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "addresses(glyph(d))";
+    /// `rhs`
+    pub const RHS: &str = "d";
+}
+
+/// Embedding coherence: glyph(ι(addresses(a))) = ι_addr(a). The addressing diagram commutes through embeddings.
+pub mod ad_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "a ∈ Addr(R_n), ι : R_n → R_{n'}";
+    /// `lhs`
+    pub const LHS: &str = "glyph(ι(addresses(a)))";
+    /// `rhs`
+    pub const RHS: &str = "ι_addr(a)";
+}
+
+/// Additive associativity: add(x, add(y, z)) = add(add(x, y), z).
+pub mod r_a1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y, z ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "add(x, add(y, z))";
+    /// `rhs`
+    pub const RHS: &str = "add(add(x, y), z)";
+}
+
+/// Additive identity: add(x, 0) = x.
+pub mod r_a2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "add(x, 0)";
+    /// `rhs`
+    pub const RHS: &str = "x";
+}
+
+/// Additive inverse: add(x, neg(x)) = 0.
+pub mod r_a3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "add(x, neg(x))";
+    /// `rhs`
+    pub const RHS: &str = "0";
+}
+
+/// Additive commutativity: add(x, y) = add(y, x).
+pub mod r_a4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "add(x, y)";
+    /// `rhs`
+    pub const RHS: &str = "add(y, x)";
+}
+
+/// Subtraction definition: sub(x, y) = add(x, neg(y)).
+pub mod r_a5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "sub(x, y)";
+    /// `rhs`
+    pub const RHS: &str = "add(x, neg(y))";
+}
+
+/// Negation involution: neg(neg(x)) = x.
+pub mod r_a6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "neg(neg(x))";
+    /// `rhs`
+    pub const RHS: &str = "x";
+}
+
+/// Multiplicative associativity: mul(x, mul(y, z)) = mul(mul(x, y), z).
+pub mod r_m1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y, z ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "mul(x, mul(y, z))";
+    /// `rhs`
+    pub const RHS: &str = "mul(mul(x, y), z)";
+}
+
+/// Multiplicative identity: mul(x, 1) = x.
+pub mod r_m2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "mul(x, 1)";
+    /// `rhs`
+    pub const RHS: &str = "x";
+}
+
+/// Multiplicative commutativity: mul(x, y) = mul(y, x).
+pub mod r_m3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "mul(x, y)";
+    /// `rhs`
+    pub const RHS: &str = "mul(y, x)";
+}
+
+/// Distributivity: mul(x, add(y, z)) = add(mul(x, y), mul(x, z)).
+pub mod r_m4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y, z ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "mul(x, add(y, z))";
+    /// `rhs`
+    pub const RHS: &str = "add(mul(x, y), mul(x, z))";
+}
+
+/// Annihilation: mul(x, 0) = 0.
+pub mod r_m5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "mul(x, 0)";
+    /// `rhs`
+    pub const RHS: &str = "0";
+}
+
+/// XOR associativity: xor(x, xor(y, z)) = xor(xor(x, y), z).
+pub mod b_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y, z ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "xor(x, xor(y, z))";
+    /// `rhs`
+    pub const RHS: &str = "xor(xor(x, y), z)";
+}
+
+/// XOR identity: xor(x, 0) = x.
+pub mod b_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "xor(x, 0)";
+    /// `rhs`
+    pub const RHS: &str = "x";
+}
+
+/// XOR self-inverse: xor(x, x) = 0.
+pub mod b_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "xor(x, x)";
+    /// `rhs`
+    pub const RHS: &str = "0";
+}
+
+/// AND associativity: and(x, and(y, z)) = and(and(x, y), z).
+pub mod b_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y, z ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "and(x, and(y, z))";
+    /// `rhs`
+    pub const RHS: &str = "and(and(x, y), z)";
+}
+
+/// AND identity: and(x, 2^n - 1) = x.
+pub mod b_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "and(x, 2^n - 1)";
+    /// `rhs`
+    pub const RHS: &str = "x";
+}
+
+/// AND annihilation: and(x, 0) = 0.
+pub mod b_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "and(x, 0)";
+    /// `rhs`
+    pub const RHS: &str = "0";
+}
+
+/// OR associativity: or(x, or(y, z)) = or(or(x, y), z).
+pub mod b_7 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y, z ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "or(x, or(y, z))";
+    /// `rhs`
+    pub const RHS: &str = "or(or(x, y), z)";
+}
+
+/// OR identity: or(x, 0) = x.
+pub mod b_8 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "or(x, 0)";
+    /// `rhs`
+    pub const RHS: &str = "x";
+}
+
+/// Absorption: and(x, or(x, y)) = x.
+pub mod b_9 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "and(x, or(x, y))";
+    /// `rhs`
+    pub const RHS: &str = "x";
+}
+
+/// AND distributes over OR: and(x, or(y, z)) = or(and(x, y), and(x, z)).
+pub mod b_10 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y, z ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "and(x, or(y, z))";
+    /// `rhs`
+    pub const RHS: &str = "or(and(x, y), and(x, z))";
+}
+
+/// De Morgan 1: bnot(and(x, y)) = or(bnot(x), bnot(y)).
+pub mod b_11 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "bnot(and(x, y))";
+    /// `rhs`
+    pub const RHS: &str = "or(bnot(x), bnot(y))";
+}
+
+/// De Morgan 2: bnot(or(x, y)) = and(bnot(x), bnot(y)).
+pub mod b_12 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "bnot(or(x, y))";
+    /// `rhs`
+    pub const RHS: &str = "and(bnot(x), bnot(y))";
+}
+
+/// Bnot involution: bnot(bnot(x)) = x.
+pub mod b_13 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "bnot(bnot(x))";
+    /// `rhs`
+    pub const RHS: &str = "x";
+}
+
+/// Neg via subtraction: neg(x) = sub(0, x).
+pub mod x_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "neg(x)";
+    /// `rhs`
+    pub const RHS: &str = "sub(0, x)";
+}
+
+/// Complement via XOR: bnot(x) = xor(x, 2^n - 1).
+pub mod x_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "bnot(x)";
+    /// `rhs`
+    pub const RHS: &str = "xor(x, 2^n - 1)";
+}
+
+/// Succ via addition: succ(x) = add(x, 1).
+pub mod x_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "succ(x)";
+    /// `rhs`
+    pub const RHS: &str = "add(x, 1)";
+}
+
+/// Pred via subtraction: pred(x) = sub(x, 1).
+pub mod x_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "pred(x)";
+    /// `rhs`
+    pub const RHS: &str = "sub(x, 1)";
+}
+
+/// Neg-bnot bridge: neg(x) = add(bnot(x), 1).
+pub mod x_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "neg(x)";
+    /// `rhs`
+    pub const RHS: &str = "add(bnot(x), 1)";
+}
+
+/// Complement predecessor: bnot(x) = pred(neg(x)).
+pub mod x_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "bnot(x)";
+    /// `rhs`
+    pub const RHS: &str = "pred(neg(x))";
+}
+
+/// XOR-add bridge: xor(x, y) = add(x, y) - 2 * and(x, y) (in Z before mod).
+pub mod x_7 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ Z (before mod)";
+    /// `lhs`
+    pub const LHS: &str = "xor(x, y)";
+    /// `rhs`
+    pub const RHS: &str = "add(x, y) - 2 * and(x, y)";
+}
+
+/// Rotation order: succ^\[2^n\](x) = x.
+pub mod d_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "succ^{2^n}(x)";
+    /// `rhs`
+    pub const RHS: &str = "x";
+}
+
+/// Conjugation: neg(succ(neg(x))) = pred(x).
+pub mod d_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "neg(succ(neg(x)))";
+    /// `rhs`
+    pub const RHS: &str = "pred(x)";
+}
+
+/// Reverse composition: bnot(neg(x)) = pred(x).
+pub mod d_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "bnot(neg(x))";
+    /// `rhs`
+    pub const RHS: &str = "pred(x)";
+}
+
+/// Group closure: D_\[2^n\] = \[succ^k, neg ∘ succ^k : 0 ≤ k < 2^n\].
+pub mod d_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "D_{2^n}";
+    /// `rhs`
+    pub const RHS: &str = "{succ^k, neg ∘ succ^k : 0 ≤ k < 2^n}";
+}
+
+/// Unit group decomposition: R_n× ≅ Z/2 × Z/2^\[n-2\] for n ≥ 3.
+pub mod u_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 3";
+    /// `lhs`
+    pub const LHS: &str = "R_n×";
+    /// `rhs`
+    pub const RHS: &str = "Z/2 × Z/2^{n-2}";
+}
+
+/// Unit group special cases: R_1× ≅ \[1\]; R_2× ≅ Z/2.
+pub mod u_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ∈ {1, 2}";
+    /// `lhs`
+    pub const LHS: &str = "R_1× ≅ {1}; R_2× ≅ Z/2";
+    /// `rhs`
+    pub const RHS: &str = "special cases for small n";
+}
+
+/// Multiplicative order: ord(u) = lcm(ord((-1)^a), ord(3^b)).
+pub mod u_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "u = (-1)^a · 3^b ∈ R_n×";
+    /// `lhs`
+    pub const LHS: &str = "ord(u)";
+    /// `rhs`
+    pub const RHS: &str = "lcm(ord((-1)^a), ord(3^b))";
+}
+
+/// Resonance period: ord_g(2) divides φ(g).
+pub mod u_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "g odd";
+    /// `lhs`
+    pub const LHS: &str = "ord_g(2)";
+    /// `rhs`
+    pub const RHS: &str = "divides φ(g)";
+}
+
+/// Step formula derivation: step_g = 2 * ((g - (2^n mod g)) mod g) + 1.
+pub mod u_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "g odd, g > 1";
+    /// `lhs`
+    pub const LHS: &str = "step_g";
+    /// `rhs`
+    pub const RHS: &str = "2 * ((g - (2^n mod g)) mod g) + 1";
+}
+
+/// Scaling not dihedral: μ_u ∉ D_\[2^n\] for u ≠ ±1.
+pub mod ag_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "u ∈ R_n×, u ≠ ±1";
+    /// `lhs`
+    pub const LHS: &str = "μ_u";
+    /// `rhs`
+    pub const RHS: &str = "∉ D_{2^n}";
+}
+
+/// Affine group: Aff(R_n) = R_n× ⋉ R_n.
+pub mod ag_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "Aff(R_n)";
+    /// `rhs`
+    pub const RHS: &str = "R_n× ⋉ R_n";
+}
+
+/// Affine group order: |Aff(R_n)| = 2^\[2n-1\].
+pub mod ag_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "|Aff(R_n)|";
+    /// `rhs`
+    pub const RHS: &str = "2^{2n-1}";
+}
+
+/// Subgroup inclusion: D_\[2^n\] ⊂ Aff(R_n) with u ∈ \[±1\].
+pub mod ag_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "D_{2^n}";
+    /// `rhs`
+    pub const RHS: &str = "⊂ Aff(R_n), u ∈ {±1}";
+}
+
+/// Addition decomposition: add(x,y)_k = xor(x_k, xor(y_k, c_k(x,y))).
+pub mod ca_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n, 0 ≤ k < n";
+    /// `lhs`
+    pub const LHS: &str = "add(x,y)_k";
+    /// `rhs`
+    pub const RHS: &str = "xor(x_k, xor(y_k, c_k(x,y)))";
+}
+
+/// Carry recurrence: c_\[k+1\](x,y) = or(and(x_k,y_k), and(xor(x_k,y_k), c_k)).
+pub mod ca_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "c_{k+1}(x,y)";
+    /// `rhs`
+    pub const RHS: &str = "or(and(x_k,y_k), and(xor(x_k,y_k), c_k))";
+}
+
+/// Carry commutativity: c(x, y) = c(y, x).
+pub mod ca_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "c(x, y)";
+    /// `rhs`
+    pub const RHS: &str = "c(y, x)";
+}
+
+/// Zero carry: c(x, 0) = 0 at all positions.
+pub mod ca_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n, all positions";
+    /// `lhs`
+    pub const LHS: &str = "c(x, 0)";
+    /// `rhs`
+    pub const RHS: &str = "0";
+}
+
+/// Negation carry: c(x, neg(x))_k = 1 for k > v_2(x).
+pub mod ca_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n, k > v_2(x)";
+    /// `lhs`
+    pub const LHS: &str = "c(x, neg(x))_k";
+    /// `rhs`
+    pub const RHS: &str = "1";
+}
+
+/// Carry-incompatibility link: d_Δ(x, y) > 0 iff ∃ k : c_k(x,y) = 1.
+pub mod ca_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_Δ(x, y) > 0";
+    /// `rhs`
+    pub const RHS: &str = "∃ k : c_k(x,y) = 1";
+}
+
+/// Constraint pin union: pins of a composite constraint equal the union of component pins.
+pub mod c_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraints A, B";
+    /// `lhs`
+    pub const LHS: &str = "pins(compose(A, B))";
+    /// `rhs`
+    pub const RHS: &str = "pins(A) ∪ pins(B)";
+}
+
+/// Constraint composition commutativity.
+pub mod c_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraints A, B";
+    /// `lhs`
+    pub const LHS: &str = "compose(A, B)";
+    /// `rhs`
+    pub const RHS: &str = "compose(B, A)";
+}
+
+/// Constraint composition associativity.
+pub mod c_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraints A, B, C";
+    /// `lhs`
+    pub const LHS: &str = "compose(compose(A,B), C)";
+    /// `rhs`
+    pub const RHS: &str = "compose(A, compose(B,C))";
+}
+
+/// Constraint composition idempotence.
+pub mod c_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint A";
+    /// `lhs`
+    pub const LHS: &str = "compose(A, A)";
+    /// `rhs`
+    pub const RHS: &str = "A";
+}
+
+/// Constraint composition identity element.
+pub mod c_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint A, identity ε";
+    /// `lhs`
+    pub const LHS: &str = "compose(A, ε)";
+    /// `rhs`
+    pub const RHS: &str = "A";
+}
+
+/// Constraint composition annihilator.
+pub mod c_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint A, annihilator Ω";
+    /// `lhs`
+    pub const LHS: &str = "compose(A, Ω)";
+    /// `rhs`
+    pub const RHS: &str = "Ω";
+}
+
+/// Constraint-depth invariant: carry complexity of the residue representation equals the type depth.
+pub mod cdi {
+    /// `forAll`
+    pub const FOR_ALL: &str = "T ∈ T_n";
+    /// `lhs`
+    pub const LHS: &str = "carry(residue(T))";
+    /// `rhs`
+    pub const RHS: &str = "depth(T)";
+}
+
+/// Constraint quotient lattice isomorphism to power set.
+pub mod cl_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint equivalence classes";
+    /// `lhs`
+    pub const LHS: &str = "Constraint/≡";
+    /// `rhs`
+    pub const RHS: &str = "2^{[n]}";
+}
+
+/// Lattice join equals constraint composition.
+pub mod cl_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraints A, B";
+    /// `lhs`
+    pub const LHS: &str = "A ∨ B";
+    /// `rhs`
+    pub const RHS: &str = "compose(A, B)";
+}
+
+/// Lattice meet pins the intersection of component pins.
+pub mod cl_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraints A, B";
+    /// `lhs`
+    pub const LHS: &str = "pins(A ∧ B)";
+    /// `rhs`
+    pub const RHS: &str = "pins(A) ∩ pins(B)";
+}
+
+/// Constraint lattice distributivity.
+pub mod cl_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraints A, B, C";
+    /// `lhs`
+    pub const LHS: &str = "(A ∨ B) ∧ C";
+    /// `rhs`
+    pub const RHS: &str = "(A ∧ C) ∨ (B ∧ C)";
+}
+
+/// Constraint lattice complement existence.
+pub mod cl_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint A";
+    /// `lhs`
+    pub const LHS: &str = "A ∧ A̅ = ε, A ∨ A̅ = Ω";
+    /// `rhs`
+    pub const RHS: &str = "∃ A̅ (complement)";
+}
+
+/// Constraint redundancy criterion.
+pub mod cm_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint set {C_1,...,C_k}";
+    /// `lhs`
+    pub const LHS: &str = "C_i redundant in {C_1,...,C_k}";
+    /// `rhs`
+    pub const RHS: &str = "pins(C_i) ⊆ ∪_{j≠i} pins(C_j)";
+}
+
+/// Minimal cover via greedy irredundant removal.
+pub mod cm_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "CompositeConstraint";
+    /// `lhs`
+    pub const LHS: &str = "minimal cover";
+    /// `rhs`
+    pub const RHS: &str = "irredundant sub-collection (greedy removal)";
+}
+
+/// Minimum constraint count to cover n fibers.
+pub mod cm_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n fibers, constraint set";
+    /// `lhs`
+    pub const LHS: &str = "min constraints to cover n fibers";
+    /// `rhs`
+    pub const RHS: &str = "⌈n / max_k pins_per_constraint_k⌉";
+}
+
+/// Residue constraint cost is the step formula.
+pub mod cr_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ResidueConstraint";
+    /// `lhs`
+    pub const LHS: &str = "cost(ResidueConstraint(m, r))";
+    /// `rhs`
+    pub const RHS: &str = "step_m = 2 × ((−2^n) mod m) + 1";
+}
+
+/// Carry constraint cost is the popcount of the pattern.
+pub mod cr_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "CarryConstraint";
+    /// `lhs`
+    pub const LHS: &str = "cost(CarryConstraint(p))";
+    /// `rhs`
+    pub const RHS: &str = "popcount(p)";
+}
+
+/// Depth constraint cost is sum of residue and carry costs.
+pub mod cr_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "DepthConstraint";
+    /// `lhs`
+    pub const LHS: &str = "cost(DepthConstraint(d_min, d_max))";
+    /// `rhs`
+    pub const RHS: &str = "cost(residue) + cost(carry)";
+}
+
+/// Composite constraint cost is subadditive.
+pub mod cr_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraints A, B";
+    /// `lhs`
+    pub const LHS: &str = "cost(compose(A, B))";
+    /// `rhs`
+    pub const RHS: &str = "≤ cost(A) + cost(B)";
+}
+
+/// Optimal resolution order is increasing cost.
+pub mod cr_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint set";
+    /// `lhs`
+    pub const LHS: &str = "optimal resolution order";
+    /// `rhs`
+    pub const RHS: &str = "increasing cost order";
+}
+
+/// Fiber monotonicity: a pinned fiber cannot be unpinned.
+pub mod f_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "FiberCoordinate";
+    /// `lhs`
+    pub const LHS: &str = "pinned fiber";
+    /// `rhs`
+    pub const RHS: &str = "cannot be unpinned";
+}
+
+/// Fiber budget upper bound: at most n pin operations to close.
+pub mod f_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "FiberBudget";
+    /// `lhs`
+    pub const LHS: &str = "pin operations to close";
+    /// `rhs`
+    pub const RHS: &str = "≤ n";
+}
+
+/// Fiber budget conservation: pinned + free = total fibers.
+pub mod f_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "FiberBudget";
+    /// `lhs`
+    pub const LHS: &str = "pinnedCount + freeCount";
+    /// `rhs`
+    pub const RHS: &str = "totalFibers = n";
+}
+
+/// Fiber budget closure: closed iff all fibers pinned.
+pub mod f_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "FiberBudget";
+    /// `lhs`
+    pub const LHS: &str = "isClosed";
+    /// `rhs`
+    pub const RHS: &str = "freeCount = 0 ⇔ pinnedCount = n";
+}
+
+/// Fiber lattice bottom: all fibers free.
+pub mod fl_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "FiberBudget lattice";
+    /// `lhs`
+    pub const LHS: &str = "⊥";
+    /// `rhs`
+    pub const RHS: &str = "all fibers free (freeCount = n)";
+}
+
+/// Fiber lattice top: all fibers pinned.
+pub mod fl_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "FiberBudget lattice";
+    /// `lhs`
+    pub const LHS: &str = "⊤";
+    /// `rhs`
+    pub const RHS: &str = "all fibers pinned (pinnedCount = n)";
+}
+
+/// Fiber lattice join is union of pinnings.
+pub mod fl_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "FiberBudget states S₁, S₂";
+    /// `lhs`
+    pub const LHS: &str = "join(S₁, S₂)";
+    /// `rhs`
+    pub const RHS: &str = "union of pinnings from S₁ and S₂";
+}
+
+/// Fiber lattice height equals n.
+pub mod fl_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "FiberBudget lattice";
+    /// `lhs`
+    pub const LHS: &str = "lattice height";
+    /// `rhs`
+    pub const RHS: &str = "n";
+}
+
+/// Unit partition membership: x is a unit iff fiber_0(x) = 1 (x is odd).
+pub mod fpm_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "x ∈ Unit";
+    /// `rhs`
+    pub const RHS: &str = "fiber_0(x) = 1 (x is odd)";
+}
+
+/// Exterior partition membership: x is exterior iff x is not in the carrier of T.
+pub mod fpm_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n, type T";
+    /// `lhs`
+    pub const LHS: &str = "x ∈ Exterior";
+    /// `rhs`
+    pub const RHS: &str = "x ∉ carrier(T)";
+}
+
+/// Irreducible partition membership: x is irreducible iff x is not a unit, exterior, or reducible.
+pub mod fpm_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "x ∈ Irreducible";
+    /// `rhs`
+    pub const RHS: &str = "x ∉ Unit ∪ Exterior AND no non-trivial factorization";
+}
+
+/// Reducible partition membership: x is reducible iff x is not a unit, exterior, or irreducible.
+pub mod fpm_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "x ∈ Reducible";
+    /// `rhs`
+    pub const RHS: &str = "x ∉ Unit ∪ Exterior ∪ Irreducible";
+}
+
+/// 2-adic decomposition: every element factors as 2^{v(x)} times an odd unit.
+pub mod fpm_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "x = 2^{v(x)} ⋅ u";
+    /// `rhs`
+    pub const RHS: &str = "u odd, v(x) = min position of 1-bit";
+}
+
+/// Stratum size formula.
+pub mod fpm_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "R_n";
+    /// `lhs`
+    pub const LHS: &str = "|{x: v(x) = k}|";
+    /// `rhs`
+    pub const RHS: &str = "2^{n−k−1} for 0 < k < n; 1 for k = n";
+}
+
+/// Base type partition cardinalities.
+pub mod fpm_7 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "R_n, n ≥ 3";
+    /// `lhs`
+    pub const LHS: &str = "base type partition";
+    /// `rhs`
+    pub const RHS: &str = "|Unit| = 2^{n−1}; |Irr| = 2^{n−2}; |Red| = 2^{n−2}";
+}
+
+/// Fiber extraction: fiber_k(x) is the k-th bit of x.
+pub mod fs_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n, 0 ≤ k < n";
+    /// `lhs`
+    pub const LHS: &str = "fiber_k(x)";
+    /// `rhs`
+    pub const RHS: &str = "(x >> k) AND 1";
+}
+
+/// Fiber 0 is parity.
+pub mod fs_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "fiber_0(x)";
+    /// `rhs`
+    pub const RHS: &str = "x mod 2 (parity)";
+}
+
+/// Progressive fiber determination: fiber_k given lower fibers determines x mod 2^{k+1}.
+pub mod fs_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "fiber_k(x) given fibers 0..k−1";
+    /// `rhs`
+    pub const RHS: &str = "determines x mod 2^{k+1}";
+}
+
+/// Cumulative fiber determination: fibers 0..k together determine x mod 2^{k+1}.
+pub mod fs_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "fibers 0..k together";
+    /// `rhs`
+    pub const RHS: &str = "determine x mod 2^{k+1}";
+}
+
+/// Complete fiber determination: all n fibers determine x uniquely.
+pub mod fs_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "all n fibers";
+    /// `rhs`
+    pub const RHS: &str = "determine x uniquely";
+}
+
+/// Stratum from fibers: v_2(x) is the minimum k where fiber_k(x) = 1.
+pub mod fs_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "stratum(x)";
+    /// `rhs`
+    pub const RHS: &str = "v_2(x) = min{k : fiber_k(x) = 1}";
+}
+
+/// Depth bound: depth(x) ≤ v_2(x) for irreducible elements.
+pub mod fs_7 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n, base type";
+    /// `lhs`
+    pub const LHS: &str = "depth(x)";
+    /// `rhs`
+    pub const RHS: &str = "≤ v_2(x) for irreducible elements";
+}
+
+/// Resolution strategy equivalence: dihedral, canonical-form, and evaluation resolvers all compute the same partition.
+pub mod re_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "T ∈ T_n";
+    /// `lhs`
+    pub const LHS: &str = "Π_D(T)";
+    /// `rhs`
+    pub const RHS: &str = "Π_C(T) = Π_E(T)";
+}
+
+/// Resolution monotonicity: pinned count never decreases.
+pub mod ir_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "resolution states";
+    /// `lhs`
+    pub const LHS: &str = "pinnedCount(state_{i+1})";
+    /// `rhs`
+    pub const RHS: &str = "≥ pinnedCount(state_i)";
+}
+
+/// Resolution convergence bound: at most n iterations.
+pub mod ir_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "resolution loop";
+    /// `lhs`
+    pub const LHS: &str = "iterations to converge";
+    /// `rhs`
+    pub const RHS: &str = "≤ n";
+}
+
+/// Convergence rate definition.
+pub mod ir_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ResolutionState";
+    /// `lhs`
+    pub const LHS: &str = "convergenceRate";
+    /// `rhs`
+    pub const RHS: &str = "pinnedCount / iterationCount";
+}
+
+/// Resolution termination: loop terminates if constraint set spans all fibers.
+pub mod ir_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "complete constraint set";
+    /// `lhs`
+    pub const LHS: &str = "constraint set spans all fibers";
+    /// `rhs`
+    pub const RHS: &str = "loop terminates";
+}
+
+/// Optimal resolution level for a factor: n ≡ 0 (mod ord_g(2)).
+pub mod sf_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "factor g, quantum n";
+    /// `lhs`
+    pub const LHS: &str = "n ≡ 0 (mod ord_g(2))";
+    /// `rhs`
+    pub const RHS: &str = "factor g has optimal resolution at level n";
+}
+
+/// Constraint ordering by step cost: smaller step_g first.
+pub mod sf_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint ordering";
+    /// `lhs`
+    pub const LHS: &str = "constraints with smaller step_g";
+    /// `rhs`
+    pub const RHS: &str = "are more constraining, apply first";
+}
+
+/// Resolution determinism: same type and constraint sequence yield unique partition.
+pub mod rd_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "T ∈ T_n, [C₁,...,Cₖ]";
+    /// `lhs`
+    pub const LHS: &str = "same type T and constraint sequence";
+    /// `rhs`
+    pub const RHS: &str = "unique resolved partition";
+}
+
+/// Order independence: complete constraint sets yield the same partition regardless of order.
+pub mod rd_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "closing constraint set";
+    /// `lhs`
+    pub const LHS: &str = "complete constraint set, any order";
+    /// `rhs`
+    pub const RHS: &str = "same final partition";
+}
+
+/// Evaluation resolver directly computes the set-theoretic partition.
+pub mod se_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "T ∈ T_n";
+    /// `lhs`
+    pub const LHS: &str = "EvaluationResolver";
+    /// `rhs`
+    pub const RHS: &str = "directly computes set-theoretic partition";
+}
+
+/// Dihedral factorization resolver yields the same partition via orbit decomposition.
+pub mod se_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "T ∈ T_n";
+    /// `lhs`
+    pub const LHS: &str = "DihedralFactorizationResolver";
+    /// `rhs`
+    pub const RHS: &str = "orbit decomposition yields same partition";
+}
+
+/// Canonical form resolver yields the same partition via confluent rewrite.
+pub mod se_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "T ∈ T_n";
+    /// `lhs`
+    pub const LHS: &str = "CanonicalFormResolver";
+    /// `rhs`
+    pub const RHS: &str = "confluent rewrite → same partition";
+}
+
+/// All three strategies compute the same set-theoretic partition.
+pub mod se_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "T ∈ T_n";
+    /// `lhs`
+    pub const LHS: &str = "Π_D(T) = Π_C(T) = Π_E(T)";
+    /// `rhs`
+    pub const RHS: &str = "all compute same set-theoretic partition";
+}
+
+/// Benefit of a constraint is the number of new pins it provides.
+pub mod oo_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint C_i, pinned set S";
+    /// `lhs`
+    pub const LHS: &str = "benefit(C_i, S)";
+    /// `rhs`
+    pub const RHS: &str = "|pins(C_i) ∖ S|";
+}
+
+/// Constraint cost is step or popcount depending on type.
+pub mod oo_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ResidueConstraint or CarryConstraint";
+    /// `lhs`
+    pub const LHS: &str = "cost(C_i)";
+    /// `rhs`
+    pub const RHS: &str = "step_{m_i} or popcount(p_i)";
+}
+
+/// Greedy selection maximizes benefit-to-cost ratio.
+pub mod oo_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "each resolution step";
+    /// `lhs`
+    pub const LHS: &str = "greedy selection";
+    /// `rhs`
+    pub const RHS: &str = "argmax benefit(C_i, S) / cost(C_i)";
+}
+
+/// Greedy approximation achieves (1 − 1/e) ≈ 63% of optimal.
+pub mod oo_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "weighted set cover";
+    /// `lhs`
+    pub const LHS: &str = "greedy approximation";
+    /// `rhs`
+    pub const RHS: &str = "(1 − 1/e) ≈ 63% of optimal";
+}
+
+/// Tiebreaker: prefer vertical (residue) before horizontal (carry).
+pub mod oo_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "cost-tied constraints";
+    /// `lhs`
+    pub const LHS: &str = "equal cost tiebreaker";
+    /// `rhs`
+    pub const RHS: &str = "prefer vertical (residue) before horizontal (carry)";
+}
+
+/// Minimum convergence rate: 1 fiber per iteration (worst case).
+pub mod cb_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "worst case";
+    /// `lhs`
+    pub const LHS: &str = "min convergenceRate";
+    /// `rhs`
+    pub const RHS: &str = "1 fiber per iteration";
+}
+
+/// Maximum convergence rate: n fibers in 1 iteration (best case).
+pub mod cb_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "best case";
+    /// `lhs`
+    pub const LHS: &str = "max convergenceRate";
+    /// `rhs`
+    pub const RHS: &str = "n fibers in 1 iteration";
+}
+
+/// Expected residue constraint rate: ⌊log_2(m)⌋ fibers per constraint.
+pub mod cb_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ResidueConstraint(m, r)";
+    /// `lhs`
+    pub const LHS: &str = "expected rate (residue)";
+    /// `rhs`
+    pub const RHS: &str = "⌊log_2(m)⌋ fibers per constraint";
+}
+
+/// Stall detection: convergenceRate < 1 for 2 iterations suggests insufficiency.
+pub mod cb_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "stall detection";
+    /// `lhs`
+    pub const LHS: &str = "convergenceRate < 1 for 2 iterations";
+    /// `rhs`
+    pub const RHS: &str = "constraint set may be insufficient";
+}
+
+/// Sufficiency criterion: pin union covers all fiber positions.
+pub mod cb_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "sufficiency criterion";
+    /// `lhs`
+    pub const LHS: &str = "∪_i pins(C_i) = {0,...,n−1}";
+    /// `rhs`
+    pub const RHS: &str = "constraint set closes budget";
+}
+
+/// Iteration bound for k constraints: at most min(k, n) iterations.
+pub mod cb_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "well-formed model";
+    /// `lhs`
+    pub const LHS: &str = "iterations for k constraints";
+    /// `rhs`
+    pub const RHS: &str = "≤ min(k, n)";
+}
+
+/// Ring metric triangle inequality.
+pub mod ob_m1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y, z ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_R(x, z)";
+    /// `rhs`
+    pub const RHS: &str = "≤ d_R(x, y) + d_R(y, z)";
+}
+
+/// Hamming metric triangle inequality.
+pub mod ob_m2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y, z ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_H(x, z)";
+    /// `rhs`
+    pub const RHS: &str = "≤ d_H(x, y) + d_H(y, z)";
+}
+
+/// Incompatibility metric is the absolute difference of ring and Hamming metrics.
+pub mod ob_m3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_Δ(x, y)";
+    /// `rhs`
+    pub const RHS: &str = "|d_R(x, y) − d_H(x, y)|";
+}
+
+/// Negation preserves ring metric.
+pub mod ob_m4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_R(neg(x), neg(y))";
+    /// `rhs`
+    pub const RHS: &str = "d_R(x, y)";
+}
+
+/// Bitwise complement preserves Hamming metric.
+pub mod ob_m5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_H(bnot(x), bnot(y))";
+    /// `rhs`
+    pub const RHS: &str = "d_H(x, y)";
+}
+
+/// Successor preserves ring metric but may change Hamming metric.
+pub mod ob_m6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_R(succ(x), succ(y))";
+    /// `rhs`
+    pub const RHS: &str = "d_R(x, y) but d_H may differ";
+}
+
+/// Negation-complement commutator is constant 2.
+pub mod ob_c1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "[neg, bnot](x)";
+    /// `rhs`
+    pub const RHS: &str = "2";
+}
+
+/// Negation-translation commutator.
+pub mod ob_c2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n, constant k";
+    /// `lhs`
+    pub const LHS: &str = "[neg, add(•,k)](x)";
+    /// `rhs`
+    pub const RHS: &str = "−2k mod 2^n";
+}
+
+/// Complement-XOR commutator is trivial.
+pub mod ob_c3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n, constant k";
+    /// `lhs`
+    pub const LHS: &str = "[bnot, xor(•,k)](x)";
+    /// `rhs`
+    pub const RHS: &str = "0";
+}
+
+/// Additive paths have trivial monodromy (abelian ⇒ path-independent).
+pub mod ob_h1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "additive group";
+    /// `lhs`
+    pub const LHS: &str = "closed additive path monodromy";
+    /// `rhs`
+    pub const RHS: &str = "trivial (abelian ⇒ path-independent)";
+}
+
+/// Dihedral generator paths have monodromy in D_{2^n}.
+pub mod ob_h2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "dihedral generators";
+    /// `lhs`
+    pub const LHS: &str = "closed {neg,bnot} path monodromy";
+    /// `rhs`
+    pub const RHS: &str = "∈ D_{2^n}";
+}
+
+/// Successor-only closed path winding number.
+pub mod ob_h3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "closed succ path";
+    /// `lhs`
+    pub const LHS: &str = "succ-only path WindingNumber";
+    /// `rhs`
+    pub const RHS: &str = "path length / 2^n";
+}
+
+/// Path length is additive under concatenation.
+pub mod ob_p1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "paths p₁, p₂";
+    /// `lhs`
+    pub const LHS: &str = "PathLength(p₁ ⋅ p₂)";
+    /// `rhs`
+    pub const RHS: &str = "PathLength(p₁) + PathLength(p₂)";
+}
+
+/// Total variation is subadditive under concatenation.
+pub mod ob_p2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "paths p₁, p₂";
+    /// `lhs`
+    pub const LHS: &str = "TotalVariation(p₁ ⋅ p₂)";
+    /// `rhs`
+    pub const RHS: &str = "≤ TotalVariation(p₁) + TotalVariation(p₂)";
+}
+
+/// Cascade length is additive under sequential composition.
+pub mod ob_p3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "cascades c₁, c₂";
+    /// `lhs`
+    pub const LHS: &str = "CascadeLength(c₁ ; c₂)";
+    /// `rhs`
+    pub const RHS: &str = "CascadeLength(c₁) + CascadeLength(c₂)";
+}
+
+/// Catastrophe boundaries are powers of 2.
+pub mod ct_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "stratum transitions";
+    /// `lhs`
+    pub const LHS: &str = "catastrophe boundaries";
+    /// `rhs`
+    pub const RHS: &str = "g = 2^k for 1 ≤ k ≤ n−1";
+}
+
+/// Odd prime catastrophe transitions visibility via residue constraints.
+pub mod ct_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "odd prime p";
+    /// `lhs`
+    pub const LHS: &str = "odd prime catastrophe";
+    /// `rhs`
+    pub const RHS: &str = "ResidueConstraint(p, •) transitions visibility";
+}
+
+/// Catastrophe threshold is normalized step cost.
+pub mod ct_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "factor g";
+    /// `lhs`
+    pub const LHS: &str = "CatastropheThreshold(g)";
+    /// `rhs`
+    pub const RHS: &str = "step_g / n";
+}
+
+/// Composite catastrophe threshold is max of component thresholds.
+pub mod ct_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "composite g";
+    /// `lhs`
+    pub const LHS: &str = "composite catastrophe g = p⋅q";
+    /// `rhs`
+    pub const RHS: &str = "max(step_p, step_q) / n";
+}
+
+/// Curvature flux is the sum of incompatibility along a path.
+pub mod cf_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "path γ";
+    /// `lhs`
+    pub const LHS: &str = "CurvatureFlux(γ)";
+    /// `rhs`
+    pub const RHS: &str = "Σ |d_R(x_i, x_{i+1}) − d_H(x_i, x_{i+1})|";
+}
+
+/// Resolution cost is bounded below by curvature flux of optimal path.
+pub mod cf_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "type T";
+    /// `lhs`
+    pub const LHS: &str = "ResolutionCost(T)";
+    /// `rhs`
+    pub const RHS: &str = "≥ CurvatureFlux(γ_opt)";
+}
+
+/// Successor curvature flux: trailing_ones(x) for most x, n−1 at maximum.
+pub mod cf_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "CurvatureFlux(x, succ(x))";
+    /// `rhs`
+    pub const RHS: &str = "trailing_ones(x) for t < n; n−1 for x = 2^n−1";
+}
+
+/// Total successor curvature flux over R_n equals 2^n − 2.
+pub mod cf_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "Σ_{x ∈ R_n} CurvatureFlux(x, succ(x))";
+    /// `rhs`
+    pub const RHS: &str = "2^n − 2";
+}
+
+/// Additive holonomy is trivial (abelian group).
+pub mod hg_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "additive group";
+    /// `lhs`
+    pub const LHS: &str = "additive holonomy";
+    /// `rhs`
+    pub const RHS: &str = "trivial (abelian ⇒ path-independent)";
+}
+
+/// Dihedral generator holonomy group is D_{2^n}.
+pub mod hg_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "dihedral generators";
+    /// `lhs`
+    pub const LHS: &str = "{neg, bnot, succ, pred} holonomy";
+    /// `rhs`
+    pub const RHS: &str = "D_{2^n}";
+}
+
+/// Unit multiplication holonomy equals the unit group.
+pub mod hg_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "unit group";
+    /// `lhs`
+    pub const LHS: &str = "{mul(•, u) : u ∈ R_n×} holonomy";
+    /// `rhs`
+    pub const RHS: &str = "R_n× ≅ Z/2 × Z/2^{n−2}";
+}
+
+/// Full holonomy group is the affine group.
+pub mod hg_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "Hol(R_n)";
+    /// `rhs`
+    pub const RHS: &str = "Aff(R_n) = R_n× ⋉ R_n";
+}
+
+/// Holonomy group decomposition into dihedral and non-trivial units.
+pub mod hg_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "Hol(R_n) decomposition";
+    /// `rhs`
+    pub const RHS: &str = "D_{2^n} ⋅ {mul(•,u) : u ∈ R_n×, u ≠ ±1}";
+}
+
+/// Category left identity: compose(id, f) = f.
+pub mod t_c1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "f ∈ Transform";
+    /// `lhs`
+    pub const LHS: &str = "compose(id, f)";
+    /// `rhs`
+    pub const RHS: &str = "f";
+}
+
+/// Category right identity: compose(f, id) = f.
+pub mod t_c2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "f ∈ Transform";
+    /// `lhs`
+    pub const LHS: &str = "compose(f, id)";
+    /// `rhs`
+    pub const RHS: &str = "f";
+}
+
+/// Category associativity of transform composition.
+pub mod t_c3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "f, g, h ∈ Transform";
+    /// `lhs`
+    pub const LHS: &str = "compose(f, compose(g, h))";
+    /// `rhs`
+    pub const RHS: &str = "compose(compose(f, g), h)";
+}
+
+/// Composability condition: f composesWith g iff target(f) = source(g).
+pub mod t_c4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "f, g ∈ Transform";
+    /// `lhs`
+    pub const LHS: &str = "f composesWith g";
+    /// `rhs`
+    pub const RHS: &str = "target(f) = source(g)";
+}
+
+/// Negation is a ring-metric isometry.
+pub mod t_i1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_R(neg(x), neg(y))";
+    /// `rhs`
+    pub const RHS: &str = "d_R(x, y)";
+}
+
+/// Bitwise complement is a Hamming-metric isometry.
+pub mod t_i2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_H(bnot(x), bnot(y))";
+    /// `rhs`
+    pub const RHS: &str = "d_H(x, y)";
+}
+
+/// Successor as composed isometries: succ = neg ∘ bnot preserves d_R but not d_H.
+pub mod t_i3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "succ = neg ∘ bnot";
+    /// `rhs`
+    pub const RHS: &str = "preserves d_R but not d_H";
+}
+
+/// Ring isometries form a group under composition.
+pub mod t_i4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "Isometry";
+    /// `lhs`
+    pub const LHS: &str = "ring isometries";
+    /// `rhs`
+    pub const RHS: &str = "form a group under composition";
+}
+
+/// CurvatureObservable measures failure of ring isometry to be Hamming isometry.
+pub mod t_i5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "Isometry";
+    /// `lhs`
+    pub const LHS: &str = "CurvatureObservable";
+    /// `rhs`
+    pub const RHS: &str = "measures failure of ring isometry to be Hamming isometry";
+}
+
+/// Embedding injectivity.
+pub mod t_e1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n (injectivity)";
+    /// `lhs`
+    pub const LHS: &str = "ι(x) = ι(y)";
+    /// `rhs`
+    pub const RHS: &str = "x = y";
+}
+
+/// Embedding is a ring homomorphism.
+pub mod t_e2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "ι(add(x,y))";
+    /// `rhs`
+    pub const RHS: &str = "add(ι(x), ι(y)); ι(mul(x,y)) = mul(ι(x), ι(y))";
+}
+
+/// Embedding transitivity: composition of embeddings is an embedding.
+pub mod t_e3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ι₁: R_n → R_m, ι₂: R_m → R_k";
+    /// `lhs`
+    pub const LHS: &str = "ι₂ ∘ ι₁ : R_n → R_k";
+    /// `rhs`
+    pub const RHS: &str = "is an embedding (transitivity)";
+}
+
+/// Embedding address coherence: glyph ∘ ι ∘ addresses is well-defined.
+pub mod t_e4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "embedding ι";
+    /// `lhs`
+    pub const LHS: &str = "glyph ∘ ι ∘ addresses";
+    /// `rhs`
+    pub const RHS: &str = "well-defined";
+}
+
+/// Dihedral group acts on constraints by transforming them.
+pub mod t_a1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "g ∈ D_{2^n}, C ∈ Constraint";
+    /// `lhs`
+    pub const LHS: &str = "g ∈ D_{2^n} on Constraint C";
+    /// `rhs`
+    pub const RHS: &str = "g⋅C (transformed constraint)";
+}
+
+/// Dihedral group action on partitions permutes components.
+pub mod t_a2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "g ∈ D_{2^n}";
+    /// `lhs`
+    pub const LHS: &str = "g ∈ D_{2^n} on Partition";
+    /// `rhs`
+    pub const RHS: &str = "permutes components";
+}
+
+/// Dihedral orbits determine irreducibility boundaries.
+pub mod t_a3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "DihedralFactorizationResolver";
+    /// `lhs`
+    pub const LHS: &str = "D_{2^n} orbits on R_n";
+    /// `rhs`
+    pub const RHS: &str = "determine irreducibility boundaries";
+}
+
+/// Fixed points of negation are {0, 2^{n−1}}; bnot has no fixed points.
+pub mod t_a4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "R_n";
+    /// `lhs`
+    pub const LHS: &str = "fixed points of neg";
+    /// `rhs`
+    pub const RHS: &str = "{0, 2^{n−1}}; bnot has none (n > 0)";
+}
+
+/// Automorphism group consists of unit multiplications.
+pub mod au_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "Aut(R_n)";
+    /// `rhs`
+    pub const RHS: &str = "{μ_u : x ↦ mul(u, x) | u ∈ R_n×}";
+}
+
+/// Automorphism group is isomorphic to the unit group.
+pub mod au_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 3";
+    /// `lhs`
+    pub const LHS: &str = "Aut(R_n)";
+    /// `rhs`
+    pub const RHS: &str = "≅ R_n× ≅ Z/2 × Z/2^{n−2}";
+}
+
+/// Automorphism group order is 2^{n−1}.
+pub mod au_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "|Aut(R_n)|";
+    /// `rhs`
+    pub const RHS: &str = "2^{n−1}";
+}
+
+/// Intersection of automorphism group with dihedral group is {id, neg}.
+pub mod au_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "Aut(R_n) ∩ D_{2^n}";
+    /// `rhs`
+    pub const RHS: &str = "{id, neg}";
+}
+
+/// Affine group is generated by D_{2^n} and μ_3.
+pub mod au_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "n ≥ 1";
+    /// `lhs`
+    pub const LHS: &str = "Aff(R_n)";
+    /// `rhs`
+    pub const RHS: &str = "⟨D_{2^n}, μ_3⟩";
+}
+
+/// Embedding functor action on morphisms.
+pub mod ef_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ι: R_n → R_m, f ∈ Cat(R_n)";
+    /// `lhs`
+    pub const LHS: &str = "F_ι(f)";
+    /// `rhs`
+    pub const RHS: &str = "ι ∘ f ∘ ι⁻¹ on Im(ι)";
+}
+
+/// Embedding functor preserves composition.
+pub mod ef_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ι: R_n → R_m";
+    /// `lhs`
+    pub const LHS: &str = "F_ι(f ∘ g)";
+    /// `rhs`
+    pub const RHS: &str = "F_ι(f) ∘ F_ι(g)";
+}
+
+/// Embedding functor preserves identities.
+pub mod ef_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ι: R_n → R_m";
+    /// `lhs`
+    pub const LHS: &str = "F_ι(id_{R_n})";
+    /// `rhs`
+    pub const RHS: &str = "id_{Im(ι)}";
+}
+
+/// Embedding functor composition is functorial.
+pub mod ef_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ι₁: R_n → R_m, ι₂: R_m → R_k";
+    /// `lhs`
+    pub const LHS: &str = "F_{ι₂ ∘ ι₁}";
+    /// `rhs`
+    pub const RHS: &str = "F_{ι₂} ∘ F_{ι₁}";
+}
+
+/// Embedding functor preserves ring isometries.
+pub mod ef_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ι: R_n → R_m";
+    /// `lhs`
+    pub const LHS: &str = "F_ι(ring isometry)";
+    /// `rhs`
+    pub const RHS: &str = "ring isometry at level m";
+}
+
+/// Embedding functor maps dihedral subgroup into target dihedral group.
+pub mod ef_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ι: R_n → R_m";
+    /// `lhs`
+    pub const LHS: &str = "F_ι(D_{2^n})";
+    /// `rhs`
+    pub const RHS: &str = "⊆ D_{2^m} as subgroup";
+}
+
+/// Embedding functor maps unit group into target unit group.
+pub mod ef_7 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ι: R_n → R_m";
+    /// `lhs`
+    pub const LHS: &str = "F_ι(R_n×)";
+    /// `rhs`
+    pub const RHS: &str = "⊆ R_m× as subgroup";
+}
+
+/// Braille glyph encoding: 6-bit blocks to Braille characters.
+pub mod aa_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n (6-bit blocks)";
+    /// `lhs`
+    pub const LHS: &str = "glyph(x)";
+    /// `rhs`
+    pub const RHS: &str = "[braille(x[0:5]), braille(x[6:11]), ...]";
+}
+
+/// Braille XOR homomorphism: Braille encoding commutes with XOR.
+pub mod aa_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "a, b ∈ {0,1}^6";
+    /// `lhs`
+    pub const LHS: &str = "braille(a ⊕ b)";
+    /// `rhs`
+    pub const RHS: &str = "braille(a) ⊕ braille(b)";
+}
+
+/// Braille complement: glyph of bnot(x) is character-wise complement of glyph(x).
+pub mod aa_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "glyph(bnot(x))";
+    /// `rhs`
+    pub const RHS: &str = "complement each Braille character of glyph(x)";
+}
+
+/// Addition does not lift to address space: no glyph homomorphism for add.
+pub mod aa_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "glyph(add(x, y))";
+    /// `rhs`
+    pub const RHS: &str = "≠ f(glyph(x), glyph(y)) in general";
+}
+
+/// Liftable operations are exactly the Boolean operations.
+pub mod aa_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "operations on R_n";
+    /// `lhs`
+    pub const LHS: &str = "liftable operations";
+    /// `rhs`
+    pub const RHS: &str = "{xor, and, or, bnot}; NOT {add, sub, mul, neg, succ, pred}";
+}
+
+/// Negation decomposes into liftable bnot and non-liftable succ.
+pub mod aa_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "neg(x) = succ(bnot(x))";
+    /// `rhs`
+    pub const RHS: &str = "bnot lifts, succ does not";
+}
+
+/// Address metric is sum of per-character Hamming distances.
+pub mod am_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "addresses a, b";
+    /// `lhs`
+    pub const LHS: &str = "d_addr(a, b)";
+    /// `rhs`
+    pub const RHS: &str = "Σ_i popcount(braille_i(a) ⊕ braille_i(b))";
+}
+
+/// Address metric equals Hamming metric on ring elements.
+pub mod am_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_addr(glyph(x), glyph(y))";
+    /// `rhs`
+    pub const RHS: &str = "d_H(x, y)";
+}
+
+/// Address metric does not preserve ring metric in general.
+pub mod am_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "addresses";
+    /// `lhs`
+    pub const LHS: &str = "d_addr";
+    /// `rhs`
+    pub const RHS: &str = "does NOT preserve d_R in general";
+}
+
+/// Address incompatibility metric.
+pub mod am_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x, y ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "d_Δ(x, y)";
+    /// `rhs`
+    pub const RHS: &str = "|d_R(x,y) − d_addr(glyph(x), glyph(y))|";
+}
+
+/// Entropy of a fiber budget state.
+pub mod th_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "state ∈ FiberBudget";
+    /// `lhs`
+    pub const LHS: &str = "S(state)";
+    /// `rhs`
+    pub const RHS: &str = "freeCount × ln 2";
+}
+
+/// Maximum entropy: unconstrained state has S = n × ln 2.
+pub mod th_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "unconstrained type";
+    /// `lhs`
+    pub const LHS: &str = "S(⊥)";
+    /// `rhs`
+    pub const RHS: &str = "n × ln 2";
+}
+
+/// Zero entropy: fully resolved state has S = 0.
+pub mod th_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "fully resolved type";
+    /// `lhs`
+    pub const LHS: &str = "S(⊤)";
+    /// `rhs`
+    pub const RHS: &str = "0";
+}
+
+/// Landauer bound on total resolution cost.
+pub mod th_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "Landauer bound";
+    /// `lhs`
+    pub const LHS: &str = "total resolution cost";
+    /// `rhs`
+    pub const RHS: &str = "n × k_B T × ln 2";
+}
+
+/// Critical inverse temperature for UOR fiber system.
+pub mod th_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "UOR fiber system";
+    /// `lhs`
+    pub const LHS: &str = "β*";
+    /// `rhs`
+    pub const RHS: &str = "ln 2";
+}
+
+/// Constraint application removes entropy; convergence rate equals cooling rate.
+pub mod th_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "resolution loop";
+    /// `lhs`
+    pub const LHS: &str = "constraint application";
+    /// `rhs`
+    pub const RHS: &str = "removes entropy; convergenceRate = cooling rate";
+}
+
+/// CatastropheThreshold is the temperature of a partition phase transition.
+pub mod th_7 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "partition bifurcation";
+    /// `lhs`
+    pub const LHS: &str = "CatastropheThreshold";
+    /// `rhs`
+    pub const RHS: &str = "temperature of partition phase transition";
+}
+
+/// Step formula as free-energy cost of a constraint boundary.
+pub mod th_8 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint boundary g";
+    /// `lhs`
+    pub const LHS: &str = "step_g";
+    /// `rhs`
+    pub const RHS: &str = "free-energy cost of constraint boundary";
+}
+
+/// Computational hardness maps to type incompleteness (high temperature).
+pub mod th_9 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "type specification";
+    /// `lhs`
+    pub const LHS: &str = "computational hardness";
+    /// `rhs`
+    pub const RHS: &str = "type incompleteness (high temperature)";
+}
+
+/// Type resolution is measurement; cost ≥ entropy removed.
+pub mod th_10 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "resolution process";
+    /// `lhs`
+    pub const LHS: &str = "type resolution";
+    /// `rhs`
+    pub const RHS: &str = "measurement; cost ≥ entropy removed";
+}
+
+/// Adiabatic schedule: decreasing freeCount, cost-per-fiber ordering.
+pub mod ar_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint ordering";
+    /// `lhs`
+    pub const LHS: &str = "adiabatic schedule";
+    /// `rhs`
+    pub const RHS: &str = "decreasing freeCount × cost-per-fiber order";
+}
+
+/// Adiabatic cost is sum of constraint costs in optimal order.
+pub mod ar_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "optimal ordering";
+    /// `lhs`
+    pub const LHS: &str = "Cost_adiabatic";
+    /// `rhs`
+    pub const RHS: &str = "Σ_i cost(C_{σ(i)}) where σ is optimal";
+}
+
+/// Adiabatic cost satisfies Landauer bound.
+pub mod ar_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "Landauer bound";
+    /// `lhs`
+    pub const LHS: &str = "Cost_adiabatic";
+    /// `rhs`
+    pub const RHS: &str = "≥ n × k_B T × ln 2";
+}
+
+/// Adiabatic efficiency η ≤ 1.
+pub mod ar_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "adiabatic efficiency";
+    /// `lhs`
+    pub const LHS: &str = "η = (n × ln 2) / Cost_adiabatic";
+    /// `rhs`
+    pub const RHS: &str = "≤ 1";
+}
+
+/// Greedy vs adiabatic cost difference: ≤ 5% for n ≤ 16.
+pub mod ar_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "empirical, Q0–Q4";
+    /// `lhs`
+    pub const LHS: &str = "greedy vs adiabatic difference";
+    /// `rhs`
+    pub const RHS: &str = "≤ 5% for n ≤ 16";
+}
+
+/// Phase space definition.
+pub mod pd_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "UOR phase diagram";
+    /// `lhs`
+    pub const LHS: &str = "phase space";
+    /// `rhs`
+    pub const RHS: &str = "{(n, g) : n ∈ Z₊, g constraint boundary}";
+}
+
+/// Phase boundaries occur where g divides 2^n − 1 or g is a power of 2.
+pub mod pd_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "(n, g) plane";
+    /// `lhs`
+    pub const LHS: &str = "phase boundaries";
+    /// `rhs`
+    pub const RHS: &str = "g | (2^n − 1) or g = 2^k";
+}
+
+/// Parity boundary divides R_n into equal halves.
+pub mod pd_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "g = 2";
+    /// `lhs`
+    pub const LHS: &str = "parity boundary";
+    /// `rhs`
+    pub const RHS: &str = "|Unit| = 2^{n−1}, |non-Unit| = 2^{n−1}";
+}
+
+/// Resonance lines in the phase diagram.
+pub mod pd_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "(n, g) plane";
+    /// `lhs`
+    pub const LHS: &str = "resonance lines";
+    /// `rhs`
+    pub const RHS: &str = "n = k ⋅ ord_g(2)";
+}
+
+/// Phase count at level n is at most 2^n (typically O(n)).
+pub mod pd_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "quantum level n";
+    /// `lhs`
+    pub const LHS: &str = "phase count at level n";
+    /// `rhs`
+    pub const RHS: &str = "≤ 2^n (typical O(n))";
+}
+
+/// Reversible pinning stores prior state in ancilla fiber.
+pub mod rc_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "FiberCoordinate k";
+    /// `lhs`
+    pub const LHS: &str = "reversible pinning of fiber k";
+    /// `rhs`
+    pub const RHS: &str = "store prior state in ancilla fiber k'";
+}
+
+/// Reversible pinning has zero total entropy change.
+pub mod rc_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "reversible strategy";
+    /// `lhs`
+    pub const LHS: &str = "reversible pinning entropy";
+    /// `rhs`
+    pub const RHS: &str = "ΔS_total = 0";
+}
+
+/// Deferred Landauer cost at ancilla erasure.
+pub mod rc_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ancilla cleanup";
+    /// `lhs`
+    pub const LHS: &str = "deferred Landauer cost";
+    /// `rhs`
+    pub const RHS: &str = "n × k_B T × ln 2 at ancilla erasure";
+}
+
+/// Reversible total cost equals irreversible total cost (redistributed).
+pub mod rc_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "reversible strategy";
+    /// `lhs`
+    pub const LHS: &str = "reversible total cost";
+    /// `rhs`
+    pub const RHS: &str = "= irreversible total cost (redistributed)";
+}
+
+/// Quantum UOR: superposed fibers, cost proportional to winning path.
+pub mod rc_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "hypothetical quantum";
+    /// `lhs`
+    pub const LHS: &str = "quantum UOR";
+    /// `rhs`
+    pub const RHS: &str = "superposed fibers, cost ∝ winning path";
+}
+
+/// Ring derivative: ∂_R f(x) = f(succ(x)) - f(x).
+pub mod dc_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "f : R_n → R_n, x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "∂_R f(x)";
+    /// `rhs`
+    pub const RHS: &str = "f(succ(x)) - f(x)";
+}
+
+/// Hamming derivative: ∂_H f(x) = f(bnot(x)) - f(x).
+pub mod dc_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "f : R_n → R_n, x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "∂_H f(x)";
+    /// `rhs`
+    pub const RHS: &str = "f(bnot(x)) - f(x)";
+}
+
+/// Hamming derivative of identity: ∂_H id(x) = -(2x + 1) mod 2^n.
+pub mod dc_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "∂_H id(x)";
+    /// `rhs`
+    pub const RHS: &str = "bnot(x) - x = -(2x + 1) mod 2^n";
+}
+
+/// Commutator from derivatives: \[neg, bnot\](x) = ∂_R neg(x) - ∂_H neg(x).
+pub mod dc_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "[neg, bnot](x)";
+    /// `rhs`
+    pub const RHS: &str = "∂_R neg(x) - ∂_H neg(x)";
+}
+
+/// Carry dependence: the difference ∂_R f - ∂_H f decomposes into carry contributions.
+pub mod dc_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "f : R_n → R_n";
+    /// `lhs`
+    pub const LHS: &str = "∂_R f - ∂_H f";
+    /// `rhs`
+    pub const RHS: &str = "Σ carry contributions";
+}
+
+/// Jacobian definition: J_k(x) = ∂_R f_k(x) where f_k = fiber_k.
+pub mod dc_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n, 0 ≤ k < n";
+    /// `lhs`
+    pub const LHS: &str = "J_k(x)";
+    /// `rhs`
+    pub const RHS: &str = "∂_R f_k(x) where f_k = fiber_k";
+}
+
+/// Top-fiber anomaly: J_{n-1}(x) may differ from lower fibers.
+pub mod dc_7 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "J_{n-1}(x)";
+    /// `rhs`
+    pub const RHS: &str = "may differ from lower fibers";
+}
+
+/// Rank-curvature identity: rank(J(x)) = d_H(x, succ(x)) - 1 for generic x.
+pub mod dc_8 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "rank(J(x))";
+    /// `rhs`
+    pub const RHS: &str = "= d_H(x, succ(x)) - 1 for generic x";
+}
+
+/// Total curvature from Jacobian: κ(x) = Σ_k J_k(x).
+pub mod dc_9 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "κ(x)";
+    /// `rhs`
+    pub const RHS: &str = "Σ_k J_k(x)";
+}
+
+/// Curvature-weighted ordering: optimal next constraint maximizes J_k over free fibers.
+pub mod dc_10 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "resolution step";
+    /// `lhs`
+    pub const LHS: &str = "optimal next constraint";
+    /// `rhs`
+    pub const RHS: &str = "argmax J_k over free fibers";
+}
+
+/// Curvature equipartition: Σ_{x} J_k(x) ≈ (2^n - 2)/n for each k.
+pub mod dc_11 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "0 ≤ k < n";
+    /// `lhs`
+    pub const LHS: &str = "Σ_{x} J_k(x)";
+    /// `rhs`
+    pub const RHS: &str = "≈ (2^n - 2)/n for each k";
+}
+
+/// Constraint nerve: N(C) is the simplicial complex on constraints.
+pub mod ha_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint set C";
+    /// `lhs`
+    pub const LHS: &str = "N(C)";
+    /// `rhs`
+    pub const RHS: &str = "simplicial complex on constraints";
+}
+
+/// Stall iff non-trivial homology: resolution stalls ⟺ H_k(N(C)) ≠ 0 for some k > 0.
+pub mod ha_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint set C";
+    /// `lhs`
+    pub const LHS: &str = "resolution stalls";
+    /// `rhs`
+    pub const RHS: &str = "⟺ H_k(N(C)) ≠ 0 for some k > 0";
+}
+
+/// Betti-entropy theorem: S_residual ≥ Σ_k β_k × ln 2.
+pub mod ha_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint configuration C";
+    /// `lhs`
+    pub const LHS: &str = "S_residual";
+    /// `rhs`
+    pub const RHS: &str = "≥ Σ_k β_k × ln 2";
+}
+
+/// Euler-Poincaré formula for constraint nerve.
+pub mod it_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint nerve N(C)";
+    /// `lhs`
+    pub const LHS: &str = "χ(N(C))";
+    /// `rhs`
+    pub const RHS: &str = "Σ_k (-1)^k β_k";
+}
+
+/// Spectral Euler characteristic.
+pub mod it_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint nerve N(C)";
+    /// `lhs`
+    pub const LHS: &str = "χ(N(C))";
+    /// `rhs`
+    pub const RHS: &str = "Σ_k (-1)^k dim(H_k)";
+}
+
+/// Spectral gap bounds convergence rate from below.
+pub mod it_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint nerve N(C)";
+    /// `lhs`
+    pub const LHS: &str = "λ_1(N(C))";
+    /// `rhs`
+    pub const RHS: &str = "lower bounds convergence rate";
+}
+
+/// UOR index theorem (topological form): total curvature minus Euler characteristic equals residual entropy in bits.
+pub mod it_7a {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint configuration C";
+    /// `lhs`
+    pub const LHS: &str = "Σ κ_k - χ(N(C))";
+    /// `rhs`
+    pub const RHS: &str = "= S_residual / ln 2";
+}
+
+/// UOR index theorem (entropy-topology duality).
+pub mod it_7b {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint configuration C";
+    /// `lhs`
+    pub const LHS: &str = "S_residual";
+    /// `rhs`
+    pub const RHS: &str = "= (Σ κ_k - χ) × ln 2";
+}
+
+/// UOR index theorem (spectral cost bound): resolution cost ≥ n - χ(N(C)).
+pub mod it_7c {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint configuration C";
+    /// `lhs`
+    pub const LHS: &str = "resolution cost";
+    /// `rhs`
+    pub const RHS: &str = "≥ n - χ(N(C))";
+}
+
+/// UOR index theorem (completeness criterion): resolution is complete iff χ(N(C)) = n and all Betti numbers vanish.
+pub mod it_7d {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint nerve N(C)";
+    /// `lhs`
+    pub const LHS: &str = "resolution complete";
+    /// `rhs`
+    pub const RHS: &str = "⟺ χ(N(C)) = n and all β_k = 0";
+}
+
+/// Ring → Constraints map: negation transforms a residue constraint.
+pub mod phi_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ring op, constraint";
+    /// `lhs`
+    pub const LHS: &str = "φ₁(neg, ResidueConstraint(m,r))";
+    /// `rhs`
+    pub const RHS: &str = "ResidueConstraint(m, m-r)";
+}
+
+/// Constraints → Fibers map: composition maps to union of fiber pinnings.
+pub mod phi_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraints A, B";
+    /// `lhs`
+    pub const LHS: &str = "φ₂(compose(A,B))";
+    /// `rhs`
+    pub const RHS: &str = "φ₂(A) ∪ φ₂(B)";
+}
+
+/// Fibers → Partition map: a closed fiber state determines a unique 4-component partition.
+pub mod phi_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "closed FiberBudget";
+    /// `lhs`
+    pub const LHS: &str = "φ₃(closed fiber state)";
+    /// `rhs`
+    pub const RHS: &str = "unique 4-component partition";
+}
+
+/// Resolution pipeline: φ₄ = φ₃ ∘ φ₂ ∘ φ₁ is the composite resolution map.
+pub mod phi_4 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "T ∈ T_n, x ∈ R_n";
+    /// `lhs`
+    pub const LHS: &str = "φ₄(T, x)";
+    /// `rhs`
+    pub const RHS: &str = "φ₃(φ₂(φ₁(T, x)))";
+}
+
+/// Operations → Observables map: negation preserves d_R, may change d_H.
+pub mod phi_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "op ∈ Operation";
+    /// `lhs`
+    pub const LHS: &str = "φ₅(neg)";
+    /// `rhs`
+    pub const RHS: &str = "preserves d_R, may change d_H";
+}
+
+/// Observables → Refinement map: observables on a state yield a refinement suggestion.
+pub mod phi_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "ResolutionState";
+    /// `lhs`
+    pub const LHS: &str = "φ₆(state, observables)";
+    /// `rhs`
+    pub const RHS: &str = "RefinementSuggestion";
+}
+
 /// The dihedral group of order 2^(n+1), generated by neg (ring reflection) and bnot (hypercube reflection). Every element of this group acts as an isometry on the type space 𝒯_n.
 pub mod d2n {
     /// `generatedBy`
