@@ -35,6 +35,6 @@ calculus to the resolution pipeline: curvature guides constraint selection.
 
 ## Commutator Decomposition
 
-Identity DC_4 shows that the fundamental commutator [neg, bnot](x) = 2 can
+Identity DC_4 shows that the fundamental commutator \[neg, bnot\](x) = 2 can
 be recovered from the difference of ring and Hamming derivatives of negation.
 This provides a differential-geometric interpretation of the critical identity.
