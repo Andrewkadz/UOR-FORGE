@@ -371,6 +371,14 @@ fn generate_individuals(f: &mut RustFile, module: &NamespaceModule) {
         let comment = normalize_comment(ind.comment);
 
         f.doc_comment(&comment);
+
+        // Empty modules (no property assertions) → single-line `pub mod name {}`
+        if ind.properties.is_empty() {
+            let _ = writeln!(f.buf, "pub mod {mod_name} {{}}");
+            f.blank();
+            continue;
+        }
+
         let _ = writeln!(f.buf, "pub mod {mod_name} {{");
 
         // Group property assertions by IRI (preserving insertion order)
@@ -428,7 +436,13 @@ fn generate_individuals(f: &mut RustFile, module: &NamespaceModule) {
             match values[0] {
                 IndividualValue::Str(s) => {
                     let _ = writeln!(f.buf, "    /// `{prop_local}`");
-                    let _ = writeln!(f.buf, "    pub const {base_const}: &str = \"{s}\";");
+                    let line = format!("    pub const {base_const}: &str = \"{s}\";");
+                    if line.chars().count() <= 100 {
+                        let _ = writeln!(f.buf, "{line}");
+                    } else {
+                        let _ = writeln!(f.buf, "    pub const {base_const}: &str =");
+                        let _ = writeln!(f.buf, "        \"{s}\";");
+                    }
                 }
                 IndividualValue::Int(n) => {
                     let _ = writeln!(f.buf, "    /// `{prop_local}`");
@@ -441,7 +455,13 @@ fn generate_individuals(f: &mut RustFile, module: &NamespaceModule) {
                 IndividualValue::IriRef(iri) => {
                     let ref_local = local_name(iri);
                     let _ = writeln!(f.buf, "    /// `{prop_local}` -> `{ref_local}`");
-                    let _ = writeln!(f.buf, "    pub const {base_const}: &str = \"{iri}\";");
+                    let line = format!("    pub const {base_const}: &str = \"{iri}\";");
+                    if line.chars().count() <= 100 {
+                        let _ = writeln!(f.buf, "{line}");
+                    } else {
+                        let _ = writeln!(f.buf, "    pub const {base_const}: &str =");
+                        let _ = writeln!(f.buf, "        \"{iri}\";");
+                    }
                 }
                 IndividualValue::List(_) => unreachable!(),
             }

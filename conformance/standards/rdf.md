@@ -13,7 +13,7 @@ The ontology is a valid RDF 1.1 graph. Requirements:
 
 The `public/uor.foundation.ttl` file must conform to Turtle 1.1:
 
-- File begins with `@prefix` declarations for all 14 namespace prefixes + standard prefixes.
+- File begins with `@prefix` declarations for all 16 namespace prefixes + standard prefixes.
 - All triples end with ` .`
 - Predicate-object lists use `;` as separator.
 - `rdf:List` for ordered collections uses `( elem1 elem2 )` syntax.
@@ -36,6 +36,8 @@ The `public/uor.foundation.ttl` file must conform to Turtle 1.1:
 @prefix type:       <https://uor.foundation/type/> .
 @prefix partition:  <https://uor.foundation/partition/> .
 @prefix observable: <https://uor.foundation/observable/> .
+@prefix homology:   <https://uor.foundation/homology/> .
+@prefix cohomology: <https://uor.foundation/cohomology/> .
 @prefix proof:      <https://uor.foundation/proof/> .
 @prefix derivation: <https://uor.foundation/derivation/> .
 @prefix trace:      <https://uor.foundation/trace/> .

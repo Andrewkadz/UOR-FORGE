@@ -20,7 +20,7 @@ pub fn module() -> NamespaceModule {
             comment: "Execution traces recording the sequence of kernel operations, \
                       intermediate results, and accumulated metrics for a computation.",
             space: Space::Bridge,
-            imports: &[NS_SCHEMA, NS_OP, NS_CERT],
+            imports: &[NS_SCHEMA, NS_OP, NS_CERT, NS_OBSERVABLE],
         },
         classes: classes(),
         properties: properties(),

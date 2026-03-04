@@ -3,7 +3,9 @@
 //! `bridge` space modules.
 
 pub mod cert;
+pub mod cohomology;
 pub mod derivation;
+pub mod homology;
 pub mod observable;
 pub mod partition;
 pub mod proof;

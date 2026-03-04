@@ -27,7 +27,7 @@ This is the foundational theorem proved by {@class https://uor.foundation/proof/
 
 ## Namespace Layers
 
-The 14 namespaces are organized into three **space** classifications:
+The 16 namespaces are organized into three **space** classifications:
 
 **Kernel** (mathematical core):
 - {@class https://uor.foundation/u/Address} — universal addressing
@@ -43,6 +43,8 @@ The 14 namespaces are organized into three **space** classifications:
 - {@class https://uor.foundation/derivation/Derivation} — derivations
 - {@class https://uor.foundation/trace/ComputationTrace} — traces
 - {@class https://uor.foundation/cert/Certificate} — certificates
+- {@class https://uor.foundation/homology/Simplex} — homology (simplicial complexes, chain homology)
+- {@class https://uor.foundation/cohomology/Sheaf} — cohomology (sheaf cohomology, local-to-global)
 
 **User** (application layer):
 - {@class https://uor.foundation/type/TypeDefinition} — types

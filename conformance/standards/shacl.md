@@ -2,19 +2,19 @@
 
 ## Overview
 
-The UOR conformance suite validates 15 OWL instance graphs against SHACL NodeShapes
+The UOR conformance suite validates 23 OWL instance graphs against SHACL NodeShapes
 defined in `conformance/shapes/uor-shapes.ttl`. One NodeShape is defined per
-ontology class (98 total).
+ontology class (123 total).
 
 ## Shape File
 
 `conformance/shapes/uor-shapes.ttl` contains:
-- 98 `sh:NodeShape` declarations (one per class)
+- 123 `sh:NodeShape` declarations (one per class)
 - `sh:targetClass` targeting each OWL class
 - Cardinality constraints (`sh:minCount`, `sh:maxCount`) on required properties
 - Type constraints (`sh:class`, `sh:datatype`) on property values
 
-## The 15 Instance Tests
+## The 23 Instance Tests
 
 | Test | File | Validates |
 |------|------|-----------|
@@ -33,6 +33,14 @@ ontology class (98 total).
 | test13_canonical_form | `tests/fixtures/test13_canonical_form.rs` | `CanonicalFormResolver` → `Derivation` with `RewriteStep` chain |
 | test14_content_addressing | `tests/fixtures/test14_content_addressing.rs` | `u:Address` → Observable taxonomy → `InvolutionCertificate` |
 | test15_boolean_sat | `tests/fixtures/test15_boolean_sat.rs` | `EvaluationResolver` → State lifecycle → Certificate → Trace |
+| test16_algebraic_identities | `tests/fixtures/test16_algebraic_identities.rs` | `op:Identity` individuals with lhs/rhs/forAll |
+| test17_inter_algebra_maps | `tests/fixtures/test17_inter_algebra_maps.rs` | `op:Identity` phi-pipeline individuals |
+| test18_analytical_completeness | `tests/fixtures/test18_analytical_completeness.rs` | `observable:Jacobian`, `observable:BettiNumber`, `observable:SpectralGap` |
+| test19_homological_pipeline | `tests/fixtures/test19_homological_pipeline.rs` | `homology:Simplex` → `ChainComplex` → `HomologyGroup` pipeline |
+| test20_sheaf_consistency | `tests/fixtures/test20_sheaf_consistency.rs` | `cohomology:Sheaf` → `Stalk` → `Section` → `GluingObstruction` |
+| test21_topological_delta | `tests/fixtures/test21_topological_delta.rs` | `morphism:TopologicalDelta` with Betti/Euler/nerve before+after |
+| test22_index_bridge | `tests/fixtures/test22_index_bridge.rs` | Full φ+ψ pipeline (6 phi_ + 6 psi_ individuals) |
+| test23_identity_grounding | `tests/fixtures/test23_identity_grounding.rs` | `op:verificationStatus`/`verificationPath` spot-check |
 
 ## Structural Validation
 

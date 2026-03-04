@@ -23,11 +23,11 @@
 //!   namespaces/
 //!     u.html                ← Auto-generated from spec (100% accurate)
 //!     schema.html
-//!     ... (14 total)
+//!     ... (16 total)
 //!   concepts/
 //!     ring.html
 //!     content-addressing.html
-//!     ... (19 pages)
+//!     ... (22 pages)
 //!   guides/
 //!     implementing-prism.html
 //!     conformance.html
@@ -125,6 +125,9 @@ pub fn generate(out_dir: &Path, readme_path: &Path) -> Result<()> {
 <li><a href="differential-calculus.html">Differential Calculus — Discrete derivatives and the Jacobian</a></li>
 <li><a href="analytical-completeness.html">Analytical Completeness — Constraint nerve, Betti numbers, and the index theorem</a></li>
 <li><a href="addressing.html">Addressing — Content-address resolution and Boolean homomorphism</a></li>
+<li><a href="homology.html">Homology — Simplicial complexes and chain homology</a></li>
+<li><a href="cohomology.html">Cohomology — Sheaf cohomology and local-to-global</a></li>
+<li><a href="sheaf-semantics.html">Sheaf Semantics — Sheaf-theoretic view of resolution</a></li>
 </ul>"#,
         &site_nav_html,
         &docs_nav_html,
@@ -157,6 +160,7 @@ pub fn generate(out_dir: &Path, readme_path: &Path) -> Result<()> {
 <li><a href="implementing-prism.html">Implementing PRISM — Build a UOR-compliant resolver</a></li>
 <li><a href="conformance.html">Conformance — Validate your implementation</a></li>
 <li><a href="contributing.html">Contributing — How to contribute to UOR</a></li>
+<li><a href="psi-pipeline.html">ψ Pipeline — Structural reasoning via homology and cohomology</a></li>
 </ul>"#,
         &site_nav_html,
         &docs_nav_html,
@@ -248,6 +252,8 @@ fn build_docs_sidebar_html(base_path: &str) -> String {
 <li><a href="{base_path}/docs/namespaces/type.html">type</a></li>
 <li><a href="{base_path}/docs/namespaces/partition.html">partition</a></li>
 <li><a href="{base_path}/docs/namespaces/observable.html">observable</a></li>
+<li><a href="{base_path}/docs/namespaces/homology.html">homology</a></li>
+<li><a href="{base_path}/docs/namespaces/cohomology.html">cohomology</a></li>
 <li><a href="{base_path}/docs/namespaces/proof.html">proof</a></li>
 <li><a href="{base_path}/docs/namespaces/derivation.html">derivation</a></li>
 <li><a href="{base_path}/docs/namespaces/trace.html">trace</a></li>
@@ -277,6 +283,9 @@ fn build_docs_sidebar_html(base_path: &str) -> String {
 <li><a href="{base_path}/docs/concepts/differential-calculus.html">Differential Calculus</a></li>
 <li><a href="{base_path}/docs/concepts/analytical-completeness.html">Analytical Completeness</a></li>
 <li><a href="{base_path}/docs/concepts/addressing.html">Addressing</a></li>
+<li><a href="{base_path}/docs/concepts/homology.html">Homology</a></li>
+<li><a href="{base_path}/docs/concepts/cohomology.html">Cohomology</a></li>
+<li><a href="{base_path}/docs/concepts/sheaf-semantics.html">Sheaf Semantics</a></li>
 </ul>
 </li>
 <li class="nav-group"><span>Guides</span>
@@ -284,6 +293,7 @@ fn build_docs_sidebar_html(base_path: &str) -> String {
 <li><a href="{base_path}/docs/guides/implementing-prism.html">Implementing PRISM</a></li>
 <li><a href="{base_path}/docs/guides/conformance.html">Conformance</a></li>
 <li><a href="{base_path}/docs/guides/contributing.html">Contributing</a></li>
+<li><a href="{base_path}/docs/guides/psi-pipeline.html">ψ Pipeline</a></li>
 </ul>
 </li>
 <li><a href="{base_path}/search.html">Search</a></li>
@@ -635,10 +645,10 @@ mod tests {
     #[test]
     fn index_has_all_terms() {
         let index = OntologyIndex::from_spec();
-        assert_eq!(index.modules.len(), 14);
-        assert_eq!(index.classes.len(), 103);
-        assert_eq!(index.properties.len(), 176);
-        assert_eq!(index.individuals.len(), 255);
+        assert_eq!(index.modules.len(), 16);
+        assert_eq!(index.classes.len(), 123);
+        assert_eq!(index.properties.len(), 229);
+        assert_eq!(index.individuals.len(), 269);
     }
 
     #[test]

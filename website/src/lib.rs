@@ -23,7 +23,7 @@
 //!   search-index.json
 //!   sitemap.xml
 //!   namespaces/
-//!     <prefix>/index.html   (14 pages, 100% auto-generated)
+//!     <prefix>/index.html   (16 pages, 100% auto-generated)
 //!   css/style.css
 //!   js/search.js
 //! ```
@@ -190,15 +190,15 @@ mod tests {
         let entries = extractor::build_search_index("");
         let class_count = entries.iter().filter(|e| e.kind == "class").count();
         assert_eq!(
-            class_count, 103,
-            "Expected 103 class entries in search index"
+            class_count, 123,
+            "Expected 123 class entries in search index"
         );
     }
 
     #[test]
     fn namespace_summaries_count() {
         let summaries = namespace_summaries("");
-        assert_eq!(summaries.len(), 14);
+        assert_eq!(summaries.len(), 16);
     }
 
     #[test]

@@ -1,5 +1,5 @@
 # UOR Foundation SHACL Shapes
-# One NodeShape per class — 82 total.
+# One NodeShape per class — 123 total.
 # Defines cardinality and type constraints validated by the conformance suite.
 
 @prefix rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -21,9 +21,11 @@
 @prefix cert:       <https://uor.foundation/cert/> .
 @prefix morphism:   <https://uor.foundation/morphism/> .
 @prefix state:      <https://uor.foundation/state/> .
+@prefix homology:   <https://uor.foundation/homology/> .
+@prefix cohomology: <https://uor.foundation/cohomology/> .
 @prefix uor-sh:     <https://uor.foundation/shapes/> .
 
-# ── u/ namespace ──────────────────────────────────────────────────────────────
+# ── u/ namespace (2) ────────────────────────────────────────────────────────
 
 uor-sh:AddressShape
     a           sh:NodeShape ;
@@ -36,7 +38,7 @@ uor-sh:GlyphShape
     sh:targetClass u:Glyph ;
     rdfs:label  "GlyphShape" .
 
-# ── schema/ namespace ─────────────────────────────────────────────────────────
+# ── schema/ namespace (6) ───────────────────────────────────────────────────
 
 uor-sh:DatumShape
     a               sh:NodeShape ;
@@ -80,7 +82,7 @@ uor-sh:RingShape
         sh:datatype  xsd:nonNegativeInteger ;
     ] .
 
-# ── op/ namespace ─────────────────────────────────────────────────────────────
+# ── op/ namespace (7) ───────────────────────────────────────────────────────
 
 uor-sh:OperationShape
     a               sh:NodeShape ;
@@ -129,7 +131,7 @@ uor-sh:DihedralGroupShape
         sh:minCount 1 ;
     ] .
 
-# ── query/ namespace ──────────────────────────────────────────────────────────
+# ── query/ namespace (4) ────────────────────────────────────────────────────
 
 uor-sh:QueryShape
     a               sh:NodeShape ;
@@ -151,7 +153,7 @@ uor-sh:RepresentationQueryShape
     sh:targetClass  query:RepresentationQuery ;
     rdfs:label      "RepresentationQueryShape" .
 
-# ── resolver/ namespace ───────────────────────────────────────────────────────
+# ── resolver/ namespace (7) ─────────────────────────────────────────────────
 
 uor-sh:ResolverShape
     a               sh:NodeShape ;
@@ -173,7 +175,58 @@ uor-sh:EvaluationResolverShape
     sh:targetClass  resolver:EvaluationResolver ;
     rdfs:label      "EvaluationResolverShape" .
 
-# ── type/ namespace ───────────────────────────────────────────────────────────
+uor-sh:ResolutionStateShape
+    a               sh:NodeShape ;
+    sh:targetClass  resolver:ResolutionState ;
+    rdfs:label      "ResolutionStateShape" ;
+    sh:property [
+        sh:path     resolver:isComplete ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] ;
+    sh:property [
+        sh:path     resolver:iterationCount ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] ;
+    sh:property [
+        sh:path     resolver:convergenceRate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+    ] ;
+    sh:property [
+        sh:path     resolver:residualEntropy ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+    ] ;
+    sh:property [
+        sh:path     resolver:topologicallyComplete ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] .
+
+uor-sh:RefinementSuggestionShape
+    a               sh:NodeShape ;
+    sh:targetClass  resolver:RefinementSuggestion ;
+    rdfs:label      "RefinementSuggestionShape" ;
+    sh:property [
+        sh:path     resolver:suggestedAxis ;
+        sh:maxCount 1 ;
+        sh:class    type:MetricAxis ;
+    ] ;
+    sh:property [
+        sh:path     resolver:suggestedClass ;
+        sh:maxCount 1 ;
+    ] .
+
+uor-sh:ConstraintNerveShape
+    a               sh:NodeShape ;
+    sh:targetClass  resolver:ConstraintNerve ;
+    rdfs:label      "ConstraintNerveShape" .
+
+# ── type/ namespace (11) ────────────────────────────────────────────────────
 
 uor-sh:TypeDefinitionShape
     a               sh:NodeShape ;
@@ -205,7 +258,82 @@ uor-sh:ConstrainedTypeShape
     sh:targetClass  type:ConstrainedType ;
     rdfs:label      "ConstrainedTypeShape" .
 
-# ── partition/ namespace ──────────────────────────────────────────────────────
+uor-sh:ConstraintShape
+    a               sh:NodeShape ;
+    sh:targetClass  type:Constraint ;
+    rdfs:label      "ConstraintShape" ;
+    sh:property [
+        sh:path     type:metricAxis ;
+        sh:maxCount 1 ;
+        sh:class    type:MetricAxis ;
+    ] ;
+    sh:property [
+        sh:path     type:crossingCost ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] .
+
+uor-sh:ResidueConstraintShape
+    a               sh:NodeShape ;
+    sh:targetClass  type:ResidueConstraint ;
+    rdfs:label      "ResidueConstraintShape" ;
+    sh:property [
+        sh:path     type:modulus ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:positiveInteger ;
+    ] ;
+    sh:property [
+        sh:path     type:residue ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] .
+
+uor-sh:CarryConstraintShape
+    a               sh:NodeShape ;
+    sh:targetClass  type:CarryConstraint ;
+    rdfs:label      "CarryConstraintShape" ;
+    sh:property [
+        sh:path     type:carryPattern ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+uor-sh:DepthConstraintShape
+    a               sh:NodeShape ;
+    sh:targetClass  type:DepthConstraint ;
+    rdfs:label      "DepthConstraintShape" ;
+    sh:property [
+        sh:path     type:minDepth ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] ;
+    sh:property [
+        sh:path     type:maxDepth ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] .
+
+uor-sh:CompositeConstraintShape
+    a               sh:NodeShape ;
+    sh:targetClass  type:CompositeConstraint ;
+    rdfs:label      "CompositeConstraintShape" ;
+    sh:property [
+        sh:path     type:composedFrom ;
+        sh:minCount 2 ;
+        sh:class    type:Constraint ;
+    ] .
+
+uor-sh:MetricAxisShape
+    a               sh:NodeShape ;
+    sh:targetClass  type:MetricAxis ;
+    rdfs:label      "MetricAxisShape" .
+
+# ── partition/ namespace (9) ────────────────────────────────────────────────
 
 uor-sh:PartitionShape
     a               sh:NodeShape ;
@@ -242,139 +370,255 @@ uor-sh:ExteriorSetShape
     sh:targetClass  partition:ExteriorSet ;
     rdfs:label      "ExteriorSetShape" .
 
-# ── observable/ namespace (26 classes — representative shapes) ────────────────
+uor-sh:FiberCoordinateShape
+    a               sh:NodeShape ;
+    sh:targetClass  partition:FiberCoordinate ;
+    rdfs:label      "FiberCoordinateShape" ;
+    sh:property [
+        sh:path     partition:fiberPosition ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] ;
+    sh:property [
+        sh:path     partition:fiberState ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+uor-sh:FiberBudgetShape
+    a               sh:NodeShape ;
+    sh:targetClass  partition:FiberBudget ;
+    rdfs:label      "FiberBudgetShape" ;
+    sh:property [
+        sh:path     partition:totalFibers ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] ;
+    sh:property [
+        sh:path     partition:pinnedCount ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] ;
+    sh:property [
+        sh:path     partition:freeCount ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] ;
+    sh:property [
+        sh:path     partition:isClosed ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] .
+
+uor-sh:FiberPinningShape
+    a               sh:NodeShape ;
+    sh:targetClass  partition:FiberPinning ;
+    rdfs:label      "FiberPinningShape" ;
+    sh:property [
+        sh:path     partition:pinnedBy ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    type:Constraint ;
+    ] ;
+    sh:property [
+        sh:path     partition:pinsCoordinate ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    partition:FiberCoordinate ;
+    ] .
+
+# ── observable/ namespace (30) ──────────────────────────────────────────────
 
 uor-sh:ObservableShape
     a               sh:NodeShape ;
     sh:targetClass  observable:Observable ;
     rdfs:label      "ObservableShape" .
 
-uor-sh:CoordinateObservableShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:CoordinateObservable ;
-    rdfs:label      "CoordinateObservableShape" .
-
 uor-sh:MetricObservableShape
     a               sh:NodeShape ;
     sh:targetClass  observable:MetricObservable ;
     rdfs:label      "MetricObservableShape" .
-
-uor-sh:RepresentationObservableShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:RepresentationObservable ;
-    rdfs:label      "RepresentationObservableShape" .
-
-uor-sh:IntrinsicMetricShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:IntrinsicMetric ;
-    rdfs:label      "IntrinsicMetricShape" .
-
-uor-sh:ObserverMetricShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:ObserverMetric ;
-    rdfs:label      "ObserverMetricShape" .
-
-uor-sh:CoherentMetricShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:CoherentMetric ;
-    rdfs:label      "CoherentMetricShape" .
-
-uor-sh:BinaryValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:BinaryValue ;
-    rdfs:label      "BinaryValueShape" .
-
-uor-sh:IntegerValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:IntegerValue ;
-    rdfs:label      "IntegerValueShape" .
-
-uor-sh:RealValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:RealValue ;
-    rdfs:label      "RealValueShape" .
-
-uor-sh:ComplexValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:ComplexValue ;
-    rdfs:label      "ComplexValueShape" .
-
-uor-sh:VectorValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:VectorValue ;
-    rdfs:label      "VectorValueShape" .
-
-uor-sh:MatrixValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:MatrixValue ;
-    rdfs:label      "MatrixValueShape" .
-
-uor-sh:TensorValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:TensorValue ;
-    rdfs:label      "TensorValueShape" .
-
-uor-sh:SymbolicValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:SymbolicValue ;
-    rdfs:label      "SymbolicValueShape" .
-
-uor-sh:SetValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:SetValue ;
-    rdfs:label      "SetValueShape" .
-
-uor-sh:GraphValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:GraphValue ;
-    rdfs:label      "GraphValueShape" .
-
-uor-sh:StreamValueShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:StreamValue ;
-    rdfs:label      "StreamValueShape" .
-
-uor-sh:HammingDistanceShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:HammingDistance ;
-    rdfs:label      "HammingDistanceShape" .
-
-uor-sh:EuclideanDistanceShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:EuclideanDistance ;
-    rdfs:label      "EuclideanDistanceShape" .
-
-uor-sh:LevenshteinDistanceShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:LevenshteinDistance ;
-    rdfs:label      "LevenshteinDistanceShape" .
-
-uor-sh:BitEncodingShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:BitEncoding ;
-    rdfs:label      "BitEncodingShape" .
-
-uor-sh:ByteEncodingShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:ByteEncoding ;
-    rdfs:label      "ByteEncodingShape" .
-
-uor-sh:UnicodeEncodingShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:UnicodeEncoding ;
-    rdfs:label      "UnicodeEncodingShape" .
-
-uor-sh:CanonicalEncodingShape
-    a               sh:NodeShape ;
-    sh:targetClass  observable:CanonicalEncoding ;
-    rdfs:label      "CanonicalEncodingShape" .
 
 uor-sh:DihedralElementShape
     a               sh:NodeShape ;
     sh:targetClass  observable:DihedralElement ;
     rdfs:label      "DihedralElementShape" .
 
-# ── proof/ namespace ──────────────────────────────────────────────────────────
+# ── Tier 1: Primary Observable categories ──
+
+uor-sh:StratumObservableShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:StratumObservable ;
+    rdfs:label      "StratumObservableShape" .
+
+uor-sh:PathObservableShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:PathObservable ;
+    rdfs:label      "PathObservableShape" .
+
+uor-sh:CascadeObservableShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:CascadeObservable ;
+    rdfs:label      "CascadeObservableShape" .
+
+uor-sh:CatastropheObservableShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:CatastropheObservable ;
+    rdfs:label      "CatastropheObservableShape" .
+
+uor-sh:CurvatureObservableShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:CurvatureObservable ;
+    rdfs:label      "CurvatureObservableShape" .
+
+uor-sh:HolonomyObservableShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:HolonomyObservable ;
+    rdfs:label      "HolonomyObservableShape" .
+
+uor-sh:TopologicalObservableShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:TopologicalObservable ;
+    rdfs:label      "TopologicalObservableShape" ;
+    sh:property [
+        sh:path     observable:dimension ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] .
+
+# ── Tier 2: MetricObservable subclasses ──
+
+uor-sh:RingMetricShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:RingMetric ;
+    rdfs:label      "RingMetricShape" .
+
+uor-sh:HammingMetricShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:HammingMetric ;
+    rdfs:label      "HammingMetricShape" .
+
+uor-sh:IncompatibilityMetricShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:IncompatibilityMetric ;
+    rdfs:label      "IncompatibilityMetricShape" .
+
+# ── Tier 2: StratumObservable subclasses ──
+
+uor-sh:StratumValueShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:StratumValue ;
+    rdfs:label      "StratumValueShape" .
+
+uor-sh:StratumDeltaShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:StratumDelta ;
+    rdfs:label      "StratumDeltaShape" .
+
+uor-sh:StratumTrajectoryShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:StratumTrajectory ;
+    rdfs:label      "StratumTrajectoryShape" .
+
+# ── Tier 2: PathObservable subclasses ──
+
+uor-sh:PathLengthShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:PathLength ;
+    rdfs:label      "PathLengthShape" .
+
+uor-sh:TotalVariationShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:TotalVariation ;
+    rdfs:label      "TotalVariationShape" .
+
+uor-sh:WindingNumberShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:WindingNumber ;
+    rdfs:label      "WindingNumberShape" .
+
+# ── Tier 2: CascadeObservable subclasses ──
+
+uor-sh:CascadeLengthShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:CascadeLength ;
+    rdfs:label      "CascadeLengthShape" .
+
+uor-sh:CascadeCountShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:CascadeCount ;
+    rdfs:label      "CascadeCountShape" .
+
+# ── Tier 2: CatastropheObservable subclasses ──
+
+uor-sh:CatastropheThresholdShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:CatastropheThreshold ;
+    rdfs:label      "CatastropheThresholdShape" .
+
+uor-sh:CatastropheCountShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:CatastropheCount ;
+    rdfs:label      "CatastropheCountShape" .
+
+# ── Tier 2: CurvatureObservable subclasses ──
+
+uor-sh:CommutatorShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:Commutator ;
+    rdfs:label      "CommutatorShape" .
+
+uor-sh:CurvatureFluxShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:CurvatureFlux ;
+    rdfs:label      "CurvatureFluxShape" .
+
+uor-sh:JacobianShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:Jacobian ;
+    rdfs:label      "JacobianShape" ;
+    sh:property [
+        sh:path     observable:fiberPosition ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] ;
+    sh:property [
+        sh:path     observable:derivativeValue ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+    ] .
+
+# ── Tier 2: HolonomyObservable subclasses ──
+
+uor-sh:MonodromyShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:Monodromy ;
+    rdfs:label      "MonodromyShape" .
+
+uor-sh:ParallelTransportShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:ParallelTransport ;
+    rdfs:label      "ParallelTransportShape" .
+
+# ── Tier 2: TopologicalObservable subclasses ──
+
+uor-sh:BettiNumberShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:BettiNumber ;
+    rdfs:label      "BettiNumberShape" .
+
+uor-sh:SpectralGapShape
+    a               sh:NodeShape ;
+    sh:targetClass  observable:SpectralGap ;
+    rdfs:label      "SpectralGapShape" .
+
+# ── proof/ namespace (4) ────────────────────────────────────────────────────
 
 uor-sh:ProofShape
     a               sh:NodeShape ;
@@ -402,7 +646,7 @@ uor-sh:WitnessDataShape
     sh:targetClass  proof:WitnessData ;
     rdfs:label      "WitnessDataShape" .
 
-# ── derivation/ namespace ─────────────────────────────────────────────────────
+# ── derivation/ namespace (5) ───────────────────────────────────────────────
 
 uor-sh:DerivationShape
     a               sh:NodeShape ;
@@ -419,7 +663,37 @@ uor-sh:TermMetricsShape
     sh:targetClass  derivation:TermMetrics ;
     rdfs:label      "TermMetricsShape" .
 
-# ── trace/ namespace ──────────────────────────────────────────────────────────
+uor-sh:DerivationStepShape
+    a               sh:NodeShape ;
+    sh:targetClass  derivation:DerivationStep ;
+    rdfs:label      "DerivationStepShape" .
+
+uor-sh:RefinementStepShape
+    a               sh:NodeShape ;
+    sh:targetClass  derivation:RefinementStep ;
+    rdfs:label      "RefinementStepShape" ;
+    sh:property [
+        sh:path     derivation:previousType ;
+        sh:maxCount 1 ;
+        sh:class    type:TypeDefinition ;
+    ] ;
+    sh:property [
+        sh:path     derivation:appliedConstraint ;
+        sh:maxCount 1 ;
+        sh:class    type:Constraint ;
+    ] ;
+    sh:property [
+        sh:path     derivation:refinedType ;
+        sh:maxCount 1 ;
+        sh:class    type:TypeDefinition ;
+    ] ;
+    sh:property [
+        sh:path     derivation:fibersClosed ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] .
+
+# ── trace/ namespace (3) ────────────────────────────────────────────────────
 
 uor-sh:ComputationTraceShape
     a               sh:NodeShape ;
@@ -436,7 +710,7 @@ uor-sh:TraceMetricsShape
     sh:targetClass  trace:TraceMetrics ;
     rdfs:label      "TraceMetricsShape" .
 
-# ── cert/ namespace ───────────────────────────────────────────────────────────
+# ── cert/ namespace (4) ─────────────────────────────────────────────────────
 
 uor-sh:CertificateShape
     a               sh:NodeShape ;
@@ -458,7 +732,7 @@ uor-sh:InvolutionCertificateShape
     sh:targetClass  cert:InvolutionCertificate ;
     rdfs:label      "InvolutionCertificateShape" .
 
-# ── morphism/ namespace ───────────────────────────────────────────────────────
+# ── morphism/ namespace (8) ─────────────────────────────────────────────────
 
 uor-sh:TransformShape
     a               sh:NodeShape ;
@@ -480,7 +754,89 @@ uor-sh:ActionShape
     sh:targetClass  morphism:Action ;
     rdfs:label      "ActionShape" .
 
-# ── state/ namespace ──────────────────────────────────────────────────────────
+uor-sh:CompositionShape
+    a               sh:NodeShape ;
+    sh:targetClass  morphism:Composition ;
+    rdfs:label      "CompositionShape" ;
+    sh:property [
+        sh:path     morphism:compositionResult ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    morphism:Transform ;
+    ] ;
+    sh:property [
+        sh:path     morphism:compositionComponents ;
+        sh:minCount 2 ;
+        sh:class    morphism:Transform ;
+    ] .
+
+uor-sh:MorphismIdentityShape
+    a               sh:NodeShape ;
+    sh:targetClass  morphism:Identity ;
+    rdfs:label      "MorphismIdentityShape" ;
+    sh:property [
+        sh:path     morphism:identityOn ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    type:TypeDefinition ;
+    ] .
+
+uor-sh:CompositionLawShape
+    a               sh:NodeShape ;
+    sh:targetClass  morphism:CompositionLaw ;
+    rdfs:label      "CompositionLawShape" ;
+    sh:property [
+        sh:path     morphism:isAssociative ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] ;
+    sh:property [
+        sh:path     morphism:isCommutative ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] ;
+    sh:property [
+        sh:path     morphism:lawResult ;
+        sh:maxCount 1 ;
+        sh:class    op:Operation ;
+    ] .
+
+uor-sh:TopologicalDeltaShape
+    a               sh:NodeShape ;
+    sh:targetClass  morphism:TopologicalDelta ;
+    rdfs:label      "TopologicalDeltaShape" ;
+    sh:property [
+        sh:path     morphism:bettisBefore ;
+        sh:maxCount 1 ;
+        sh:class    observable:BettiNumber ;
+    ] ;
+    sh:property [
+        sh:path     morphism:bettisAfter ;
+        sh:maxCount 1 ;
+        sh:class    observable:BettiNumber ;
+    ] ;
+    sh:property [
+        sh:path     morphism:eulerBefore ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path     morphism:eulerAfter ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path     morphism:nerveBefore ;
+        sh:maxCount 1 ;
+        sh:class    homology:SimplicialComplex ;
+    ] ;
+    sh:property [
+        sh:path     morphism:nerveAfter ;
+        sh:maxCount 1 ;
+        sh:class    homology:SimplicialComplex ;
+    ] .
+
+# ── state/ namespace (4) ────────────────────────────────────────────────────
 
 uor-sh:ContextShape
     a               sh:NodeShape ;
@@ -528,4 +884,305 @@ uor-sh:TransitionShape
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:class    state:Frame ;
+    ] .
+
+# ── homology/ namespace (9) ─────────────────────────────────────────────────
+
+uor-sh:SimplexShape
+    a               sh:NodeShape ;
+    sh:targetClass  homology:Simplex ;
+    rdfs:label      "SimplexShape" ;
+    sh:property [
+        sh:path     homology:dimension ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path     homology:vertexCount ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:positiveInteger ;
+    ] ;
+    sh:property [
+        sh:path     homology:vertex ;
+        sh:minCount 1 ;
+    ] .
+
+uor-sh:SimplicialComplexShape
+    a               sh:NodeShape ;
+    sh:targetClass  homology:SimplicialComplex ;
+    rdfs:label      "SimplicialComplexShape" ;
+    sh:property [
+        sh:path     homology:maxDimension ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path     homology:eulerCharacteristic ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path     homology:simplicialVertexCount ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] ;
+    sh:property [
+        sh:path     homology:hasSimplex ;
+        sh:minCount 1 ;
+        sh:class    homology:Simplex ;
+    ] .
+
+uor-sh:FaceMapShape
+    a               sh:NodeShape ;
+    sh:targetClass  homology:FaceMap ;
+    rdfs:label      "FaceMapShape" ;
+    sh:property [
+        sh:path     homology:removesVertex ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] ;
+    sh:property [
+        sh:path     homology:sourceSimplex ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    homology:Simplex ;
+    ] ;
+    sh:property [
+        sh:path     homology:targetFace ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    homology:Simplex ;
+    ] .
+
+uor-sh:ChainGroupShape
+    a               sh:NodeShape ;
+    sh:targetClass  homology:ChainGroup ;
+    rdfs:label      "ChainGroupShape" ;
+    sh:property [
+        sh:path     homology:degree ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path     homology:generatedBy ;
+        sh:minCount 1 ;
+        sh:class    homology:Simplex ;
+    ] .
+
+uor-sh:BoundaryOperatorShape
+    a               sh:NodeShape ;
+    sh:targetClass  homology:BoundaryOperator ;
+    rdfs:label      "BoundaryOperatorShape" ;
+    sh:property [
+        sh:path     homology:sourceGroup ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    homology:ChainGroup ;
+    ] ;
+    sh:property [
+        sh:path     homology:targetGroup ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    homology:ChainGroup ;
+    ] ;
+    sh:property [
+        sh:path     homology:satisfiesBoundarySquaredZero ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] .
+
+uor-sh:ChainComplexShape
+    a               sh:NodeShape ;
+    sh:targetClass  homology:ChainComplex ;
+    rdfs:label      "ChainComplexShape" ;
+    sh:property [
+        sh:path     homology:hasChainGroup ;
+        sh:minCount 1 ;
+        sh:class    homology:ChainGroup ;
+    ] ;
+    sh:property [
+        sh:path     homology:hasBoundary ;
+        sh:minCount 1 ;
+        sh:class    homology:BoundaryOperator ;
+    ] .
+
+uor-sh:HomologyGroupShape
+    a               sh:NodeShape ;
+    sh:targetClass  homology:HomologyGroup ;
+    rdfs:label      "HomologyGroupShape" ;
+    sh:property [
+        sh:path     homology:homologyDegree ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path     homology:bettiNumber ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] .
+
+uor-sh:NerveFunctorShape
+    a               sh:NodeShape ;
+    sh:targetClass  homology:NerveFunctor ;
+    rdfs:label      "NerveFunctorShape" .
+
+uor-sh:ChainFunctorShape
+    a               sh:NodeShape ;
+    sh:targetClass  homology:ChainFunctor ;
+    rdfs:label      "ChainFunctorShape" .
+
+# ── cohomology/ namespace (10) ──────────────────────────────────────────────
+
+uor-sh:CochainGroupShape
+    a               sh:NodeShape ;
+    sh:targetClass  cohomology:CochainGroup ;
+    rdfs:label      "CochainGroupShape" ;
+    sh:property [
+        sh:path     cohomology:cochainDegree ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path     cohomology:cochainRank ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] ;
+    sh:property [
+        sh:path     cohomology:dualOf ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    homology:ChainGroup ;
+    ] .
+
+uor-sh:CoboundaryOperatorShape
+    a               sh:NodeShape ;
+    sh:targetClass  cohomology:CoboundaryOperator ;
+    rdfs:label      "CoboundaryOperatorShape" ;
+    sh:property [
+        sh:path     cohomology:coboundarySource ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    cohomology:CochainGroup ;
+    ] ;
+    sh:property [
+        sh:path     cohomology:coboundaryTarget ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    cohomology:CochainGroup ;
+    ] ;
+    sh:property [
+        sh:path     cohomology:satisfiesCoboundarySquaredZero ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] .
+
+uor-sh:CochainComplexShape
+    a               sh:NodeShape ;
+    sh:targetClass  cohomology:CochainComplex ;
+    rdfs:label      "CochainComplexShape" ;
+    sh:property [
+        sh:path     cohomology:hasCochainGroup ;
+        sh:minCount 1 ;
+        sh:class    cohomology:CochainGroup ;
+    ] ;
+    sh:property [
+        sh:path     cohomology:hasCoboundary ;
+        sh:minCount 1 ;
+        sh:class    cohomology:CoboundaryOperator ;
+    ] .
+
+uor-sh:CohomologyGroupShape
+    a               sh:NodeShape ;
+    sh:targetClass  cohomology:CohomologyGroup ;
+    rdfs:label      "CohomologyGroupShape" ;
+    sh:property [
+        sh:path     cohomology:cohomologyDegree ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path     cohomology:cohomologyRank ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:nonNegativeInteger ;
+    ] .
+
+uor-sh:SheafShape
+    a               sh:NodeShape ;
+    sh:targetClass  cohomology:Sheaf ;
+    rdfs:label      "SheafShape" ;
+    sh:property [
+        sh:path     cohomology:sheafOver ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    homology:SimplicialComplex ;
+    ] ;
+    sh:property [
+        sh:path     cohomology:coefficientIn ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    schema:Ring ;
+    ] ;
+    sh:property [
+        sh:path     cohomology:hasStalks ;
+        sh:minCount 1 ;
+        sh:class    cohomology:Stalk ;
+    ] .
+
+uor-sh:StalkShape
+    a               sh:NodeShape ;
+    sh:targetClass  cohomology:Stalk ;
+    rdfs:label      "StalkShape" ;
+    sh:property [
+        sh:path     cohomology:stalkAt ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    homology:Simplex ;
+    ] .
+
+uor-sh:SectionShape
+    a               sh:NodeShape ;
+    sh:targetClass  cohomology:Section ;
+    rdfs:label      "SectionShape" .
+
+uor-sh:LocalSectionShape
+    a               sh:NodeShape ;
+    sh:targetClass  cohomology:LocalSection ;
+    rdfs:label      "LocalSectionShape" .
+
+uor-sh:RestrictionMapShape
+    a               sh:NodeShape ;
+    sh:targetClass  cohomology:RestrictionMap ;
+    rdfs:label      "RestrictionMapShape" ;
+    sh:property [
+        sh:path     cohomology:restrictsFrom ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    homology:Simplex ;
+    ] ;
+    sh:property [
+        sh:path     cohomology:restrictsTo ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    homology:Simplex ;
+    ] .
+
+uor-sh:GluingObstructionShape
+    a               sh:NodeShape ;
+    sh:targetClass  cohomology:GluingObstruction ;
+    rdfs:label      "GluingObstructionShape" ;
+    sh:property [
+        sh:path     cohomology:obstructionClass ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class    cohomology:CohomologyGroup ;
     ] .

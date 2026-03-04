@@ -96,6 +96,26 @@ pub trait CompositionLaw<P: Primitives> {
     fn law_result(&self) -> &Self::Operation;
 }
 
+/// A topological delta: records changes in topological invariants (Betti numbers, Euler characteristic, nerve structure) before and after a morphism.
+pub trait TopologicalDelta<P: Primitives> {
+    /// Associated type for `BettiNumber`.
+    type BettiNumber: crate::bridge::observable::BettiNumber<P>;
+    /// Betti numbers before the morphism.
+    fn bettis_before(&self) -> &Self::BettiNumber;
+    /// Betti numbers after the morphism.
+    fn bettis_after(&self) -> &Self::BettiNumber;
+    /// Euler characteristic before the morphism.
+    fn euler_before(&self) -> P::Integer;
+    /// Euler characteristic after the morphism.
+    fn euler_after(&self) -> P::Integer;
+    /// Associated type for `SimplicialComplex`.
+    type SimplicialComplex: crate::bridge::homology::SimplicialComplex<P>;
+    /// Constraint nerve (simplicial complex) before the morphism.
+    fn nerve_before(&self) -> &Self::SimplicialComplex;
+    /// Constraint nerve (simplicial complex) after the morphism.
+    fn nerve_after(&self) -> &Self::SimplicialComplex;
+}
+
 /// The critical composition law: neg ∘ bnot = succ. This is the operational form of the critical identity theorem. The composition of the two involutions (neg, bnot) yields the successor operation. Non-associative and non-commutative.
 pub mod critical_composition {
     /// `isAssociative`

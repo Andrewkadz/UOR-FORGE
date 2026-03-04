@@ -1,10 +1,10 @@
 //! Ontology inventory validator.
 //!
 //! Verifies that the built ontology artifact contains the correct counts:
-//! - 14 namespaces (3 Kernel / 8 Bridge / 3 User)
-//! - 103 classes
-//! - 176 namespace-level properties + 1 global annotation = 177 via property_count()
-//! - 255 named individuals (each with required property assertions)
+//! - 16 namespaces (3 Kernel / 10 Bridge / 3 User)
+//! - 123 classes
+//! - 229 namespace-level properties + 1 global annotation = 230 via property_count()
+//! - 269 named individuals (each with required property assertions)
 
 use std::path::Path;
 
@@ -15,10 +15,10 @@ use uor_ontology::model::Space;
 use crate::report::{ConformanceReport, TestResult};
 
 /// Expected inventory counts for the UOR Foundation ontology.
-const EXPECTED_NAMESPACES: usize = 14;
-const EXPECTED_CLASSES: usize = 103;
-const EXPECTED_PROPERTIES: usize = 177;
-const EXPECTED_INDIVIDUALS: usize = 255;
+const EXPECTED_NAMESPACES: usize = 16;
+const EXPECTED_CLASSES: usize = 123;
+const EXPECTED_PROPERTIES: usize = 230;
+const EXPECTED_INDIVIDUALS: usize = 269;
 
 /// Validates the ontology inventory counts in the built JSON-LD artifact.
 ///
@@ -39,6 +39,9 @@ pub fn validate(artifacts: &Path) -> Result<ConformanceReport> {
 
     // Hardening: identity completeness (all op:Identity individuals have lhs/rhs/forAll)
     validate_identity_completeness(&mut report);
+
+    // Hardening: identity grounding (all op:Identity individuals have verificationStatus/verificationPath)
+    validate_identity_grounding(&mut report);
 
     // Validate the built JSON-LD artifact
     let json_path = artifacts.join("uor.foundation.json");
@@ -124,9 +127,9 @@ fn check_count(
     }
 }
 
-/// Validates that namespace space annotations follow the 3/8/3 classification.
+/// Validates that namespace space annotations follow the 3/10/3 classification.
 ///
-/// Expected: 3 Kernel (u, schema, op), 8 Bridge, 3 User (type, state, morphism).
+/// Expected: 3 Kernel (u, schema, op), 10 Bridge, 3 User (type, state, morphism).
 fn validate_space_classification(report: &mut ConformanceReport) {
     let ontology = uor_ontology::Ontology::full();
     let validator = "ontology/inventory/space_classification";
@@ -166,16 +169,16 @@ fn validate_space_classification(report: &mut ConformanceReport) {
         ));
     }
 
-    if bridge.len() == 8 {
+    if bridge.len() == 10 {
         report.push(TestResult::pass(
             validator,
-            format!("Correct bridge-space count: 8 ({:?})", bridge),
+            format!("Correct bridge-space count: 10 ({:?})", bridge),
         ));
     } else {
         report.push(TestResult::fail(
             validator,
             format!(
-                "Wrong bridge-space count: expected 8, got {} ({:?})",
+                "Wrong bridge-space count: expected 10, got {} ({:?})",
                 bridge.len(),
                 bridge
             ),
@@ -249,6 +252,10 @@ fn validate_individual_completeness(report: &mut ConformanceReport) {
             "https://uor.foundation/op/AD_2",
             &["op/lhs", "op/rhs", "op/forAll"],
         ),
+        // nerveFunctorN: type assertion only
+        ("https://uor.foundation/homology/nerveFunctorN", &[]),
+        // chainFunctorC: type assertion only
+        ("https://uor.foundation/homology/chainFunctorC", &[]),
     ];
 
     let mut all_found = true;
@@ -338,7 +345,7 @@ fn validate_identity_completeness(report: &mut ConformanceReport) {
         "R_A", "R_M", "B_", "X_", "D_", "U_", "AG_", "CA_", "C_", "CDI", "CL_", "CM_", "CR_", "F_",
         "FL_", "FPM_", "FS_", "RE_", "IR_", "SF_", "RD_", "SE_", "OO_", "CB_", "OB_M", "OB_C",
         "OB_H", "OB_P", "CT_", "CF_", "HG_", "T_C", "T_I", "T_E", "T_A", "AU_", "EF_", "AD_",
-        "AA_", "AM_", "TH_", "AR_", "PD_", "RC_", "DC_", "HA_", "IT_", "phi_",
+        "AA_", "AM_", "TH_", "AR_", "PD_", "RC_", "DC_", "HA_", "IT_", "phi_", "psi_",
     ];
     for prefix in &expected_prefixes {
         let has = identities.iter().any(|i| i.label.starts_with(prefix));
@@ -355,6 +362,82 @@ fn validate_identity_completeness(report: &mut ConformanceReport) {
         report.push(TestResult::pass(
             validator,
             format!("{} identity individuals validated", identities.len()),
+        ));
+    }
+}
+
+/// Validates that all `op:Identity` individuals are grounded with
+/// `verificationStatus` ("verifiable" or "derivable") and `verificationPath`.
+fn validate_identity_grounding(report: &mut ConformanceReport) {
+    let ontology = uor_ontology::Ontology::full();
+    let validator = "ontology/inventory/identity_grounding";
+
+    let identity_type = "https://uor.foundation/op/Identity";
+    let status_prop = "https://uor.foundation/op/verificationStatus";
+    let path_prop = "https://uor.foundation/op/verificationPath";
+
+    let mut total = 0usize;
+    let mut verifiable = 0usize;
+    let mut derivable = 0usize;
+    let mut all_valid = true;
+
+    for module in &ontology.namespaces {
+        for ind in &module.individuals {
+            if ind.type_ != identity_type {
+                continue;
+            }
+            total += 1;
+
+            let status = ind
+                .properties
+                .iter()
+                .find(|(k, _)| *k == status_prop)
+                .map(|(_, v)| v);
+            let has_path = ind.properties.iter().any(|(k, _)| *k == path_prop);
+
+            match status {
+                Some(uor_ontology::IndividualValue::Str("verifiable")) => {
+                    verifiable += 1;
+                }
+                Some(uor_ontology::IndividualValue::Str("derivable")) => {
+                    derivable += 1;
+                }
+                Some(_) => {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!(
+                            "Identity {} has invalid verificationStatus (must be 'verifiable' or 'derivable')",
+                            ind.id
+                        ),
+                    ));
+                    all_valid = false;
+                }
+                None => {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!("Identity {} missing verificationStatus", ind.id),
+                    ));
+                    all_valid = false;
+                }
+            }
+
+            if !has_path {
+                report.push(TestResult::fail(
+                    validator,
+                    format!("Identity {} missing verificationPath", ind.id),
+                ));
+                all_valid = false;
+            }
+        }
+    }
+
+    if all_valid && total > 0 {
+        report.push(TestResult::pass(
+            validator,
+            format!(
+                "All {} identities grounded ({} verifiable, {} derivable)",
+                total, verifiable, derivable
+            ),
         ));
     }
 }

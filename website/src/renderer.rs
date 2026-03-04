@@ -149,7 +149,7 @@ pub fn render_homepage(summaries: &[NamespaceSummary], base_path: &str) -> Strin
     )
 }
 
-/// Renders the namespaces index page listing all 14 namespaces.
+/// Renders the namespaces index page listing all 16 namespaces.
 pub fn render_namespaces_index(summaries: &[NamespaceSummary]) -> String {
     let mut rows = String::new();
     for ns in summaries {
@@ -175,7 +175,7 @@ pub fn render_namespaces_index(summaries: &[NamespaceSummary]) -> String {
 
     format!(
         r#"<h1>Namespaces</h1>
-<p>The UOR Foundation ontology is organized into 14 namespaces spanning three space classifications: kernel, bridge, and user.</p>
+<p>The UOR Foundation ontology is organized into 16 namespaces spanning three space classifications: kernel, bridge, and user.</p>
 <table>
 <thead>
 <tr><th>Prefix</th><th>Label</th><th>Classes</th><th>Properties</th><th>Individuals</th><th>Space</th></tr>

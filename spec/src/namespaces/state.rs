@@ -22,7 +22,7 @@ pub fn module() -> NamespaceModule {
                       lifecycle, and state transitions. The user-space overlay \
                       onto the kernel's read-only ring substrate.",
             space: Space::User,
-            imports: &[NS_U, NS_SCHEMA, NS_TYPE, NS_TRACE],
+            imports: &[NS_U, NS_SCHEMA, NS_TYPE, NS_TRACE, NS_MORPHISM],
         },
         classes: classes(),
         properties: properties(),
@@ -238,6 +238,16 @@ fn properties() -> Vec<Property> {
             functional: true,
             domain: Some("https://uor.foundation/state/Transition"),
             range: "https://uor.foundation/trace/ComputationTrace",
+        },
+        // Amendment 22: topological snapshot
+        Property {
+            id: "https://uor.foundation/state/topologicalSnapshot",
+            label: "topologicalSnapshot",
+            comment: "A snapshot of topological invariants at this transition point.",
+            domain: Some("https://uor.foundation/state/Transition"),
+            kind: PropertyKind::Object,
+            functional: true,
+            range: "https://uor.foundation/morphism/TopologicalDelta",
         },
     ]
 }

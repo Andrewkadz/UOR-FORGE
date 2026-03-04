@@ -235,6 +235,8 @@ fn shorten_iri(iri: &str) -> String {
         ("https://uor.foundation/type/", "type:"),
         ("https://uor.foundation/query/", "query:"),
         ("https://uor.foundation/u/", "u:"),
+        ("https://uor.foundation/homology/", "homology:"),
+        ("https://uor.foundation/cohomology/", "cohomology:"),
         ("http://www.w3.org/2002/07/owl#", "owl:"),
         ("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf:"),
         ("http://www.w3.org/2000/01/rdf-schema#", "rdfs:"),
@@ -291,9 +293,9 @@ mod tests {
         let ontology = Ontology::full();
         let json = to_json_ld(ontology);
         let graph = json["@graph"].as_array().expect("@graph must be array");
-        // root ontology + annotation property + 14 ns declarations +
-        // 98 classes + 166 properties + 18 individuals >= 298
-        assert!(graph.len() >= 298, "graph has {} nodes", graph.len());
+        // root ontology + annotation property + 16 ns declarations +
+        // 123 classes + 229 properties + 269 individuals >= 639
+        assert!(graph.len() >= 639, "graph has {} nodes", graph.len());
     }
 
     #[test]

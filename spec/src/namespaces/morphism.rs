@@ -34,6 +34,7 @@ pub fn module() -> NamespaceModule {
                 NS_OBSERVABLE,
                 NS_PARTITION,
                 NS_TRACE,
+                NS_HOMOLOGY,
             ],
         },
         classes: classes(),
@@ -115,6 +116,16 @@ fn classes() -> Vec<Class> {
                       is the foundational instance.",
             subclass_of: &[OWL_THING],
             disjoint_with: &["https://uor.foundation/morphism/Transform"],
+        },
+        // Amendment 22: TopologicalDelta
+        Class {
+            id: "https://uor.foundation/morphism/TopologicalDelta",
+            label: "TopologicalDelta",
+            comment:
+                "A topological delta: records changes in topological invariants (Betti numbers, \
+                      Euler characteristic, nerve structure) before and after a morphism.",
+            subclass_of: &[OWL_THING],
+            disjoint_with: &[],
         },
     ]
 }
@@ -324,6 +335,61 @@ fn properties() -> Vec<Property> {
             functional: true,
             domain: Some("https://uor.foundation/morphism/Embedding"),
             range: "https://uor.foundation/op/Identity",
+        },
+        // Amendment 22: TopologicalDelta properties
+        Property {
+            id: "https://uor.foundation/morphism/bettisBefore",
+            label: "bettisBefore",
+            comment: "Betti numbers before the morphism.",
+            domain: Some("https://uor.foundation/morphism/TopologicalDelta"),
+            kind: PropertyKind::Object,
+            functional: true,
+            range: "https://uor.foundation/observable/BettiNumber",
+        },
+        Property {
+            id: "https://uor.foundation/morphism/bettisAfter",
+            label: "bettisAfter",
+            comment: "Betti numbers after the morphism.",
+            domain: Some("https://uor.foundation/morphism/TopologicalDelta"),
+            kind: PropertyKind::Object,
+            functional: true,
+            range: "https://uor.foundation/observable/BettiNumber",
+        },
+        Property {
+            id: "https://uor.foundation/morphism/eulerBefore",
+            label: "eulerBefore",
+            comment: "Euler characteristic before the morphism.",
+            domain: Some("https://uor.foundation/morphism/TopologicalDelta"),
+            kind: PropertyKind::Datatype,
+            functional: true,
+            range: XSD_INTEGER,
+        },
+        Property {
+            id: "https://uor.foundation/morphism/eulerAfter",
+            label: "eulerAfter",
+            comment: "Euler characteristic after the morphism.",
+            domain: Some("https://uor.foundation/morphism/TopologicalDelta"),
+            kind: PropertyKind::Datatype,
+            functional: true,
+            range: XSD_INTEGER,
+        },
+        Property {
+            id: "https://uor.foundation/morphism/nerveBefore",
+            label: "nerveBefore",
+            comment: "Constraint nerve (simplicial complex) before the morphism.",
+            domain: Some("https://uor.foundation/morphism/TopologicalDelta"),
+            kind: PropertyKind::Object,
+            functional: true,
+            range: "https://uor.foundation/homology/SimplicialComplex",
+        },
+        Property {
+            id: "https://uor.foundation/morphism/nerveAfter",
+            label: "nerveAfter",
+            comment: "Constraint nerve (simplicial complex) after the morphism.",
+            domain: Some("https://uor.foundation/morphism/TopologicalDelta"),
+            kind: PropertyKind::Object,
+            functional: true,
+            range: "https://uor.foundation/homology/SimplicialComplex",
         },
     ]
 }

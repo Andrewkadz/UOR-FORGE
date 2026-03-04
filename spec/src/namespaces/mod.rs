@@ -5,7 +5,9 @@
 //! assembly sequence.
 
 pub mod cert;
+pub mod cohomology;
 pub mod derivation;
+pub mod homology;
 pub mod morphism;
 pub mod observable;
 pub mod op;

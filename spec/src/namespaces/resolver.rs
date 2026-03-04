@@ -108,7 +108,10 @@ fn classes() -> Vec<Class> {
                       have nonempty intersection. The nerve's topology governs \
                       resolution convergence: trivial homology ↔ smooth convergence, \
                       non-trivial homology ↔ potential stalls.",
-            subclass_of: &[OWL_THING],
+            subclass_of: &[
+                OWL_THING,
+                "https://uor.foundation/homology/SimplicialComplex",
+            ],
             disjoint_with: &[],
         },
     ]

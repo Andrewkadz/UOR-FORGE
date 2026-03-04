@@ -1,7 +1,7 @@
 //! JSON-LD 1.1 validator.
 //!
 //! Verifies that `public/uor.foundation.json` is a well-formed JSON-LD 1.1 document:
-//! - Has `@context` with all 14 namespace prefixes and standard prefixes
+//! - Has `@context` with all 16 namespace prefixes and standard prefixes
 //! - Has `@graph` containing the expected node types
 //! - All `@id` values are IRIs (not relative references)
 //! - Context entries map to valid IRI prefixes
@@ -23,6 +23,8 @@ const REQUIRED_PREFIXES: &[&str] = &[
     "type",
     "partition",
     "observable",
+    "homology",
+    "cohomology",
     "proof",
     "derivation",
     "trace",
@@ -134,8 +136,8 @@ fn check_graph_structure(value: &Value, report: &mut ConformanceReport) {
         format!("@graph array present with {} nodes", graph.len()),
     ));
 
-    // Verify minimum node count (14 namespaces + 98 classes + 166 properties + 18 individuals + annotation properties)
-    let min_nodes = 14 + 98 + 166 + 18;
+    // Verify minimum node count (16 namespaces + 123 classes + 229 properties + 269 individuals + annotation properties)
+    let min_nodes = 16 + 123 + 229 + 269;
     if graph.len() >= min_nodes {
         report.push(TestResult::pass(
             "ontology/jsonld",

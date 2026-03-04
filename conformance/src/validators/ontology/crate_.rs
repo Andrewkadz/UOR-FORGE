@@ -63,6 +63,8 @@ fn validate_module_structure(src_dir: &Path, report: &mut ConformanceReport) -> 
         "bridge/resolver.rs",
         "bridge/partition.rs",
         "bridge/observable.rs",
+        "bridge/homology.rs",
+        "bridge/cohomology.rs",
         "bridge/proof.rs",
         "bridge/derivation.rs",
         "bridge/trace.rs",

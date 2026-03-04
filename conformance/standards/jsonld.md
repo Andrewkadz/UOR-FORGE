@@ -30,7 +30,7 @@ W3C JSON-LD 1.1 specification.
 ## Context Requirements
 
 - `@version` must be `1.1`
-- All 14 UOR namespace prefixes must be declared
+- All 16 UOR namespace prefixes must be declared
 - Standard prefixes (`owl`, `rdf`, `rdfs`, `xsd`, `sh`) must be declared
 - All prefix IRIs must end with `/` or `#`
 
@@ -47,9 +47,9 @@ W3C JSON-LD 1.1 specification.
 
 | Type | Minimum |
 |------|---------|
-| owl:Class | 98 |
-| owl:DatatypeProperty + owl:ObjectProperty + owl:AnnotationProperty | 166 |
-| owl:NamedIndividual | 18 |
+| owl:Class | 123 |
+| owl:DatatypeProperty + owl:ObjectProperty + owl:AnnotationProperty | 229 |
+| owl:NamedIndividual | 269 |
 
 ## References
 

@@ -1,7 +1,7 @@
 //! UOR Foundation ontology encoded as typed Rust data.
 //!
 //! The `uor-ontology` crate provides the complete UOR Foundation ontology —
-//! 14 namespaces, 103 classes, 176 properties, and 255 named individuals —
+//! 16 namespaces, 123 classes, 230 properties, and 269 named individuals —
 //! as static Rust data structures, along with serializers that produce
 //! JSON-LD, Turtle, and N-Triples output.
 //!
@@ -9,7 +9,7 @@
 //!
 //! ```
 //! let ontology = uor_ontology::Ontology::full();
-//! assert_eq!(ontology.namespaces.len(), 14);
+//! assert_eq!(ontology.namespaces.len(), 16);
 //! ```
 //!
 //! # Serialization
@@ -52,18 +52,18 @@ pub use model::{
 };
 
 impl Ontology {
-    /// Returns the complete UOR Foundation ontology with all 14 namespaces
-    /// and all 20 amendments applied.
+    /// Returns the complete UOR Foundation ontology with all 16 namespaces
+    /// and all 22 amendments applied.
     ///
     /// Assembly order follows the dependency graph specified in the UOR Foundation
     /// completion plan:
     /// `u → schema → op → query → resolver → type → partition →
-    ///  observable → proof → derivation → trace → cert → morphism → state`
+    ///  observable → homology → cohomology → proof → derivation → trace → cert → morphism → state`
     #[must_use]
     pub fn full() -> &'static Ontology {
         static ONTOLOGY: std::sync::OnceLock<Ontology> = std::sync::OnceLock::new();
         ONTOLOGY.get_or_init(|| Ontology {
-            version: "2.1.0",
+            version: "3.0.0",
             base_iri: "https://uor.foundation/",
             namespaces: vec![
                 namespaces::u::module(),
@@ -74,6 +74,8 @@ impl Ontology {
                 namespaces::type_::module(),
                 namespaces::partition::module(),
                 namespaces::observable::module(),
+                namespaces::homology::module(),
+                namespaces::cohomology::module(),
                 namespaces::proof::module(),
                 namespaces::derivation::module(),
                 namespaces::trace::module(),
@@ -106,7 +108,7 @@ mod tests {
 
     #[test]
     fn namespace_count() {
-        assert_eq!(Ontology::full().namespaces.len(), 14);
+        assert_eq!(Ontology::full().namespaces.len(), 16);
     }
 
     #[test]
@@ -116,15 +118,15 @@ mod tests {
             .iter()
             .map(|m| m.classes.len())
             .sum();
-        // 103 classes: 98 original + 4 observable (Amendment 18) + 1 resolver (Amendment 18).
-        assert_eq!(total, 103);
+        // 123 classes: 103 v2.1.0 + 9 homology + 10 cohomology + 1 morphism.
+        assert_eq!(total, 123);
     }
 
     #[test]
     fn property_count() {
-        // 177 = 176 namespace-level properties + 1 global uor:space annotation (Amendment 8).
-        // 176 = 166 original + 4 (Amendment 13) + 3 observable + 3 resolver (Amendment 18).
-        assert_eq!(Ontology::full().property_count(), 177);
+        // 230 = 229 namespace-level properties + 1 global uor:space annotation.
+        // 229 = 176 v2.1.0 + 25 homology + 19 cohomology + 2 op + 6 morphism + 1 state.
+        assert_eq!(Ontology::full().property_count(), 230);
     }
 
     #[test]
@@ -134,10 +136,8 @@ mod tests {
             .iter()
             .map(|m| m.individuals.len())
             .sum();
-        // 255 individuals: 18 base + 2 (Amendment 13) + 50 (Amendment 14)
-        // + 42 (Amendment 15) + 52 (Amendment 16) + 64 (Amendment 17)
-        // + 21 (Amendment 19) + 6 (Amendment 20).
-        assert_eq!(total, 255);
+        // 269 individuals: 255 v2.1.0 + 5 homology + 4 cohomology + 5 op(ψ-pipeline).
+        assert_eq!(total, 269);
     }
 
     #[test]

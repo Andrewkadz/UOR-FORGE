@@ -6,7 +6,7 @@ Documentation follows the [Diataxis framework](https://diataxis.fr/), organized 
 
 | Section | Path | Purpose |
 |---------|------|---------|
-| Reference | `public/docs/namespaces/` | Precise technical reference for all 14 namespaces |
+| Reference | `public/docs/namespaces/` | Precise technical reference for all 16 namespaces |
 | Explanation | `public/docs/concepts/` | Understanding the UOR mathematical model |
 | How-to | `public/docs/guides/` | Task-oriented guides for practitioners |
 | Tutorial | (homepage overview) | Introductory learning paths |
@@ -14,9 +14,9 @@ Documentation follows the [Diataxis framework](https://diataxis.fr/), organized 
 ## Completeness
 
 Every ontology term must be documented:
-- All 98 classes must appear in at least one documentation page.
-- All 166 properties must appear in at least one documentation page.
-- All 18 named individuals must appear in at least one documentation page.
+- All 123 classes must appear in at least one documentation page.
+- All 229 properties must appear in at least one documentation page.
+- All 269 named individuals must appear in at least one documentation page.
 
 ## Accuracy
 

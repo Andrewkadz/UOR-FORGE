@@ -9,7 +9,7 @@ use anyhow::Result;
 
 use crate::report::{ConformanceReport, TestResult};
 
-/// Validates that namespace reference pages exist for all 14 namespaces.
+/// Validates that namespace reference pages exist for all 16 namespaces.
 ///
 /// # Errors
 ///
@@ -75,7 +75,7 @@ pub fn validate(artifacts: &Path) -> Result<ConformanceReport> {
     if missing.is_empty() {
         report.push(TestResult::pass(
             "docs/accuracy",
-            "All 14 namespace reference pages exist",
+            "All 16 namespace reference pages exist",
         ));
     } else {
         report.push(TestResult::fail_with_details(

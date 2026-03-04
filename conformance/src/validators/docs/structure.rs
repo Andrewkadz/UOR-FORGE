@@ -1,7 +1,7 @@
 //! Documentation structure validator.
 //!
 //! Verifies that the generated documentation follows the Diataxis framework:
-//! - Reference section: `public/docs/namespaces/` (14 pages, one per namespace)
+//! - Reference section: `public/docs/namespaces/` (16 pages, one per namespace)
 //! - Explanation section: `public/docs/concepts/` (concept pages)
 //! - How-to section: `public/docs/guides/` (guide pages)
 //! - Entry point: `public/docs/index.html`
@@ -36,6 +36,8 @@ const NAMESPACE_PREFIXES: &[&str] = &[
     "type",
     "partition",
     "observable",
+    "homology",
+    "cohomology",
     "proof",
     "derivation",
     "trace",
@@ -68,7 +70,7 @@ pub fn validate(artifacts: &Path) -> Result<ConformanceReport> {
         }
     }
 
-    // Check all 14 namespace reference pages
+    // Check all 16 namespace reference pages
     let mut missing_namespaces: Vec<String> = Vec::new();
     for prefix in NAMESPACE_PREFIXES {
         let page = artifacts
@@ -83,7 +85,7 @@ pub fn validate(artifacts: &Path) -> Result<ConformanceReport> {
     if missing_namespaces.is_empty() {
         report.push(TestResult::pass(
             "docs/structure",
-            "All 14 namespace reference pages present",
+            "All 16 namespace reference pages present",
         ));
     } else {
         report.push(TestResult::fail_with_details(

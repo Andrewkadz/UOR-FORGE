@@ -1,6 +1,6 @@
 //! SHACL validator.
 //!
-//! Validates the 18 OWL instance test graphs against the UOR SHACL shapes.
+//! Validates the 23 OWL instance test graphs against the UOR SHACL shapes.
 //! Each test graph is defined as a Turtle string in `tests/fixtures/`.
 //! Validation checks structural constraints without a full SHACL engine:
 //! - Required properties are present
@@ -10,7 +10,7 @@
 use crate::report::{ConformanceReport, TestResult};
 use crate::tests;
 
-/// Runs all 18 SHACL instance conformance tests.
+/// Runs all 23 SHACL instance conformance tests.
 pub fn validate() -> ConformanceReport {
     let mut report = ConformanceReport::new();
 
@@ -100,6 +100,31 @@ pub fn validate() -> ConformanceReport {
         tests::fixtures::TEST18_ANALYTICAL_COMPLETENESS,
         &mut report,
     );
+    run_test(
+        "test19_homological_pipeline",
+        tests::fixtures::TEST19_HOMOLOGICAL_PIPELINE,
+        &mut report,
+    );
+    run_test(
+        "test20_sheaf_consistency",
+        tests::fixtures::TEST20_SHEAF_CONSISTENCY,
+        &mut report,
+    );
+    run_test(
+        "test21_topological_delta",
+        tests::fixtures::TEST21_TOPOLOGICAL_DELTA,
+        &mut report,
+    );
+    run_test(
+        "test22_index_bridge",
+        tests::fixtures::TEST22_INDEX_BRIDGE,
+        &mut report,
+    );
+    run_test(
+        "test23_identity_grounding",
+        tests::fixtures::TEST23_IDENTITY_GROUNDING,
+        &mut report,
+    );
 
     report
 }
@@ -145,6 +170,11 @@ fn run_test(name: &str, turtle_src: &str, report: &mut ConformanceReport) {
         "test16_algebraic_identities" => validate_algebraic_identities(turtle_src),
         "test17_inter_algebra_maps" => validate_inter_algebra_maps(turtle_src),
         "test18_analytical_completeness" => validate_analytical_completeness(turtle_src),
+        "test19_homological_pipeline" => validate_homological_pipeline(turtle_src),
+        "test20_sheaf_consistency" => validate_sheaf_consistency(turtle_src),
+        "test21_topological_delta" => validate_topological_delta(turtle_src),
+        "test22_index_bridge" => validate_index_bridge(turtle_src),
+        "test23_identity_grounding" => validate_identity_grounding_shacl(turtle_src),
         _ => Ok(()),
     };
 
@@ -443,6 +473,107 @@ fn validate_analytical_completeness(src: &str) -> Result<(), String> {
     check_contains(src, "op:HA_1", "Missing homological identity HA_1")?;
     check_contains(src, "op:IT_7a", "Missing index theorem identity IT_7a")?;
     check_contains(src, "op:IT_7d", "Missing completeness criterion IT_7d")?;
+    Ok(())
+}
+
+fn validate_homological_pipeline(src: &str) -> Result<(), String> {
+    check_contains(src, "homology:Simplex", "Missing homology:Simplex")?;
+    check_contains(
+        src,
+        "homology:SimplicialComplex",
+        "Missing homology:SimplicialComplex",
+    )?;
+    check_contains(src, "homology:ChainGroup", "Missing homology:ChainGroup")?;
+    check_contains(
+        src,
+        "homology:BoundaryOperator",
+        "Missing homology:BoundaryOperator",
+    )?;
+    check_contains(
+        src,
+        "homology:ChainComplex",
+        "Missing homology:ChainComplex",
+    )?;
+    check_contains(
+        src,
+        "homology:HomologyGroup",
+        "Missing homology:HomologyGroup",
+    )?;
+    Ok(())
+}
+
+fn validate_sheaf_consistency(src: &str) -> Result<(), String> {
+    check_contains(src, "cohomology:Sheaf", "Missing cohomology:Sheaf")?;
+    check_contains(src, "cohomology:Stalk", "Missing cohomology:Stalk")?;
+    check_contains(src, "cohomology:Section", "Missing cohomology:Section")?;
+    check_contains(
+        src,
+        "cohomology:GluingObstruction",
+        "Missing cohomology:GluingObstruction",
+    )?;
+    check_contains(
+        src,
+        "cohomology:CochainComplex",
+        "Missing cohomology:CochainComplex",
+    )?;
+    check_contains(
+        src,
+        "cohomology:CohomologyGroup",
+        "Missing cohomology:CohomologyGroup",
+    )?;
+    Ok(())
+}
+
+fn validate_topological_delta(src: &str) -> Result<(), String> {
+    check_contains(
+        src,
+        "morphism:TopologicalDelta",
+        "Missing morphism:TopologicalDelta",
+    )?;
+    check_contains(
+        src,
+        "morphism:bettisBefore",
+        "Missing morphism:bettisBefore",
+    )?;
+    check_contains(src, "morphism:bettisAfter", "Missing morphism:bettisAfter")?;
+    check_contains(src, "morphism:eulerBefore", "Missing morphism:eulerBefore")?;
+    check_contains(src, "morphism:eulerAfter", "Missing morphism:eulerAfter")?;
+    check_contains(src, "morphism:nerveBefore", "Missing morphism:nerveBefore")?;
+    check_contains(src, "morphism:nerveAfter", "Missing morphism:nerveAfter")?;
+    Ok(())
+}
+
+fn validate_index_bridge(src: &str) -> Result<(), String> {
+    check_contains(src, "op:Identity", "Missing op:Identity type assertion")?;
+    check_contains(src, "op:phi_1", "Missing phi_1")?;
+    check_contains(src, "op:phi_6", "Missing phi_6")?;
+    check_contains(src, "op:psi_1", "Missing psi_1")?;
+    check_contains(src, "op:psi_6", "Missing psi_6")?;
+    check_contains(
+        src,
+        "op:verificationStatus",
+        "Missing op:verificationStatus",
+    )?;
+    check_contains(src, "op:verificationPath", "Missing op:verificationPath")?;
+    Ok(())
+}
+
+fn validate_identity_grounding_shacl(src: &str) -> Result<(), String> {
+    check_contains(src, "op:R_A1", "Missing R_A1")?;
+    check_contains(src, "op:C_1", "Missing C_1")?;
+    check_contains(src, "op:F_1", "Missing F_1")?;
+    check_contains(src, "op:DC_1", "Missing DC_1")?;
+    check_contains(src, "op:psi_1", "Missing psi_1")?;
+    check_contains(
+        src,
+        "op:verificationStatus",
+        "Missing verificationStatus property",
+    )?;
+    check_contains(
+        src,
+        "op:verificationPath",
+        "Missing verificationPath property",
+    )?;
     Ok(())
 }
 

@@ -110,6 +110,22 @@ pub fn namespace_mappings() -> HashMap<&'static str, NamespaceMapping> {
         },
     );
     m.insert(
+        NS_HOMOLOGY,
+        NamespaceMapping {
+            space: Space::Bridge,
+            space_module: "bridge",
+            file_module: "homology",
+        },
+    );
+    m.insert(
+        NS_COHOMOLOGY,
+        NamespaceMapping {
+            space: Space::Bridge,
+            space_module: "bridge",
+            file_module: "cohomology",
+        },
+    );
+    m.insert(
         NS_TYPE,
         NamespaceMapping {
             space: Space::User,

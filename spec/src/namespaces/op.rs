@@ -236,6 +236,27 @@ fn properties() -> Vec<Property> {
             domain: Some("https://uor.foundation/op/Group"),
             range: XSD_STRING,
         },
+        // Amendment 21: Verification properties
+        Property {
+            id: "https://uor.foundation/op/verificationStatus",
+            label: "verificationStatus",
+            comment: "Verification status of an identity: 'verifiable' (exhaustively checkable) \
+                      or 'derivable' (follows from axioms).",
+            domain: Some("https://uor.foundation/op/Identity"),
+            kind: PropertyKind::Datatype,
+            functional: true,
+            range: XSD_STRING,
+        },
+        Property {
+            id: "https://uor.foundation/op/verificationPath",
+            label: "verificationPath",
+            comment: "The verification path for an identity: either the enumeration domain or \
+                      the trait-graph walk.",
+            domain: Some("https://uor.foundation/op/Identity"),
+            kind: PropertyKind::Datatype,
+            functional: true,
+            range: XSD_STRING,
+        },
     ]
 }
 
@@ -494,6 +515,8 @@ fn individuals() -> Vec<Individual> {
                     "https://uor.foundation/op/forAll",
                     IndividualValue::Str("x ∈ R_n"),
                 ),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         // Amendment 13: Address Resolution identities
@@ -516,6 +539,8 @@ fn individuals() -> Vec<Individual> {
                     "https://uor.foundation/op/forAll",
                     IndividualValue::Str("d ∈ R_n"),
                 ),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Address → Ring → bijection")),
             ],
         },
         Individual {
@@ -537,6 +562,8 @@ fn individuals() -> Vec<Individual> {
                     "https://uor.foundation/op/forAll",
                     IndividualValue::Str("a ∈ Addr(R_n), ι : R_n → R_{n'}"),
                 ),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Address → Ring → bijection")),
             ],
         },
         // Amendment 14: Ring Algebra Laws — Additive group (6)
@@ -549,6 +576,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("add(x, add(y, z))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("add(add(x, y), z)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -560,6 +589,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("add(x, 0)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -571,6 +602,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("add(x, neg(x))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -582,6 +615,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("add(x, y)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("add(y, x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -593,6 +628,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("sub(x, y)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("add(x, neg(y))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -604,6 +641,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(neg(x))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         // Amendment 14: Multiplicative monoid (5)
@@ -616,6 +655,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("mul(x, mul(y, z))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("mul(mul(x, y), z)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -627,6 +668,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("mul(x, 1)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -638,6 +681,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("mul(x, y)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("mul(y, x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -649,6 +694,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("mul(x, add(y, z))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("add(mul(x, y), mul(x, z))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -660,6 +707,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("mul(x, 0)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         // Amendment 14: Boolean algebra (13)
@@ -672,6 +721,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("xor(x, xor(y, z))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("xor(xor(x, y), z)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -683,6 +734,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("xor(x, 0)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -694,6 +747,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("xor(x, x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -705,6 +760,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("and(x, and(y, z))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("and(and(x, y), z)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -716,6 +773,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("and(x, 2^n - 1)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -727,6 +786,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("and(x, 0)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -738,6 +799,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("or(x, or(y, z))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("or(or(x, y), z)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -749,6 +812,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("or(x, 0)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -760,6 +825,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("and(x, or(x, y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -771,6 +838,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("and(x, or(y, z))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("or(and(x, y), and(x, z))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -782,6 +851,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(and(x, y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("or(bnot(x), bnot(y))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -793,6 +864,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(or(x, y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("and(bnot(x), bnot(y))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -804,6 +877,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(bnot(x))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         // Amendment 14: Cross-structure (7)
@@ -816,6 +891,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("sub(0, x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -827,6 +904,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("xor(x, 2^n - 1)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -838,6 +917,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("succ(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("add(x, 1)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -849,6 +930,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("pred(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("sub(x, 1)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -860,6 +943,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("add(bnot(x), 1)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -871,6 +956,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("pred(neg(x))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -882,6 +969,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("xor(x, y)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("add(x, y) - 2 * and(x, y)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ Z (before mod)")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         // Amendment 14: Dihedral group (4, D-2 omitted as duplicate of R-A6)
@@ -894,6 +983,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("succ^{2^n}(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -905,6 +996,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(succ(neg(x)))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("pred(x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -916,6 +1009,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("bnot(neg(x))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("pred(x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -927,6 +1022,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("D_{2^n}")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("{succ^k, neg ∘ succ^k : 0 ≤ k < 2^n}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         // Amendment 14: Unit group (5)
@@ -939,6 +1036,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("R_n×")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Z/2 × Z/2^{n-2}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 3")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -950,6 +1049,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("R_1× ≅ {1}; R_2× ≅ Z/2")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("special cases for small n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ∈ {1, 2}")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -961,6 +1062,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("ord(u)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("lcm(ord((-1)^a), ord(3^b))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("u = (-1)^a · 3^b ∈ R_n×")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -972,6 +1075,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("ord_g(2)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("divides φ(g)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("g odd")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -983,6 +1088,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("step_g")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("2 * ((g - (2^n mod g)) mod g) + 1")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("g odd, g > 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         // Amendment 14: Affine group (4)
@@ -995,6 +1102,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("μ_u")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("∉ D_{2^n}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("u ∈ R_n×, u ≠ ±1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -1006,6 +1115,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Aff(R_n)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("R_n× ⋉ R_n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -1017,6 +1128,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("|Aff(R_n)|")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("2^{2n-1}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -1028,6 +1141,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("D_{2^n}")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("⊂ Aff(R_n), u ∈ {±1}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         // Amendment 14: Carry algebra (6)
@@ -1040,6 +1155,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("add(x,y)_k")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("xor(x_k, xor(y_k, c_k(x,y)))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n, 0 ≤ k < n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -1051,6 +1168,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("c_{k+1}(x,y)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("or(and(x_k,y_k), and(xor(x_k,y_k), c_k))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -1062,6 +1181,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("c(x, y)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("c(y, x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -1073,6 +1194,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("c(x, 0)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, all positions")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -1084,6 +1207,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("c(x, neg(x))_k")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("1")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, k > v_2(x)")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         Individual {
@@ -1095,6 +1220,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_Δ(x, y) > 0")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("∃ k : c_k(x,y) = 1")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("verifiable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("exhaustive_enumeration(R_n)")),
             ],
         },
         // Amendment 15: Constraint, Fiber & Partition Laws — Constraint composition (6)
@@ -1108,6 +1235,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("pins(compose(A, B))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("pins(A) ∪ pins(B)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Ring → Constraint via axiom inheritance")),
             ],
         },
         Individual {
@@ -1119,6 +1248,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(A, B)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("compose(B, A)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Ring → Constraint via axiom inheritance")),
             ],
         },
         Individual {
@@ -1130,6 +1261,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(compose(A,B), C)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("compose(A, compose(B,C))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B, C")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Ring → Constraint via axiom inheritance")),
             ],
         },
         Individual {
@@ -1141,6 +1274,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(A, A)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("A")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint A")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Ring → Constraint via axiom inheritance")),
             ],
         },
         Individual {
@@ -1152,6 +1287,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(A, ε)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("A")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint A, identity ε")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Ring → Constraint via axiom inheritance")),
             ],
         },
         Individual {
@@ -1163,6 +1300,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(A, Ω)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Ω")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint A, annihilator Ω")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Ring → Constraint via axiom inheritance")),
             ],
         },
         // Amendment 15: Constraint dependence (1)
@@ -1176,6 +1315,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("carry(residue(T))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("depth(T)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Dihedral via interaction")),
             ],
         },
         // Amendment 15: Constraint lattice (5)
@@ -1188,6 +1329,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Constraint/≡")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("2^{[n]}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint equivalence classes")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Lattice via ordering")),
             ],
         },
         Individual {
@@ -1199,6 +1342,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("A ∨ B")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("compose(A, B)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Lattice via ordering")),
             ],
         },
         Individual {
@@ -1210,6 +1355,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("pins(A ∧ B)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("pins(A) ∩ pins(B)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Lattice via ordering")),
             ],
         },
         Individual {
@@ -1221,6 +1368,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("(A ∨ B) ∧ C")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("(A ∧ C) ∨ (B ∧ C)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B, C")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Lattice via ordering")),
             ],
         },
         Individual {
@@ -1232,6 +1381,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("A ∧ A̅ = ε, A ∨ A̅ = Ω")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("∃ A̅ (complement)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint A")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Lattice via ordering")),
             ],
         },
         // Amendment 15: Constraint minimization (3)
@@ -1244,6 +1395,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("C_i redundant in {C_1,...,C_k}")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("pins(C_i) ⊆ ∪_{j≠i} pins(C_j)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint set {C_1,...,C_k}")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Metric via measurement")),
             ],
         },
         Individual {
@@ -1255,6 +1408,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("minimal cover")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("irredundant sub-collection (greedy removal)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("CompositeConstraint")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Metric via measurement")),
             ],
         },
         Individual {
@@ -1266,6 +1421,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("min constraints to cover n fibers")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("⌈n / max_k pins_per_constraint_k⌉")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n fibers, constraint set")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Metric via measurement")),
             ],
         },
         // Amendment 15: Constraint cost (5)
@@ -1278,6 +1435,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("cost(ResidueConstraint(m, r))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("step_m = 2 × ((−2^n) mod m) + 1")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ResidueConstraint")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Resolution via convergence")),
             ],
         },
         Individual {
@@ -1289,6 +1448,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("cost(CarryConstraint(p))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("popcount(p)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("CarryConstraint")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Resolution via convergence")),
             ],
         },
         Individual {
@@ -1300,6 +1461,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("cost(DepthConstraint(d_min, d_max))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("cost(residue) + cost(carry)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("DepthConstraint")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Resolution via convergence")),
             ],
         },
         Individual {
@@ -1311,6 +1474,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("cost(compose(A, B))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ cost(A) + cost(B)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Resolution via convergence")),
             ],
         },
         Individual {
@@ -1322,6 +1487,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("optimal resolution order")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("increasing cost order")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint set")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Resolution via convergence")),
             ],
         },
         // Amendment 15: Fiber monotone (4)
@@ -1334,6 +1501,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("pinned fiber")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("cannot be unpinned")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberCoordinate")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → FiberBudget → pins")),
             ],
         },
         Individual {
@@ -1345,6 +1514,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("pin operations to close")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → FiberBudget → pins")),
             ],
         },
         Individual {
@@ -1356,6 +1527,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("pinnedCount + freeCount")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("totalFibers = n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → FiberBudget → pins")),
             ],
         },
         Individual {
@@ -1367,6 +1540,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("isClosed")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("freeCount = 0 ⇔ pinnedCount = n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → FiberBudget → pins")),
             ],
         },
         // Amendment 15: Fiber lattice (4)
@@ -1379,6 +1554,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("⊥")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("all fibers free (freeCount = n)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget lattice")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Lattice via ordering")),
             ],
         },
         Individual {
@@ -1390,6 +1567,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("⊤")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("all fibers pinned (pinnedCount = n)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget lattice")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Lattice via ordering")),
             ],
         },
         Individual {
@@ -1401,6 +1580,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("join(S₁, S₂)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("union of pinnings from S₁ and S₂")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget states S₁, S₂")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Lattice via ordering")),
             ],
         },
         Individual {
@@ -1412,6 +1593,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("lattice height")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberBudget lattice")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Lattice via ordering")),
             ],
         },
         // Amendment 15: Fiber-partition map (7)
@@ -1424,6 +1607,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("x ∈ Unit")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("fiber_0(x) = 1 (x is odd)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Partition → Metric")),
             ],
         },
         Individual {
@@ -1435,6 +1620,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("x ∈ Exterior")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x ∉ carrier(T)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, type T")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Partition → Metric")),
             ],
         },
         Individual {
@@ -1447,6 +1634,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("x ∈ Irreducible")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x ∉ Unit ∪ Exterior AND no non-trivial factorization")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Partition → Metric")),
             ],
         },
         Individual {
@@ -1459,6 +1648,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("x ∈ Reducible")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x ∉ Unit ∪ Exterior ∪ Irreducible")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Partition → Metric")),
             ],
         },
         Individual {
@@ -1470,6 +1661,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("x = 2^{v(x)} ⋅ u")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("u odd, v(x) = min position of 1-bit")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Partition → Metric")),
             ],
         },
         Individual {
@@ -1481,6 +1674,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("|{x: v(x) = k}|")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("2^{n−k−1} for 0 < k < n; 1 for k = n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Partition → Metric")),
             ],
         },
         Individual {
@@ -1492,6 +1687,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("base type partition")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("|Unit| = 2^{n−1}; |Irr| = 2^{n−2}; |Red| = 2^{n−2}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("R_n, n ≥ 3")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Partition → Metric")),
             ],
         },
         // Amendment 15: Fiber position semantics (7)
@@ -1504,6 +1701,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("fiber_k(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("(x >> k) AND 1")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, 0 ≤ k < n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Structure via decomposition")),
             ],
         },
         Individual {
@@ -1515,6 +1714,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("fiber_0(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x mod 2 (parity)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Structure via decomposition")),
             ],
         },
         Individual {
@@ -1527,6 +1728,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("fiber_k(x) given fibers 0..k−1")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("determines x mod 2^{k+1}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Structure via decomposition")),
             ],
         },
         Individual {
@@ -1538,6 +1741,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("fibers 0..k together")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("determine x mod 2^{k+1}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Structure via decomposition")),
             ],
         },
         Individual {
@@ -1549,6 +1754,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("all n fibers")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("determine x uniquely")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Structure via decomposition")),
             ],
         },
         Individual {
@@ -1560,6 +1767,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("stratum(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("v_2(x) = min{k : fiber_k(x) = 1}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Structure via decomposition")),
             ],
         },
         Individual {
@@ -1571,6 +1780,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("depth(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ v_2(x) for irreducible elements")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, base type")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Fiber → Structure via decomposition")),
             ],
         },
         // Amendment 16: Resolution & Observable Laws — Strategy equivalence (1)
@@ -1584,6 +1795,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Π_D(T)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Π_C(T) = Π_E(T)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Resolution → convergence")),
             ],
         },
         // Amendment 16: Iterative resolution (4)
@@ -1596,6 +1809,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("pinnedCount(state_{i+1})")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≥ pinnedCount(state_i)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("resolution states")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Iteration → convergence")),
             ],
         },
         Individual {
@@ -1607,6 +1822,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("iterations to converge")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("resolution loop")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Iteration → convergence")),
             ],
         },
         Individual {
@@ -1618,6 +1835,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("convergenceRate")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("pinnedCount / iterationCount")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ResolutionState")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Iteration → convergence")),
             ],
         },
         Individual {
@@ -1629,6 +1848,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("constraint set spans all fibers")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("loop terminates")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("complete constraint set")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Iteration → convergence")),
             ],
         },
         // Amendment 16: Step formula (2)
@@ -1641,6 +1862,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("n ≡ 0 (mod ord_g(2))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("factor g has optimal resolution at level n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("factor g, quantum n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Structure → Fiber via decomposition")),
             ],
         },
         Individual {
@@ -1652,6 +1875,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("constraints with smaller step_g")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("are more constraining, apply first")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint ordering")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Structure → Fiber via decomposition")),
             ],
         },
         // Amendment 16: Determinism (2)
@@ -1664,6 +1889,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("same type T and constraint sequence")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("unique resolved partition")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n, [C₁,...,Cₖ]")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Derivation via steps")),
             ],
         },
         Individual {
@@ -1675,6 +1902,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("complete constraint set, any order")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("same final partition")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("closing constraint set")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Derivation via steps")),
             ],
         },
         // Amendment 16: Strategy proofs (4)
@@ -1687,6 +1916,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("EvaluationResolver")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("directly computes set-theoretic partition")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Structure → Evolution via dynamics")),
             ],
         },
         Individual {
@@ -1698,6 +1929,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("DihedralFactorizationResolver")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("orbit decomposition yields same partition")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Structure → Evolution via dynamics")),
             ],
         },
         Individual {
@@ -1709,6 +1942,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("CanonicalFormResolver")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("confluent rewrite → same partition")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Structure → Evolution via dynamics")),
             ],
         },
         Individual {
@@ -1720,6 +1955,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Π_D(T) = Π_C(T) = Π_E(T)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("all compute same set-theoretic partition")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Structure → Evolution via dynamics")),
             ],
         },
         // Amendment 16: Optimal ordering (5)
@@ -1732,6 +1969,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("benefit(C_i, S)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("|pins(C_i) ∖ S|")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint C_i, pinned set S")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Operation → Observable via measurement")),
             ],
         },
         Individual {
@@ -1743,6 +1982,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("cost(C_i)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("step_{m_i} or popcount(p_i)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ResidueConstraint or CarryConstraint")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Operation → Observable via measurement")),
             ],
         },
         Individual {
@@ -1754,6 +1995,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("greedy selection")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("argmax benefit(C_i, S) / cost(C_i)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("each resolution step")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Operation → Observable via measurement")),
             ],
         },
         Individual {
@@ -1765,6 +2008,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("greedy approximation")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("(1 − 1/e) ≈ 63% of optimal")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("weighted set cover")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Operation → Observable via measurement")),
             ],
         },
         Individual {
@@ -1776,6 +2021,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("equal cost tiebreaker")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("prefer vertical (residue) before horizontal (carry)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("cost-tied constraints")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Operation → Observable via measurement")),
             ],
         },
         // Amendment 16: Convergence bounds (6)
@@ -1788,6 +2035,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("min convergenceRate")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("1 fiber per iteration")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("worst case")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Cert → Bridge via validation")),
             ],
         },
         Individual {
@@ -1799,6 +2048,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("max convergenceRate")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("n fibers in 1 iteration")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("best case")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Cert → Bridge via validation")),
             ],
         },
         Individual {
@@ -1810,6 +2061,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("expected rate (residue)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("⌊log_2(m)⌋ fibers per constraint")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ResidueConstraint(m, r)")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Cert → Bridge via validation")),
             ],
         },
         Individual {
@@ -1821,6 +2074,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("convergenceRate < 1 for 2 iterations")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("constraint set may be insufficient")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("stall detection")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Cert → Bridge via validation")),
             ],
         },
         Individual {
@@ -1832,6 +2087,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("∪_i pins(C_i) = {0,...,n−1}")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("constraint set closes budget")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("sufficiency criterion")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Cert → Bridge via validation")),
             ],
         },
         Individual {
@@ -1843,6 +2100,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("iterations for k constraints")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ min(k, n)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("well-formed model")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Cert → Bridge via validation")),
             ],
         },
         // Amendment 16: Metric identities (6)
@@ -1855,6 +2114,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_R(x, z)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ d_R(x, y) + d_R(y, z)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Metric via measurement")),
             ],
         },
         Individual {
@@ -1866,6 +2127,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_H(x, z)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ d_H(x, y) + d_H(y, z)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y, z ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Metric via measurement")),
             ],
         },
         Individual {
@@ -1877,6 +2140,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_Δ(x, y)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("|d_R(x, y) − d_H(x, y)|")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Metric via measurement")),
             ],
         },
         Individual {
@@ -1888,6 +2153,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_R(neg(x), neg(y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("d_R(x, y)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Metric via measurement")),
             ],
         },
         Individual {
@@ -1899,6 +2166,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_H(bnot(x), bnot(y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("d_H(x, y)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Metric via measurement")),
             ],
         },
         Individual {
@@ -1910,6 +2179,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_R(succ(x), succ(y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("d_R(x, y) but d_H may differ")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Metric via measurement")),
             ],
         },
         // Amendment 16: Commutator identities (3)
@@ -1922,6 +2193,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("[neg, bnot](x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("2")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Constraint via measurement")),
             ],
         },
         Individual {
@@ -1933,6 +2206,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("[neg, add(•,k)](x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("−2k mod 2^n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, constant k")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Constraint via measurement")),
             ],
         },
         Individual {
@@ -1944,6 +2219,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("[bnot, xor(•,k)](x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, constant k")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Constraint via measurement")),
             ],
         },
         // Amendment 16: Holonomy (3)
@@ -1956,6 +2233,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("closed additive path monodromy")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("trivial (abelian ⇒ path-independent)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("additive group")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Hamming via measurement")),
             ],
         },
         Individual {
@@ -1967,6 +2246,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("closed {neg,bnot} path monodromy")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("∈ D_{2^n}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("dihedral generators")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Hamming via measurement")),
             ],
         },
         Individual {
@@ -1978,6 +2259,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("succ-only path WindingNumber")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("path length / 2^n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("closed succ path")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Hamming via measurement")),
             ],
         },
         // Amendment 16: Observable composition (3)
@@ -1990,6 +2273,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("PathLength(p₁ ⋅ p₂)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("PathLength(p₁) + PathLength(p₂)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("paths p₁, p₂")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Partition via measurement")),
             ],
         },
         Individual {
@@ -2001,6 +2286,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("TotalVariation(p₁ ⋅ p₂)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ TotalVariation(p₁) + TotalVariation(p₂)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("paths p₁, p₂")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Partition via measurement")),
             ],
         },
         Individual {
@@ -2012,6 +2299,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("CascadeLength(c₁ ; c₂)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("CascadeLength(c₁) + CascadeLength(c₂)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("cascades c₁, c₂")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → Partition via measurement")),
             ],
         },
         // Amendment 16: Catastrophe thresholds (4)
@@ -2024,6 +2313,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("catastrophe boundaries")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("g = 2^k for 1 ≤ k ≤ n−1")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("stratum transitions")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Type via classification")),
             ],
         },
         Individual {
@@ -2035,6 +2326,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("odd prime catastrophe")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("ResidueConstraint(p, •) transitions visibility")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("odd prime p")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Type via classification")),
             ],
         },
         Individual {
@@ -2046,6 +2339,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("CatastropheThreshold(g)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("step_g / n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("factor g")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Type via classification")),
             ],
         },
         Individual {
@@ -2057,6 +2352,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("composite catastrophe g = p⋅q")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("max(step_p, step_q) / n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("composite g")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Type via classification")),
             ],
         },
         // Amendment 16: Curvature-cost (4)
@@ -2069,6 +2366,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("CurvatureFlux(γ)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ |d_R(x_i, x_{i+1}) − d_H(x_i, x_{i+1})|")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("path γ")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Fiber via pinning")),
             ],
         },
         Individual {
@@ -2080,6 +2379,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("ResolutionCost(T)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≥ CurvatureFlux(γ_opt)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("type T")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Fiber via pinning")),
             ],
         },
         Individual {
@@ -2091,6 +2392,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("CurvatureFlux(x, succ(x))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("trailing_ones(x) for t < n; n−1 for x = 2^n−1")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Fiber via pinning")),
             ],
         },
         Individual {
@@ -2102,6 +2405,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Σ_{x ∈ R_n} CurvatureFlux(x, succ(x))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("2^n − 2")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → Fiber via pinning")),
             ],
         },
         // Amendment 16: Complete holonomy (5)
@@ -2114,6 +2419,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("additive holonomy")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("trivial (abelian ⇒ path-independent)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("additive group")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Hamming → Geometry via structure")),
             ],
         },
         Individual {
@@ -2125,6 +2432,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("{neg, bnot, succ, pred} holonomy")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("D_{2^n}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("dihedral generators")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Hamming → Geometry via structure")),
             ],
         },
         Individual {
@@ -2136,6 +2445,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("{mul(•, u) : u ∈ R_n×} holonomy")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("R_n× ≅ Z/2 × Z/2^{n−2}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("unit group")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Hamming → Geometry via structure")),
             ],
         },
         Individual {
@@ -2147,6 +2458,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Hol(R_n)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Aff(R_n) = R_n× ⋉ R_n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Hamming → Geometry via structure")),
             ],
         },
         Individual {
@@ -2158,6 +2471,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Hol(R_n) decomposition")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("D_{2^n} ⋅ {mul(•,u) : u ∈ R_n×, u ≠ ±1}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Hamming → Geometry via structure")),
             ],
         },
         // Amendment 17: Transform, Addressing & Thermodynamic Laws — Category laws (4)
@@ -2170,6 +2485,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(id, f)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("f")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("f ∈ Transform")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Composition via structure")),
             ],
         },
         Individual {
@@ -2181,6 +2498,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(f, id)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("f")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("f ∈ Transform")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Composition via structure")),
             ],
         },
         Individual {
@@ -2192,6 +2511,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("compose(f, compose(g, h))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("compose(compose(f, g), h)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("f, g, h ∈ Transform")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Composition via structure")),
             ],
         },
         Individual {
@@ -2203,6 +2524,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("f composesWith g")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("target(f) = source(g)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("f, g ∈ Transform")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Composition via structure")),
             ],
         },
         // Amendment 17: Isometry laws (5)
@@ -2215,6 +2538,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_R(neg(x), neg(y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("d_R(x, y)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Isometry via structure")),
             ],
         },
         Individual {
@@ -2226,6 +2551,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_H(bnot(x), bnot(y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("d_H(x, y)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Isometry via structure")),
             ],
         },
         Individual {
@@ -2237,6 +2564,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("succ = neg ∘ bnot")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("preserves d_R but not d_H")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Isometry via structure")),
             ],
         },
         Individual {
@@ -2248,6 +2577,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("ring isometries")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("form a group under composition")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("Isometry")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Isometry via structure")),
             ],
         },
         Individual {
@@ -2259,6 +2590,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("CurvatureObservable")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("measures failure of ring isometry to be Hamming isometry")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("Isometry")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Isometry via structure")),
             ],
         },
         // Amendment 17: Embedding laws (4)
@@ -2271,6 +2604,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("ι(x) = ι(y)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("x = y")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n (injectivity)")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Embedding via structure")),
             ],
         },
         Individual {
@@ -2282,6 +2617,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("ι(add(x,y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("add(ι(x), ι(y)); ι(mul(x,y)) = mul(ι(x), ι(y))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Embedding via structure")),
             ],
         },
         Individual {
@@ -2293,6 +2630,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("ι₂ ∘ ι₁ : R_n → R_k")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("is an embedding (transitivity)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ι₁: R_n → R_m, ι₂: R_m → R_k")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Embedding via structure")),
             ],
         },
         Individual {
@@ -2304,6 +2643,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("glyph ∘ ι ∘ addresses")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("well-defined")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("embedding ι")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Embedding via structure")),
             ],
         },
         // Amendment 17: Group action (4)
@@ -2316,6 +2657,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("g ∈ D_{2^n} on Constraint C")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("g⋅C (transformed constraint)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("g ∈ D_{2^n}, C ∈ Constraint")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Action via structure")),
             ],
         },
         Individual {
@@ -2327,6 +2670,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("g ∈ D_{2^n} on Partition")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("permutes components")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("g ∈ D_{2^n}")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Action via structure")),
             ],
         },
         Individual {
@@ -2338,6 +2683,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("D_{2^n} orbits on R_n")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("determine irreducibility boundaries")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("DihedralFactorizationResolver")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Action via structure")),
             ],
         },
         Individual {
@@ -2349,6 +2696,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("fixed points of neg")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("{0, 2^{n−1}}; bnot has none (n > 0)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Transform → Action via structure")),
             ],
         },
         // Amendment 17: Automorphism group (5)
@@ -2361,6 +2710,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Aut(R_n)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("{μ_u : x ↦ mul(u, x) | u ∈ R_n×}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Automorphism → Structure via symmetry")),
             ],
         },
         Individual {
@@ -2372,6 +2723,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Aut(R_n)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≅ R_n× ≅ Z/2 × Z/2^{n−2}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 3")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Automorphism → Structure via symmetry")),
             ],
         },
         Individual {
@@ -2383,6 +2736,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("|Aut(R_n)|")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("2^{n−1}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Automorphism → Structure via symmetry")),
             ],
         },
         Individual {
@@ -2394,6 +2749,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Aut(R_n) ∩ D_{2^n}")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("{id, neg}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Automorphism → Structure via symmetry")),
             ],
         },
         Individual {
@@ -2405,6 +2762,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Aff(R_n)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("⟨D_{2^n}, μ_3⟩")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Automorphism → Structure via symmetry")),
             ],
         },
         // Amendment 17: Embedding functors (7)
@@ -2417,6 +2776,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(f)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("ι ∘ f ∘ ι⁻¹ on Im(ι)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m, f ∈ Cat(R_n)")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Embedding → Factorization via decomposition")),
             ],
         },
         Individual {
@@ -2428,6 +2789,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(f ∘ g)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("F_ι(f) ∘ F_ι(g)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Embedding → Factorization via decomposition")),
             ],
         },
         Individual {
@@ -2439,6 +2802,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(id_{R_n})")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("id_{Im(ι)}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Embedding → Factorization via decomposition")),
             ],
         },
         Individual {
@@ -2450,6 +2815,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("F_{ι₂ ∘ ι₁}")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("F_{ι₂} ∘ F_{ι₁}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ι₁: R_n → R_m, ι₂: R_m → R_k")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Embedding → Factorization via decomposition")),
             ],
         },
         Individual {
@@ -2461,6 +2828,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(ring isometry)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("ring isometry at level m")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Embedding → Factorization via decomposition")),
             ],
         },
         Individual {
@@ -2472,6 +2841,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(D_{2^n})")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("⊆ D_{2^m} as subgroup")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Embedding → Factorization via decomposition")),
             ],
         },
         Individual {
@@ -2483,6 +2854,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("F_ι(R_n×)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("⊆ R_m× as subgroup")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ι: R_n → R_m")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Embedding → Factorization via decomposition")),
             ],
         },
         // Amendment 17: Address arithmetic (6)
@@ -2495,6 +2868,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("glyph(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("[braille(x[0:5]), braille(x[6:11]), ...]")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n (6-bit blocks)")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Addressing via calculus")),
             ],
         },
         Individual {
@@ -2506,6 +2881,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("braille(a ⊕ b)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("braille(a) ⊕ braille(b)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("a, b ∈ {0,1}^6")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Addressing via calculus")),
             ],
         },
         Individual {
@@ -2517,6 +2894,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("glyph(bnot(x))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("complement each Braille character of glyph(x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Addressing via calculus")),
             ],
         },
         Individual {
@@ -2528,6 +2907,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("glyph(add(x, y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≠ f(glyph(x), glyph(y)) in general")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Addressing via calculus")),
             ],
         },
         Individual {
@@ -2539,6 +2920,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("liftable operations")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("{xor, and, or, bnot}; NOT {add, sub, mul, neg, succ, pred}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("operations on R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Addressing via calculus")),
             ],
         },
         Individual {
@@ -2550,6 +2933,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(x) = succ(bnot(x))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("bnot lifts, succ does not")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Addressing via calculus")),
             ],
         },
         // Amendment 17: Address metric (4)
@@ -2562,6 +2947,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_addr(a, b)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ_i popcount(braille_i(a) ⊕ braille_i(b))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("addresses a, b")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Metric via calculus")),
             ],
         },
         Individual {
@@ -2573,6 +2960,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_addr(glyph(x), glyph(y))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("d_H(x, y)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Metric via calculus")),
             ],
         },
         Individual {
@@ -2584,6 +2973,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_addr")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("does NOT preserve d_R in general")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("addresses")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Metric via calculus")),
             ],
         },
         Individual {
@@ -2595,6 +2986,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("d_Δ(x, y)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("|d_R(x,y) − d_addr(glyph(x), glyph(y))|")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x, y ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Metric via calculus")),
             ],
         },
         // Amendment 17: Thermodynamic (10)
@@ -2607,6 +3000,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("S(state)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("freeCount × ln 2")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("state ∈ FiberBudget")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Thermodynamic → Observable via entropy")),
             ],
         },
         Individual {
@@ -2618,6 +3013,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("S(⊥)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("n × ln 2")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("unconstrained type")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Thermodynamic → Observable via entropy")),
             ],
         },
         Individual {
@@ -2629,6 +3026,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("S(⊤)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("fully resolved type")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Thermodynamic → Observable via entropy")),
             ],
         },
         Individual {
@@ -2640,6 +3039,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("total resolution cost")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("n × k_B T × ln 2")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("Landauer bound")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Thermodynamic → Observable via entropy")),
             ],
         },
         Individual {
@@ -2651,6 +3052,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("β*")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("ln 2")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("UOR fiber system")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Thermodynamic → Observable via entropy")),
             ],
         },
         Individual {
@@ -2662,6 +3065,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("constraint application")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("removes entropy; convergenceRate = cooling rate")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("resolution loop")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Thermodynamic → Observable via entropy")),
             ],
         },
         Individual {
@@ -2673,6 +3078,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("CatastropheThreshold")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("temperature of partition phase transition")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("partition bifurcation")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Thermodynamic → Observable via entropy")),
             ],
         },
         Individual {
@@ -2684,6 +3091,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("step_g")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("free-energy cost of constraint boundary")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint boundary g")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Thermodynamic → Observable via entropy")),
             ],
         },
         Individual {
@@ -2695,6 +3104,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("computational hardness")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("type incompleteness (high temperature)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("type specification")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Thermodynamic → Observable via entropy")),
             ],
         },
         Individual {
@@ -2706,6 +3117,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("type resolution")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("measurement; cost ≥ entropy removed")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("resolution process")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Thermodynamic → Observable via entropy")),
             ],
         },
         // Amendment 17: Adiabatic (5)
@@ -2718,6 +3131,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("adiabatic schedule")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("decreasing freeCount × cost-per-fiber order")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint ordering")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Resolution via calculus")),
             ],
         },
         Individual {
@@ -2729,6 +3144,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Cost_adiabatic")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ_i cost(C_{σ(i)}) where σ is optimal")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("optimal ordering")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Resolution via calculus")),
             ],
         },
         Individual {
@@ -2740,6 +3157,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Cost_adiabatic")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≥ n × k_B T × ln 2")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("Landauer bound")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Resolution via calculus")),
             ],
         },
         Individual {
@@ -2751,6 +3170,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("η = (n × ln 2) / Cost_adiabatic")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ 1")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("adiabatic efficiency")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Resolution via calculus")),
             ],
         },
         Individual {
@@ -2762,6 +3183,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("greedy vs adiabatic difference")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ 5% for n ≤ 16")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("empirical, Q0–Q4")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Analytical → Resolution via calculus")),
             ],
         },
         // Amendment 17: Phase diagram (5)
@@ -2774,6 +3197,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("phase space")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("{(n, g) : n ∈ Z₊, g constraint boundary}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("UOR phase diagram")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Partition → Dynamics via evolution")),
             ],
         },
         Individual {
@@ -2785,6 +3210,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("phase boundaries")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("g | (2^n − 1) or g = 2^k")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("(n, g) plane")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Partition → Dynamics via evolution")),
             ],
         },
         Individual {
@@ -2796,6 +3223,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("parity boundary")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("|Unit| = 2^{n−1}, |non-Unit| = 2^{n−1}")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("g = 2")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Partition → Dynamics via evolution")),
             ],
         },
         Individual {
@@ -2807,6 +3236,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("resonance lines")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("n = k ⋅ ord_g(2)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("(n, g) plane")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Partition → Dynamics via evolution")),
             ],
         },
         Individual {
@@ -2818,6 +3249,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("phase count at level n")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ 2^n (typical O(n))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("quantum level n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Partition → Dynamics via evolution")),
             ],
         },
         // Amendment 17: Reversible computation (5)
@@ -2830,6 +3263,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("reversible pinning of fiber k")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("store prior state in ancilla fiber k'")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("FiberCoordinate k")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Convergence via rate")),
             ],
         },
         Individual {
@@ -2841,6 +3276,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("reversible pinning entropy")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("ΔS_total = 0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("reversible strategy")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Convergence via rate")),
             ],
         },
         Individual {
@@ -2852,6 +3289,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("deferred Landauer cost")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("n × k_B T × ln 2 at ancilla erasure")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ancilla cleanup")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Convergence via rate")),
             ],
         },
         Individual {
@@ -2863,6 +3302,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("reversible total cost")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("= irreversible total cost (redistributed)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("reversible strategy")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Convergence via rate")),
             ],
         },
         Individual {
@@ -2874,6 +3315,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("quantum UOR")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("superposed fibers, cost ∝ winning path")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("hypothetical quantum")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Resolution → Convergence via rate")),
             ],
         },
         // Amendment 19: Analytical Identities — Differential calculus (11)
@@ -2886,6 +3329,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("∂_R f(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("f(succ(x)) - f(x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("f : R_n → R_n, x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         Individual {
@@ -2897,6 +3342,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("∂_H f(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("f(bnot(x)) - f(x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("f : R_n → R_n, x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         Individual {
@@ -2908,6 +3355,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("∂_H id(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("bnot(x) - x = -(2x + 1) mod 2^n")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         Individual {
@@ -2919,6 +3368,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("[neg, bnot](x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("∂_R neg(x) - ∂_H neg(x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         Individual {
@@ -2930,6 +3381,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("∂_R f - ∂_H f")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ carry contributions")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("f : R_n → R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         Individual {
@@ -2941,6 +3394,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("J_k(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("∂_R f_k(x) where f_k = fiber_k")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, 0 ≤ k < n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         Individual {
@@ -2952,6 +3407,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("J_{n-1}(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("may differ from lower fibers")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         Individual {
@@ -2963,6 +3420,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("rank(J(x))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("= d_H(x, succ(x)) - 1 for generic x")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         Individual {
@@ -2974,6 +3433,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("κ(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ_k J_k(x)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         Individual {
@@ -2985,6 +3446,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("optimal next constraint")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("argmax J_k over free fibers")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("resolution step")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         Individual {
@@ -2996,6 +3459,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Σ_{x} J_k(x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≈ (2^n - 2)/n for each k")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("0 ≤ k < n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → DifferentialCalculus → Jacobian")),
             ],
         },
         // Amendment 19: Homological algebra (3)
@@ -3008,6 +3473,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("N(C)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("simplicial complex on constraints")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint set C")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → HomologicalAlgebra → Betti")),
             ],
         },
         Individual {
@@ -3019,6 +3486,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("resolution stalls")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("⟺ H_k(N(C)) ≠ 0 for some k > 0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint set C")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → HomologicalAlgebra → Betti")),
             ],
         },
         Individual {
@@ -3030,6 +3499,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("S_residual")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≥ Σ_k β_k × ln 2")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint configuration C")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Observable → HomologicalAlgebra → Betti")),
             ],
         },
         // Amendment 19: Index theorem (7)
@@ -3042,6 +3513,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("χ(N(C))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ_k (-1)^k β_k")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint nerve N(C)")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("DifferentialCalculus + HomologicalAlgebra → IndexTheorem")),
             ],
         },
         Individual {
@@ -3053,6 +3526,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("χ(N(C))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("Σ_k (-1)^k dim(H_k)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint nerve N(C)")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("DifferentialCalculus + HomologicalAlgebra → IndexTheorem")),
             ],
         },
         Individual {
@@ -3064,6 +3539,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("λ_1(N(C))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("lower bounds convergence rate")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint nerve N(C)")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("DifferentialCalculus + HomologicalAlgebra → IndexTheorem")),
             ],
         },
         Individual {
@@ -3076,6 +3553,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("Σ κ_k - χ(N(C))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("= S_residual / ln 2")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint configuration C")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("DifferentialCalculus + HomologicalAlgebra → IndexTheorem")),
             ],
         },
         Individual {
@@ -3087,6 +3566,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("S_residual")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("= (Σ κ_k - χ) × ln 2")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint configuration C")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("DifferentialCalculus + HomologicalAlgebra → IndexTheorem")),
             ],
         },
         Individual {
@@ -3098,6 +3579,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("resolution cost")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("≥ n - χ(N(C))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint configuration C")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("DifferentialCalculus + HomologicalAlgebra → IndexTheorem")),
             ],
         },
         Individual {
@@ -3110,6 +3593,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("resolution complete")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("⟺ χ(N(C)) = n and all β_k = 0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint nerve N(C)")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("DifferentialCalculus + HomologicalAlgebra → IndexTheorem")),
             ],
         },
         // Amendment 20: Inter-algebra Map Formalization (6)
@@ -3122,6 +3607,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₁(neg, ResidueConstraint(m,r))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("ResidueConstraint(m, m-r)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ring op, constraint")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Inter-algebra map: source → target")),
             ],
         },
         Individual {
@@ -3133,6 +3620,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₂(compose(A,B))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("φ₂(A) ∪ φ₂(B)")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("constraints A, B")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Inter-algebra map: source → target")),
             ],
         },
         Individual {
@@ -3144,6 +3633,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₃(closed fiber state)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("unique 4-component partition")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("closed FiberBudget")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Inter-algebra map: source → target")),
             ],
         },
         Individual {
@@ -3155,6 +3646,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₄(T, x)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("φ₃(φ₂(φ₁(T, x)))")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("T ∈ T_n, x ∈ R_n")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Inter-algebra map: source → target")),
             ],
         },
         Individual {
@@ -3166,6 +3659,8 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₅(neg)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("preserves d_R, may change d_H")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("op ∈ Operation")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Inter-algebra map: source → target")),
             ],
         },
         Individual {
@@ -3177,6 +3672,79 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("φ₆(state, observables)")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("RefinementSuggestion")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("ResolutionState")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Inter-algebra map: source → target")),
+            ],
+        },
+        // Amendment 21: ψ-pipeline individuals (homological algebra)
+        Individual {
+            id: "https://uor.foundation/op/psi_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "psi_1",
+            comment: "ψ_1: Constraints → SimplicialComplex (nerve construction). \
+                      Maps a set of constraints to its nerve simplicial complex.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("N(constraints)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("SimplicialComplex")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("constraint set")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("Constraint → NerveFunctor → SimplicialComplex")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/psi_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "psi_2",
+            comment: "ψ_2: SimplicialComplex → ChainComplex (chain functor). \
+                      Maps a simplicial complex to its chain complex.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("C(K)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("ChainComplex")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("simplicial complex K")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("SimplicialComplex → ChainFunctor → ChainComplex")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/psi_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "psi_3",
+            comment: "ψ_3: ChainComplex → HomologyGroups (homology functor). \
+                      Computes homology groups from a chain complex.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("H_k(C)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("ker(∂_k) / im(∂_{k+1})")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("chain complex C")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("ChainComplex → BoundaryOperator → HomologyGroup")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/psi_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "psi_5",
+            comment: "ψ_5: ChainComplex → CochainComplex (dualization functor). \
+                      Dualizes a chain complex to obtain a cochain complex.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("C^k")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Hom(C_k, R)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("chain complex C, ring R")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("ChainComplex → dual → CochainComplex")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/psi_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "psi_6",
+            comment: "ψ_6: CochainComplex → CohomologyGroups (cohomology functor). \
+                      Computes cohomology groups from a cochain complex.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("H^k(C)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("ker(δ^k) / im(δ^{k-1})")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("cochain complex C")),
+                ("https://uor.foundation/op/verificationStatus", IndividualValue::Str("derivable")),
+                ("https://uor.foundation/op/verificationPath", IndividualValue::Str("CochainComplex → CoboundaryOperator → CohomologyGroup")),
             ],
         },
         // Amendment 4: D2n individual

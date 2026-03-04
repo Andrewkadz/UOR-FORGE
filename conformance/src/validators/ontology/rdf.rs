@@ -78,16 +78,16 @@ fn validate_turtle(artifacts: &Path, report: &mut ConformanceReport) -> Result<(
         ));
     }
 
-    // Check prefix count (should have all 14 namespace prefixes + standard prefixes)
+    // Check prefix count (should have all 16 namespace prefixes + standard prefixes)
     let prefix_count = content
         .lines()
         .filter(|l| l.trim_start().starts_with("@prefix"))
         .count();
-    if prefix_count >= 14 {
+    if prefix_count >= 16 {
         report.push(TestResult::pass(
             "ontology/rdf",
             format!(
-                "Turtle file has {} @prefix declarations (≥14 required)",
+                "Turtle file has {} @prefix declarations (≥16 required)",
                 prefix_count
             ),
         ));
@@ -95,7 +95,7 @@ fn validate_turtle(artifacts: &Path, report: &mut ConformanceReport) -> Result<(
         report.push(TestResult::fail(
             "ontology/rdf",
             format!(
-                "Turtle file has only {} @prefix declarations (expected ≥14)",
+                "Turtle file has only {} @prefix declarations (expected ≥16)",
                 prefix_count
             ),
         ));

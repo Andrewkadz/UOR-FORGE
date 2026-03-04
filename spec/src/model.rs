@@ -229,7 +229,7 @@ pub struct Ontology {
     pub version: &'static str,
     /// Base IRI of the ontology (e.g., `"https://uor.foundation/"`).
     pub base_iri: &'static str,
-    /// All 14 namespace modules in dependency order.
+    /// All 16 namespace modules in dependency order.
     pub namespaces: Vec<NamespaceModule>,
     /// Root-level annotation properties (Amendment 8: `uor:space`).
     pub annotation_properties: Vec<AnnotationProperty>,
@@ -348,6 +348,10 @@ pub mod iris {
     pub const NS_MORPHISM: &str = "https://uor.foundation/morphism/";
     /// State namespace.
     pub const NS_STATE: &str = "https://uor.foundation/state/";
+    /// Homology namespace.
+    pub const NS_HOMOLOGY: &str = "https://uor.foundation/homology/";
+    /// Cohomology namespace.
+    pub const NS_COHOMOLOGY: &str = "https://uor.foundation/cohomology/";
 
     // XSD datatypes
     /// `xsd:string`.

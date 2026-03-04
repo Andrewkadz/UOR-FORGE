@@ -74,4 +74,8 @@ pub trait Transition<P: Primitives> {
     type ComputationTrace: crate::bridge::trace::ComputationTrace<P>;
     /// The computation trace recording the kernel operations that effected this state transition.
     fn trace(&self) -> &Self::ComputationTrace;
+    /// Associated type for `TopologicalDelta`.
+    type TopologicalDelta: crate::user::morphism::TopologicalDelta<P>;
+    /// A snapshot of topological invariants at this transition point.
+    fn topological_snapshot(&self) -> &Self::TopologicalDelta;
 }

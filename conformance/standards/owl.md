@@ -42,13 +42,17 @@ The UOR Foundation ontology is expressed in OWL 2 DL. All OWL 2 DL restrictions 
 
 ## Named Individuals
 
-All 18 named individuals must be typed with a known OWL class:
+All 269 named individuals must be typed with a known OWL class:
 - 10 operation individuals: `op:neg`, `op:bnot`, `op:succ`, `op:pred`, `op:add`, `op:sub`, `op:mul`, `op:xor`, `op:and`, `op:or`
 - 2 schema individuals: `schema:pi1`, `schema:zero`
 - 1 identity individual: `op:criticalIdentity`
 - 1 group individual: `op:D2n`
 - 3 metric axis individuals: `type:verticalAxis`, `type:horizontalAxis`, `type:diagonalAxis`
 - 1 composition law individual: `morphism:criticalComposition`
+- 2 address individuals: `op:AD_1`, `op:AD_2`
+- 250 `op:Identity` individuals (algebraic identities across all algebra groups)
+- 2 homology functor individuals: `homology:nerveFunctorN`, `homology:chainFunctorC`
+- 4 cohomology identity individuals: `cohomology:coboundarySquaredZero`, `cohomology:deRhamDuality`, `cohomology:sheafCohomologyBridge`, `cohomology:localGlobalPrinciple`
 
 ## References
 

@@ -31,7 +31,7 @@ uor-ontology (spec/)
 `uor-ontology` encodes the complete ontology as typed Rust static data:
 
 - **`model.rs`**: Core types — `Namespace`, `Class`, `Property`, `Individual`, `Ontology`
-- **`namespaces/*.rs`**: 14 modules, one per namespace (all 12 amendments applied)
+- **`namespaces/*.rs`**: 16 modules, one per namespace (all 22 amendments applied)
 - **`serializer/jsonld.rs`**: Serializes to JSON-LD 1.1
 - **`serializer/turtle.rs`**: Serializes to Turtle 1.1
 - **`serializer/ntriples.rs`**: Serializes to N-Triples
@@ -55,13 +55,13 @@ This crate is the single source of truth. It is internal (`publish = false`).
 `uor-foundation` is the **generated** published crate. Every file in `foundation/src/`
 is produced by `uor-crate` — never hand-edited.
 
-- **98 traits** (one per OWL class, generic over `Primitives`)
-- **164 methods** (one per property with a domain)
+- **123 traits** (one per OWL class, generic over `Primitives`)
+- **226 methods** (one per property with a domain)
 - **5 enums** (Space, PrimitiveOp, MetricAxis, FiberState, GeometricCharacter)
-- **5 constant modules** (for singleton named individuals)
+- **256 constant modules** (for named individuals)
 - **Zero mandatory dependencies** — pure traits
 
-Module structure: `kernel/` (3 namespaces), `bridge/` (8 namespaces), `user/` (3 namespaces).
+Module structure: `kernel/` (3 namespaces), `bridge/` (10 namespaces), `user/` (3 namespaces).
 
 ## conformance/ Library
 
@@ -69,7 +69,7 @@ Module structure: `kernel/` (3 namespaces), `bridge/` (8 namespaces), `user/` (3
 
 1. **Rust source**: API documentation, style conventions
 2. **Ontology artifacts**: JSON-LD 1.1, OWL 2 DL constraints, RDF 1.1, Turtle 1.1, inventory counts
-3. **SHACL instances**: 15 test graphs validated against 98 NodeShapes
+3. **SHACL instances**: 23 test graphs validated against 123 NodeShapes
 4. **Generated crate**: Trait completeness, method completeness, individual completeness
 5. **Documentation**: Diataxis structure, completeness, accuracy, links
 6. **Website**: HTML5, WCAG 2.1 AA, CSS, coverage, links
@@ -90,7 +90,7 @@ The conformance suite is the **single gate** — all components must pass before
 
 - Templates use the Tera template engine
 - Namespace pages are auto-generated (no hand-written HTML for spec terms)
-- Search index is generated from all 98 classes, 166 properties, 18 individuals
+- Search index is generated from all 123 classes, 229 properties, 269 individuals
 - No external dependencies (no CDN, no tracking, no third-party scripts)
 
 ## Build Pipeline
@@ -105,7 +105,7 @@ cargo run --bin uor-conformance → validates all of the above
 
 ## Amendment History
 
-The spec crate implements all 12 amendments from the UOR Foundation completion plan:
+The spec crate implements all 22 amendments from the UOR Foundation completion plan:
 
 | Amendment | Namespace | Key Additions |
 |-----------|-----------|---------------|
@@ -121,3 +121,13 @@ The spec crate implements all 12 amendments from the UOR Foundation completion p
 | 10 | type/ | Constraint hierarchy (6 classes), MetricAxis, 3 axis individuals |
 | 11 | resolver/, derivation/ | ResolutionState, RefinementSuggestion, DerivationStep/RefinementStep |
 | 12 | morphism/ | Composition, Identity, CompositionLaw; criticalComposition individual |
+| 13 | u/, op/ | Content addressing (AD_1/AD_2), AddressHierarchy, 4 properties |
+| 14 | op/ | 50 Ring/Boolean/XOR/Dihedral/Universal/Group/Carry identities |
+| 15 | op/ | 42 Constraint/Fiber/Resolution identities |
+| 16 | op/ | 52 Observable/Cert/Structure identities |
+| 17 | op/ | 64 Transform/Automorphism/Embedding/Analytical identities |
+| 18 | observable/, resolver/ | Jacobian, TopologicalObservable, BettiNumber, SpectralGap, ConstraintNerve |
+| 19 | op/ | 21 Thermodynamic/Analytical/Partition/Resolution identities |
+| 20 | op/ | 6 Differential calculus, Homological algebra, Index theorem identities |
+| 21 | op/, homology/, cohomology/ | Structural Reasoning namespaces, ψ-pipeline, identity grounding |
+| 22 | morphism/, state/ | TopologicalDelta class, topologicalSnapshot property |

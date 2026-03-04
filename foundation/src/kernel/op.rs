@@ -47,6 +47,10 @@ pub trait Identity<P: Primitives> {
     fn rhs(&self) -> &Self::Operation;
     /// The quantifier scope: the variable(s) over which this algebraic identity holds (e.g., 'x ∈ R_n').
     fn for_all(&self) -> &P::String;
+    /// Verification status of an identity: 'verifiable' (exhaustively checkable) or 'derivable' (follows from axioms).
+    fn verification_status(&self) -> &P::String;
+    /// The verification path for an identity: either the enumeration domain or the trait-graph walk.
+    fn verification_path(&self) -> &P::String;
 }
 
 /// A group: a set with an associative binary operation, an identity element, and inverses for every element.
@@ -73,6 +77,10 @@ pub mod critical_identity {
         "https://uor.foundation/op/neg",
         "https://uor.foundation/op/bnot",
     ];
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Addressing bijection: addresses(glyph(d)) = d. Round-trip from datum through glyph and back is identity.
@@ -83,6 +91,10 @@ pub mod ad_1 {
     pub const LHS: &str = "addresses(glyph(d))";
     /// `rhs`
     pub const RHS: &str = "d";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Address → Ring → bijection";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding coherence: glyph(ι(addresses(a))) = ι_addr(a). The addressing diagram commutes through embeddings.
@@ -93,6 +105,10 @@ pub mod ad_2 {
     pub const LHS: &str = "glyph(ι(addresses(a)))";
     /// `rhs`
     pub const RHS: &str = "ι_addr(a)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Address → Ring → bijection";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Additive associativity: add(x, add(y, z)) = add(add(x, y), z).
@@ -103,6 +119,10 @@ pub mod r_a1 {
     pub const LHS: &str = "add(x, add(y, z))";
     /// `rhs`
     pub const RHS: &str = "add(add(x, y), z)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Additive identity: add(x, 0) = x.
@@ -113,6 +133,10 @@ pub mod r_a2 {
     pub const LHS: &str = "add(x, 0)";
     /// `rhs`
     pub const RHS: &str = "x";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Additive inverse: add(x, neg(x)) = 0.
@@ -123,6 +147,10 @@ pub mod r_a3 {
     pub const LHS: &str = "add(x, neg(x))";
     /// `rhs`
     pub const RHS: &str = "0";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Additive commutativity: add(x, y) = add(y, x).
@@ -133,6 +161,10 @@ pub mod r_a4 {
     pub const LHS: &str = "add(x, y)";
     /// `rhs`
     pub const RHS: &str = "add(y, x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Subtraction definition: sub(x, y) = add(x, neg(y)).
@@ -143,6 +175,10 @@ pub mod r_a5 {
     pub const LHS: &str = "sub(x, y)";
     /// `rhs`
     pub const RHS: &str = "add(x, neg(y))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Negation involution: neg(neg(x)) = x.
@@ -153,6 +189,10 @@ pub mod r_a6 {
     pub const LHS: &str = "neg(neg(x))";
     /// `rhs`
     pub const RHS: &str = "x";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Multiplicative associativity: mul(x, mul(y, z)) = mul(mul(x, y), z).
@@ -163,6 +203,10 @@ pub mod r_m1 {
     pub const LHS: &str = "mul(x, mul(y, z))";
     /// `rhs`
     pub const RHS: &str = "mul(mul(x, y), z)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Multiplicative identity: mul(x, 1) = x.
@@ -173,6 +217,10 @@ pub mod r_m2 {
     pub const LHS: &str = "mul(x, 1)";
     /// `rhs`
     pub const RHS: &str = "x";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Multiplicative commutativity: mul(x, y) = mul(y, x).
@@ -183,6 +231,10 @@ pub mod r_m3 {
     pub const LHS: &str = "mul(x, y)";
     /// `rhs`
     pub const RHS: &str = "mul(y, x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Distributivity: mul(x, add(y, z)) = add(mul(x, y), mul(x, z)).
@@ -193,6 +245,10 @@ pub mod r_m4 {
     pub const LHS: &str = "mul(x, add(y, z))";
     /// `rhs`
     pub const RHS: &str = "add(mul(x, y), mul(x, z))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Annihilation: mul(x, 0) = 0.
@@ -203,6 +259,10 @@ pub mod r_m5 {
     pub const LHS: &str = "mul(x, 0)";
     /// `rhs`
     pub const RHS: &str = "0";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// XOR associativity: xor(x, xor(y, z)) = xor(xor(x, y), z).
@@ -213,6 +273,10 @@ pub mod b_1 {
     pub const LHS: &str = "xor(x, xor(y, z))";
     /// `rhs`
     pub const RHS: &str = "xor(xor(x, y), z)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// XOR identity: xor(x, 0) = x.
@@ -223,6 +287,10 @@ pub mod b_2 {
     pub const LHS: &str = "xor(x, 0)";
     /// `rhs`
     pub const RHS: &str = "x";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// XOR self-inverse: xor(x, x) = 0.
@@ -233,6 +301,10 @@ pub mod b_3 {
     pub const LHS: &str = "xor(x, x)";
     /// `rhs`
     pub const RHS: &str = "0";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// AND associativity: and(x, and(y, z)) = and(and(x, y), z).
@@ -243,6 +315,10 @@ pub mod b_4 {
     pub const LHS: &str = "and(x, and(y, z))";
     /// `rhs`
     pub const RHS: &str = "and(and(x, y), z)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// AND identity: and(x, 2^n - 1) = x.
@@ -253,6 +329,10 @@ pub mod b_5 {
     pub const LHS: &str = "and(x, 2^n - 1)";
     /// `rhs`
     pub const RHS: &str = "x";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// AND annihilation: and(x, 0) = 0.
@@ -263,6 +343,10 @@ pub mod b_6 {
     pub const LHS: &str = "and(x, 0)";
     /// `rhs`
     pub const RHS: &str = "0";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// OR associativity: or(x, or(y, z)) = or(or(x, y), z).
@@ -273,6 +357,10 @@ pub mod b_7 {
     pub const LHS: &str = "or(x, or(y, z))";
     /// `rhs`
     pub const RHS: &str = "or(or(x, y), z)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// OR identity: or(x, 0) = x.
@@ -283,6 +371,10 @@ pub mod b_8 {
     pub const LHS: &str = "or(x, 0)";
     /// `rhs`
     pub const RHS: &str = "x";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Absorption: and(x, or(x, y)) = x.
@@ -293,6 +385,10 @@ pub mod b_9 {
     pub const LHS: &str = "and(x, or(x, y))";
     /// `rhs`
     pub const RHS: &str = "x";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// AND distributes over OR: and(x, or(y, z)) = or(and(x, y), and(x, z)).
@@ -303,6 +399,10 @@ pub mod b_10 {
     pub const LHS: &str = "and(x, or(y, z))";
     /// `rhs`
     pub const RHS: &str = "or(and(x, y), and(x, z))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// De Morgan 1: bnot(and(x, y)) = or(bnot(x), bnot(y)).
@@ -313,6 +413,10 @@ pub mod b_11 {
     pub const LHS: &str = "bnot(and(x, y))";
     /// `rhs`
     pub const RHS: &str = "or(bnot(x), bnot(y))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// De Morgan 2: bnot(or(x, y)) = and(bnot(x), bnot(y)).
@@ -323,6 +427,10 @@ pub mod b_12 {
     pub const LHS: &str = "bnot(or(x, y))";
     /// `rhs`
     pub const RHS: &str = "and(bnot(x), bnot(y))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Bnot involution: bnot(bnot(x)) = x.
@@ -333,6 +441,10 @@ pub mod b_13 {
     pub const LHS: &str = "bnot(bnot(x))";
     /// `rhs`
     pub const RHS: &str = "x";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Neg via subtraction: neg(x) = sub(0, x).
@@ -343,6 +455,10 @@ pub mod x_1 {
     pub const LHS: &str = "neg(x)";
     /// `rhs`
     pub const RHS: &str = "sub(0, x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Complement via XOR: bnot(x) = xor(x, 2^n - 1).
@@ -353,6 +469,10 @@ pub mod x_2 {
     pub const LHS: &str = "bnot(x)";
     /// `rhs`
     pub const RHS: &str = "xor(x, 2^n - 1)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Succ via addition: succ(x) = add(x, 1).
@@ -363,6 +483,10 @@ pub mod x_3 {
     pub const LHS: &str = "succ(x)";
     /// `rhs`
     pub const RHS: &str = "add(x, 1)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Pred via subtraction: pred(x) = sub(x, 1).
@@ -373,6 +497,10 @@ pub mod x_4 {
     pub const LHS: &str = "pred(x)";
     /// `rhs`
     pub const RHS: &str = "sub(x, 1)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Neg-bnot bridge: neg(x) = add(bnot(x), 1).
@@ -383,6 +511,10 @@ pub mod x_5 {
     pub const LHS: &str = "neg(x)";
     /// `rhs`
     pub const RHS: &str = "add(bnot(x), 1)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Complement predecessor: bnot(x) = pred(neg(x)).
@@ -393,6 +525,10 @@ pub mod x_6 {
     pub const LHS: &str = "bnot(x)";
     /// `rhs`
     pub const RHS: &str = "pred(neg(x))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// XOR-add bridge: xor(x, y) = add(x, y) - 2 * and(x, y) (in Z before mod).
@@ -403,6 +539,10 @@ pub mod x_7 {
     pub const LHS: &str = "xor(x, y)";
     /// `rhs`
     pub const RHS: &str = "add(x, y) - 2 * and(x, y)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Rotation order: succ^\[2^n\](x) = x.
@@ -413,6 +553,10 @@ pub mod d_1 {
     pub const LHS: &str = "succ^{2^n}(x)";
     /// `rhs`
     pub const RHS: &str = "x";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Conjugation: neg(succ(neg(x))) = pred(x).
@@ -423,6 +567,10 @@ pub mod d_3 {
     pub const LHS: &str = "neg(succ(neg(x)))";
     /// `rhs`
     pub const RHS: &str = "pred(x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Reverse composition: bnot(neg(x)) = pred(x).
@@ -433,6 +581,10 @@ pub mod d_4 {
     pub const LHS: &str = "bnot(neg(x))";
     /// `rhs`
     pub const RHS: &str = "pred(x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Group closure: D_\[2^n\] = \[succ^k, neg ∘ succ^k : 0 ≤ k < 2^n\].
@@ -443,6 +595,10 @@ pub mod d_5 {
     pub const LHS: &str = "D_{2^n}";
     /// `rhs`
     pub const RHS: &str = "{succ^k, neg ∘ succ^k : 0 ≤ k < 2^n}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Unit group decomposition: R_n× ≅ Z/2 × Z/2^\[n-2\] for n ≥ 3.
@@ -453,6 +609,10 @@ pub mod u_1 {
     pub const LHS: &str = "R_n×";
     /// `rhs`
     pub const RHS: &str = "Z/2 × Z/2^{n-2}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Unit group special cases: R_1× ≅ \[1\]; R_2× ≅ Z/2.
@@ -463,6 +623,10 @@ pub mod u_2 {
     pub const LHS: &str = "R_1× ≅ {1}; R_2× ≅ Z/2";
     /// `rhs`
     pub const RHS: &str = "special cases for small n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Multiplicative order: ord(u) = lcm(ord((-1)^a), ord(3^b)).
@@ -473,6 +637,10 @@ pub mod u_3 {
     pub const LHS: &str = "ord(u)";
     /// `rhs`
     pub const RHS: &str = "lcm(ord((-1)^a), ord(3^b))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Resonance period: ord_g(2) divides φ(g).
@@ -483,6 +651,10 @@ pub mod u_4 {
     pub const LHS: &str = "ord_g(2)";
     /// `rhs`
     pub const RHS: &str = "divides φ(g)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Step formula derivation: step_g = 2 * ((g - (2^n mod g)) mod g) + 1.
@@ -493,6 +665,10 @@ pub mod u_5 {
     pub const LHS: &str = "step_g";
     /// `rhs`
     pub const RHS: &str = "2 * ((g - (2^n mod g)) mod g) + 1";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Scaling not dihedral: μ_u ∉ D_\[2^n\] for u ≠ ±1.
@@ -503,6 +679,10 @@ pub mod ag_1 {
     pub const LHS: &str = "μ_u";
     /// `rhs`
     pub const RHS: &str = "∉ D_{2^n}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Affine group: Aff(R_n) = R_n× ⋉ R_n.
@@ -513,6 +693,10 @@ pub mod ag_2 {
     pub const LHS: &str = "Aff(R_n)";
     /// `rhs`
     pub const RHS: &str = "R_n× ⋉ R_n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Affine group order: |Aff(R_n)| = 2^\[2n-1\].
@@ -523,6 +707,10 @@ pub mod ag_3 {
     pub const LHS: &str = "|Aff(R_n)|";
     /// `rhs`
     pub const RHS: &str = "2^{2n-1}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Subgroup inclusion: D_\[2^n\] ⊂ Aff(R_n) with u ∈ \[±1\].
@@ -533,6 +721,10 @@ pub mod ag_4 {
     pub const LHS: &str = "D_{2^n}";
     /// `rhs`
     pub const RHS: &str = "⊂ Aff(R_n), u ∈ {±1}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Addition decomposition: add(x,y)_k = xor(x_k, xor(y_k, c_k(x,y))).
@@ -543,6 +735,10 @@ pub mod ca_1 {
     pub const LHS: &str = "add(x,y)_k";
     /// `rhs`
     pub const RHS: &str = "xor(x_k, xor(y_k, c_k(x,y)))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Carry recurrence: c_\[k+1\](x,y) = or(and(x_k,y_k), and(xor(x_k,y_k), c_k)).
@@ -553,6 +749,10 @@ pub mod ca_2 {
     pub const LHS: &str = "c_{k+1}(x,y)";
     /// `rhs`
     pub const RHS: &str = "or(and(x_k,y_k), and(xor(x_k,y_k), c_k))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Carry commutativity: c(x, y) = c(y, x).
@@ -563,6 +763,10 @@ pub mod ca_3 {
     pub const LHS: &str = "c(x, y)";
     /// `rhs`
     pub const RHS: &str = "c(y, x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Zero carry: c(x, 0) = 0 at all positions.
@@ -573,6 +777,10 @@ pub mod ca_4 {
     pub const LHS: &str = "c(x, 0)";
     /// `rhs`
     pub const RHS: &str = "0";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Negation carry: c(x, neg(x))_k = 1 for k > v_2(x).
@@ -583,6 +791,10 @@ pub mod ca_5 {
     pub const LHS: &str = "c(x, neg(x))_k";
     /// `rhs`
     pub const RHS: &str = "1";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Carry-incompatibility link: d_Δ(x, y) > 0 iff ∃ k : c_k(x,y) = 1.
@@ -593,6 +805,10 @@ pub mod ca_6 {
     pub const LHS: &str = "d_Δ(x, y) > 0";
     /// `rhs`
     pub const RHS: &str = "∃ k : c_k(x,y) = 1";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "exhaustive_enumeration(R_n)";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "verifiable";
 }
 
 /// Constraint pin union: pins of a composite constraint equal the union of component pins.
@@ -603,6 +819,10 @@ pub mod c_1 {
     pub const LHS: &str = "pins(compose(A, B))";
     /// `rhs`
     pub const RHS: &str = "pins(A) ∪ pins(B)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Ring → Constraint via axiom inheritance";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint composition commutativity.
@@ -613,6 +833,10 @@ pub mod c_2 {
     pub const LHS: &str = "compose(A, B)";
     /// `rhs`
     pub const RHS: &str = "compose(B, A)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Ring → Constraint via axiom inheritance";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint composition associativity.
@@ -623,6 +847,10 @@ pub mod c_3 {
     pub const LHS: &str = "compose(compose(A,B), C)";
     /// `rhs`
     pub const RHS: &str = "compose(A, compose(B,C))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Ring → Constraint via axiom inheritance";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint composition idempotence.
@@ -633,6 +861,10 @@ pub mod c_4 {
     pub const LHS: &str = "compose(A, A)";
     /// `rhs`
     pub const RHS: &str = "A";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Ring → Constraint via axiom inheritance";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint composition identity element.
@@ -643,6 +875,10 @@ pub mod c_5 {
     pub const LHS: &str = "compose(A, ε)";
     /// `rhs`
     pub const RHS: &str = "A";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Ring → Constraint via axiom inheritance";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint composition annihilator.
@@ -653,6 +889,10 @@ pub mod c_6 {
     pub const LHS: &str = "compose(A, Ω)";
     /// `rhs`
     pub const RHS: &str = "Ω";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Ring → Constraint via axiom inheritance";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint-depth invariant: carry complexity of the residue representation equals the type depth.
@@ -663,6 +903,10 @@ pub mod cdi {
     pub const LHS: &str = "carry(residue(T))";
     /// `rhs`
     pub const RHS: &str = "depth(T)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Dihedral via interaction";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint quotient lattice isomorphism to power set.
@@ -673,6 +917,10 @@ pub mod cl_1 {
     pub const LHS: &str = "Constraint/≡";
     /// `rhs`
     pub const RHS: &str = "2^{[n]}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Lattice via ordering";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Lattice join equals constraint composition.
@@ -683,6 +931,10 @@ pub mod cl_2 {
     pub const LHS: &str = "A ∨ B";
     /// `rhs`
     pub const RHS: &str = "compose(A, B)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Lattice via ordering";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Lattice meet pins the intersection of component pins.
@@ -693,6 +945,10 @@ pub mod cl_3 {
     pub const LHS: &str = "pins(A ∧ B)";
     /// `rhs`
     pub const RHS: &str = "pins(A) ∩ pins(B)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Lattice via ordering";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint lattice distributivity.
@@ -703,6 +959,10 @@ pub mod cl_4 {
     pub const LHS: &str = "(A ∨ B) ∧ C";
     /// `rhs`
     pub const RHS: &str = "(A ∧ C) ∨ (B ∧ C)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Lattice via ordering";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint lattice complement existence.
@@ -713,6 +973,10 @@ pub mod cl_5 {
     pub const LHS: &str = "A ∧ A̅ = ε, A ∨ A̅ = Ω";
     /// `rhs`
     pub const RHS: &str = "∃ A̅ (complement)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Lattice via ordering";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint redundancy criterion.
@@ -723,6 +987,10 @@ pub mod cm_1 {
     pub const LHS: &str = "C_i redundant in {C_1,...,C_k}";
     /// `rhs`
     pub const RHS: &str = "pins(C_i) ⊆ ∪_{j≠i} pins(C_j)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Metric via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Minimal cover via greedy irredundant removal.
@@ -733,6 +1001,10 @@ pub mod cm_2 {
     pub const LHS: &str = "minimal cover";
     /// `rhs`
     pub const RHS: &str = "irredundant sub-collection (greedy removal)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Metric via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Minimum constraint count to cover n fibers.
@@ -743,6 +1015,10 @@ pub mod cm_3 {
     pub const LHS: &str = "min constraints to cover n fibers";
     /// `rhs`
     pub const RHS: &str = "⌈n / max_k pins_per_constraint_k⌉";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Metric via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Residue constraint cost is the step formula.
@@ -753,6 +1029,10 @@ pub mod cr_1 {
     pub const LHS: &str = "cost(ResidueConstraint(m, r))";
     /// `rhs`
     pub const RHS: &str = "step_m = 2 × ((−2^n) mod m) + 1";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Resolution via convergence";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Carry constraint cost is the popcount of the pattern.
@@ -763,6 +1043,10 @@ pub mod cr_2 {
     pub const LHS: &str = "cost(CarryConstraint(p))";
     /// `rhs`
     pub const RHS: &str = "popcount(p)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Resolution via convergence";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Depth constraint cost is sum of residue and carry costs.
@@ -773,6 +1057,10 @@ pub mod cr_3 {
     pub const LHS: &str = "cost(DepthConstraint(d_min, d_max))";
     /// `rhs`
     pub const RHS: &str = "cost(residue) + cost(carry)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Resolution via convergence";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Composite constraint cost is subadditive.
@@ -783,6 +1071,10 @@ pub mod cr_4 {
     pub const LHS: &str = "cost(compose(A, B))";
     /// `rhs`
     pub const RHS: &str = "≤ cost(A) + cost(B)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Resolution via convergence";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Optimal resolution order is increasing cost.
@@ -793,6 +1085,10 @@ pub mod cr_5 {
     pub const LHS: &str = "optimal resolution order";
     /// `rhs`
     pub const RHS: &str = "increasing cost order";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Resolution via convergence";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fiber monotonicity: a pinned fiber cannot be unpinned.
@@ -803,6 +1099,10 @@ pub mod f_1 {
     pub const LHS: &str = "pinned fiber";
     /// `rhs`
     pub const RHS: &str = "cannot be unpinned";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → FiberBudget → pins";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fiber budget upper bound: at most n pin operations to close.
@@ -813,6 +1113,10 @@ pub mod f_2 {
     pub const LHS: &str = "pin operations to close";
     /// `rhs`
     pub const RHS: &str = "≤ n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → FiberBudget → pins";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fiber budget conservation: pinned + free = total fibers.
@@ -823,6 +1127,10 @@ pub mod f_3 {
     pub const LHS: &str = "pinnedCount + freeCount";
     /// `rhs`
     pub const RHS: &str = "totalFibers = n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → FiberBudget → pins";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fiber budget closure: closed iff all fibers pinned.
@@ -833,6 +1141,10 @@ pub mod f_4 {
     pub const LHS: &str = "isClosed";
     /// `rhs`
     pub const RHS: &str = "freeCount = 0 ⇔ pinnedCount = n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → FiberBudget → pins";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fiber lattice bottom: all fibers free.
@@ -843,6 +1155,10 @@ pub mod fl_1 {
     pub const LHS: &str = "⊥";
     /// `rhs`
     pub const RHS: &str = "all fibers free (freeCount = n)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Lattice via ordering";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fiber lattice top: all fibers pinned.
@@ -853,6 +1169,10 @@ pub mod fl_2 {
     pub const LHS: &str = "⊤";
     /// `rhs`
     pub const RHS: &str = "all fibers pinned (pinnedCount = n)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Lattice via ordering";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fiber lattice join is union of pinnings.
@@ -863,6 +1183,10 @@ pub mod fl_3 {
     pub const LHS: &str = "join(S₁, S₂)";
     /// `rhs`
     pub const RHS: &str = "union of pinnings from S₁ and S₂";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Lattice via ordering";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fiber lattice height equals n.
@@ -873,6 +1197,10 @@ pub mod fl_4 {
     pub const LHS: &str = "lattice height";
     /// `rhs`
     pub const RHS: &str = "n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Lattice via ordering";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Unit partition membership: x is a unit iff fiber_0(x) = 1 (x is odd).
@@ -883,6 +1211,10 @@ pub mod fpm_1 {
     pub const LHS: &str = "x ∈ Unit";
     /// `rhs`
     pub const RHS: &str = "fiber_0(x) = 1 (x is odd)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Partition → Metric";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Exterior partition membership: x is exterior iff x is not in the carrier of T.
@@ -893,6 +1225,10 @@ pub mod fpm_2 {
     pub const LHS: &str = "x ∈ Exterior";
     /// `rhs`
     pub const RHS: &str = "x ∉ carrier(T)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Partition → Metric";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Irreducible partition membership: x is irreducible iff x is not a unit, exterior, or reducible.
@@ -903,6 +1239,10 @@ pub mod fpm_3 {
     pub const LHS: &str = "x ∈ Irreducible";
     /// `rhs`
     pub const RHS: &str = "x ∉ Unit ∪ Exterior AND no non-trivial factorization";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Partition → Metric";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Reducible partition membership: x is reducible iff x is not a unit, exterior, or irreducible.
@@ -913,6 +1253,10 @@ pub mod fpm_4 {
     pub const LHS: &str = "x ∈ Reducible";
     /// `rhs`
     pub const RHS: &str = "x ∉ Unit ∪ Exterior ∪ Irreducible";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Partition → Metric";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// 2-adic decomposition: every element factors as 2^{v(x)} times an odd unit.
@@ -923,6 +1267,10 @@ pub mod fpm_5 {
     pub const LHS: &str = "x = 2^{v(x)} ⋅ u";
     /// `rhs`
     pub const RHS: &str = "u odd, v(x) = min position of 1-bit";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Partition → Metric";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Stratum size formula.
@@ -933,6 +1281,10 @@ pub mod fpm_6 {
     pub const LHS: &str = "|{x: v(x) = k}|";
     /// `rhs`
     pub const RHS: &str = "2^{n−k−1} for 0 < k < n; 1 for k = n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Partition → Metric";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Base type partition cardinalities.
@@ -943,6 +1295,10 @@ pub mod fpm_7 {
     pub const LHS: &str = "base type partition";
     /// `rhs`
     pub const RHS: &str = "|Unit| = 2^{n−1}; |Irr| = 2^{n−2}; |Red| = 2^{n−2}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Partition → Metric";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fiber extraction: fiber_k(x) is the k-th bit of x.
@@ -953,6 +1309,10 @@ pub mod fs_1 {
     pub const LHS: &str = "fiber_k(x)";
     /// `rhs`
     pub const RHS: &str = "(x >> k) AND 1";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Structure via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fiber 0 is parity.
@@ -963,6 +1323,10 @@ pub mod fs_2 {
     pub const LHS: &str = "fiber_0(x)";
     /// `rhs`
     pub const RHS: &str = "x mod 2 (parity)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Structure via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Progressive fiber determination: fiber_k given lower fibers determines x mod 2^{k+1}.
@@ -973,6 +1337,10 @@ pub mod fs_3 {
     pub const LHS: &str = "fiber_k(x) given fibers 0..k−1";
     /// `rhs`
     pub const RHS: &str = "determines x mod 2^{k+1}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Structure via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Cumulative fiber determination: fibers 0..k together determine x mod 2^{k+1}.
@@ -983,6 +1351,10 @@ pub mod fs_4 {
     pub const LHS: &str = "fibers 0..k together";
     /// `rhs`
     pub const RHS: &str = "determine x mod 2^{k+1}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Structure via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Complete fiber determination: all n fibers determine x uniquely.
@@ -993,6 +1365,10 @@ pub mod fs_5 {
     pub const LHS: &str = "all n fibers";
     /// `rhs`
     pub const RHS: &str = "determine x uniquely";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Structure via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Stratum from fibers: v_2(x) is the minimum k where fiber_k(x) = 1.
@@ -1003,6 +1379,10 @@ pub mod fs_6 {
     pub const LHS: &str = "stratum(x)";
     /// `rhs`
     pub const RHS: &str = "v_2(x) = min{k : fiber_k(x) = 1}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Structure via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Depth bound: depth(x) ≤ v_2(x) for irreducible elements.
@@ -1013,6 +1393,10 @@ pub mod fs_7 {
     pub const LHS: &str = "depth(x)";
     /// `rhs`
     pub const RHS: &str = "≤ v_2(x) for irreducible elements";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Fiber → Structure via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Resolution strategy equivalence: dihedral, canonical-form, and evaluation resolvers all compute the same partition.
@@ -1023,6 +1407,10 @@ pub mod re_1 {
     pub const LHS: &str = "Π_D(T)";
     /// `rhs`
     pub const RHS: &str = "Π_C(T) = Π_E(T)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Resolution → convergence";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Resolution monotonicity: pinned count never decreases.
@@ -1033,6 +1421,10 @@ pub mod ir_1 {
     pub const LHS: &str = "pinnedCount(state_{i+1})";
     /// `rhs`
     pub const RHS: &str = "≥ pinnedCount(state_i)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Iteration → convergence";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Resolution convergence bound: at most n iterations.
@@ -1043,6 +1435,10 @@ pub mod ir_2 {
     pub const LHS: &str = "iterations to converge";
     /// `rhs`
     pub const RHS: &str = "≤ n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Iteration → convergence";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Convergence rate definition.
@@ -1053,6 +1449,10 @@ pub mod ir_3 {
     pub const LHS: &str = "convergenceRate";
     /// `rhs`
     pub const RHS: &str = "pinnedCount / iterationCount";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Iteration → convergence";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Resolution termination: loop terminates if constraint set spans all fibers.
@@ -1063,6 +1463,10 @@ pub mod ir_4 {
     pub const LHS: &str = "constraint set spans all fibers";
     /// `rhs`
     pub const RHS: &str = "loop terminates";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Iteration → convergence";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Optimal resolution level for a factor: n ≡ 0 (mod ord_g(2)).
@@ -1073,6 +1477,10 @@ pub mod sf_1 {
     pub const LHS: &str = "n ≡ 0 (mod ord_g(2))";
     /// `rhs`
     pub const RHS: &str = "factor g has optimal resolution at level n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Structure → Fiber via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint ordering by step cost: smaller step_g first.
@@ -1083,6 +1491,10 @@ pub mod sf_2 {
     pub const LHS: &str = "constraints with smaller step_g";
     /// `rhs`
     pub const RHS: &str = "are more constraining, apply first";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Structure → Fiber via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Resolution determinism: same type and constraint sequence yield unique partition.
@@ -1093,6 +1505,10 @@ pub mod rd_1 {
     pub const LHS: &str = "same type T and constraint sequence";
     /// `rhs`
     pub const RHS: &str = "unique resolved partition";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Derivation via steps";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Order independence: complete constraint sets yield the same partition regardless of order.
@@ -1103,6 +1519,10 @@ pub mod rd_2 {
     pub const LHS: &str = "complete constraint set, any order";
     /// `rhs`
     pub const RHS: &str = "same final partition";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Derivation via steps";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Evaluation resolver directly computes the set-theoretic partition.
@@ -1113,6 +1533,10 @@ pub mod se_1 {
     pub const LHS: &str = "EvaluationResolver";
     /// `rhs`
     pub const RHS: &str = "directly computes set-theoretic partition";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Structure → Evolution via dynamics";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Dihedral factorization resolver yields the same partition via orbit decomposition.
@@ -1123,6 +1547,10 @@ pub mod se_2 {
     pub const LHS: &str = "DihedralFactorizationResolver";
     /// `rhs`
     pub const RHS: &str = "orbit decomposition yields same partition";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Structure → Evolution via dynamics";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Canonical form resolver yields the same partition via confluent rewrite.
@@ -1133,6 +1561,10 @@ pub mod se_3 {
     pub const LHS: &str = "CanonicalFormResolver";
     /// `rhs`
     pub const RHS: &str = "confluent rewrite → same partition";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Structure → Evolution via dynamics";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// All three strategies compute the same set-theoretic partition.
@@ -1143,6 +1575,10 @@ pub mod se_4 {
     pub const LHS: &str = "Π_D(T) = Π_C(T) = Π_E(T)";
     /// `rhs`
     pub const RHS: &str = "all compute same set-theoretic partition";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Structure → Evolution via dynamics";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Benefit of a constraint is the number of new pins it provides.
@@ -1153,6 +1589,10 @@ pub mod oo_1 {
     pub const LHS: &str = "benefit(C_i, S)";
     /// `rhs`
     pub const RHS: &str = "|pins(C_i) ∖ S|";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Operation → Observable via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint cost is step or popcount depending on type.
@@ -1163,6 +1603,10 @@ pub mod oo_2 {
     pub const LHS: &str = "cost(C_i)";
     /// `rhs`
     pub const RHS: &str = "step_{m_i} or popcount(p_i)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Operation → Observable via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Greedy selection maximizes benefit-to-cost ratio.
@@ -1173,6 +1617,10 @@ pub mod oo_3 {
     pub const LHS: &str = "greedy selection";
     /// `rhs`
     pub const RHS: &str = "argmax benefit(C_i, S) / cost(C_i)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Operation → Observable via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Greedy approximation achieves (1 − 1/e) ≈ 63% of optimal.
@@ -1183,6 +1631,10 @@ pub mod oo_4 {
     pub const LHS: &str = "greedy approximation";
     /// `rhs`
     pub const RHS: &str = "(1 − 1/e) ≈ 63% of optimal";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Operation → Observable via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Tiebreaker: prefer vertical (residue) before horizontal (carry).
@@ -1193,6 +1645,10 @@ pub mod oo_5 {
     pub const LHS: &str = "equal cost tiebreaker";
     /// `rhs`
     pub const RHS: &str = "prefer vertical (residue) before horizontal (carry)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Operation → Observable via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Minimum convergence rate: 1 fiber per iteration (worst case).
@@ -1203,6 +1659,10 @@ pub mod cb_1 {
     pub const LHS: &str = "min convergenceRate";
     /// `rhs`
     pub const RHS: &str = "1 fiber per iteration";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Cert → Bridge via validation";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Maximum convergence rate: n fibers in 1 iteration (best case).
@@ -1213,6 +1673,10 @@ pub mod cb_2 {
     pub const LHS: &str = "max convergenceRate";
     /// `rhs`
     pub const RHS: &str = "n fibers in 1 iteration";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Cert → Bridge via validation";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Expected residue constraint rate: ⌊log_2(m)⌋ fibers per constraint.
@@ -1223,6 +1687,10 @@ pub mod cb_3 {
     pub const LHS: &str = "expected rate (residue)";
     /// `rhs`
     pub const RHS: &str = "⌊log_2(m)⌋ fibers per constraint";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Cert → Bridge via validation";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Stall detection: convergenceRate < 1 for 2 iterations suggests insufficiency.
@@ -1233,6 +1701,10 @@ pub mod cb_4 {
     pub const LHS: &str = "convergenceRate < 1 for 2 iterations";
     /// `rhs`
     pub const RHS: &str = "constraint set may be insufficient";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Cert → Bridge via validation";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Sufficiency criterion: pin union covers all fiber positions.
@@ -1243,6 +1715,10 @@ pub mod cb_5 {
     pub const LHS: &str = "∪_i pins(C_i) = {0,...,n−1}";
     /// `rhs`
     pub const RHS: &str = "constraint set closes budget";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Cert → Bridge via validation";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Iteration bound for k constraints: at most min(k, n) iterations.
@@ -1253,6 +1729,10 @@ pub mod cb_6 {
     pub const LHS: &str = "iterations for k constraints";
     /// `rhs`
     pub const RHS: &str = "≤ min(k, n)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Cert → Bridge via validation";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Ring metric triangle inequality.
@@ -1263,6 +1743,10 @@ pub mod ob_m1 {
     pub const LHS: &str = "d_R(x, z)";
     /// `rhs`
     pub const RHS: &str = "≤ d_R(x, y) + d_R(y, z)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Metric via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Hamming metric triangle inequality.
@@ -1273,6 +1757,10 @@ pub mod ob_m2 {
     pub const LHS: &str = "d_H(x, z)";
     /// `rhs`
     pub const RHS: &str = "≤ d_H(x, y) + d_H(y, z)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Metric via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Incompatibility metric is the absolute difference of ring and Hamming metrics.
@@ -1283,6 +1771,10 @@ pub mod ob_m3 {
     pub const LHS: &str = "d_Δ(x, y)";
     /// `rhs`
     pub const RHS: &str = "|d_R(x, y) − d_H(x, y)|";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Metric via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Negation preserves ring metric.
@@ -1293,6 +1785,10 @@ pub mod ob_m4 {
     pub const LHS: &str = "d_R(neg(x), neg(y))";
     /// `rhs`
     pub const RHS: &str = "d_R(x, y)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Metric via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Bitwise complement preserves Hamming metric.
@@ -1303,6 +1799,10 @@ pub mod ob_m5 {
     pub const LHS: &str = "d_H(bnot(x), bnot(y))";
     /// `rhs`
     pub const RHS: &str = "d_H(x, y)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Metric via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Successor preserves ring metric but may change Hamming metric.
@@ -1313,6 +1813,10 @@ pub mod ob_m6 {
     pub const LHS: &str = "d_R(succ(x), succ(y))";
     /// `rhs`
     pub const RHS: &str = "d_R(x, y) but d_H may differ";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Metric via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Negation-complement commutator is constant 2.
@@ -1323,6 +1827,10 @@ pub mod ob_c1 {
     pub const LHS: &str = "[neg, bnot](x)";
     /// `rhs`
     pub const RHS: &str = "2";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Constraint via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Negation-translation commutator.
@@ -1333,6 +1841,10 @@ pub mod ob_c2 {
     pub const LHS: &str = "[neg, add(•,k)](x)";
     /// `rhs`
     pub const RHS: &str = "−2k mod 2^n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Constraint via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Complement-XOR commutator is trivial.
@@ -1343,6 +1855,10 @@ pub mod ob_c3 {
     pub const LHS: &str = "[bnot, xor(•,k)](x)";
     /// `rhs`
     pub const RHS: &str = "0";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Constraint via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Additive paths have trivial monodromy (abelian ⇒ path-independent).
@@ -1353,6 +1869,10 @@ pub mod ob_h1 {
     pub const LHS: &str = "closed additive path monodromy";
     /// `rhs`
     pub const RHS: &str = "trivial (abelian ⇒ path-independent)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Hamming via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Dihedral generator paths have monodromy in D_{2^n}.
@@ -1363,6 +1883,10 @@ pub mod ob_h2 {
     pub const LHS: &str = "closed {neg,bnot} path monodromy";
     /// `rhs`
     pub const RHS: &str = "∈ D_{2^n}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Hamming via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Successor-only closed path winding number.
@@ -1373,6 +1897,10 @@ pub mod ob_h3 {
     pub const LHS: &str = "succ-only path WindingNumber";
     /// `rhs`
     pub const RHS: &str = "path length / 2^n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Hamming via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Path length is additive under concatenation.
@@ -1383,6 +1911,10 @@ pub mod ob_p1 {
     pub const LHS: &str = "PathLength(p₁ ⋅ p₂)";
     /// `rhs`
     pub const RHS: &str = "PathLength(p₁) + PathLength(p₂)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Partition via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Total variation is subadditive under concatenation.
@@ -1393,6 +1925,10 @@ pub mod ob_p2 {
     pub const LHS: &str = "TotalVariation(p₁ ⋅ p₂)";
     /// `rhs`
     pub const RHS: &str = "≤ TotalVariation(p₁) + TotalVariation(p₂)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Partition via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Cascade length is additive under sequential composition.
@@ -1403,6 +1939,10 @@ pub mod ob_p3 {
     pub const LHS: &str = "CascadeLength(c₁ ; c₂)";
     /// `rhs`
     pub const RHS: &str = "CascadeLength(c₁) + CascadeLength(c₂)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → Partition via measurement";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Catastrophe boundaries are powers of 2.
@@ -1413,6 +1953,10 @@ pub mod ct_1 {
     pub const LHS: &str = "catastrophe boundaries";
     /// `rhs`
     pub const RHS: &str = "g = 2^k for 1 ≤ k ≤ n−1";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Type via classification";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Odd prime catastrophe transitions visibility via residue constraints.
@@ -1423,6 +1967,10 @@ pub mod ct_2 {
     pub const LHS: &str = "odd prime catastrophe";
     /// `rhs`
     pub const RHS: &str = "ResidueConstraint(p, •) transitions visibility";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Type via classification";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Catastrophe threshold is normalized step cost.
@@ -1433,6 +1981,10 @@ pub mod ct_3 {
     pub const LHS: &str = "CatastropheThreshold(g)";
     /// `rhs`
     pub const RHS: &str = "step_g / n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Type via classification";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Composite catastrophe threshold is max of component thresholds.
@@ -1443,6 +1995,10 @@ pub mod ct_4 {
     pub const LHS: &str = "composite catastrophe g = p⋅q";
     /// `rhs`
     pub const RHS: &str = "max(step_p, step_q) / n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Type via classification";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Curvature flux is the sum of incompatibility along a path.
@@ -1453,6 +2009,10 @@ pub mod cf_1 {
     pub const LHS: &str = "CurvatureFlux(γ)";
     /// `rhs`
     pub const RHS: &str = "Σ |d_R(x_i, x_{i+1}) − d_H(x_i, x_{i+1})|";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Fiber via pinning";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Resolution cost is bounded below by curvature flux of optimal path.
@@ -1463,6 +2023,10 @@ pub mod cf_2 {
     pub const LHS: &str = "ResolutionCost(T)";
     /// `rhs`
     pub const RHS: &str = "≥ CurvatureFlux(γ_opt)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Fiber via pinning";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Successor curvature flux: trailing_ones(x) for most x, n−1 at maximum.
@@ -1473,6 +2037,10 @@ pub mod cf_3 {
     pub const LHS: &str = "CurvatureFlux(x, succ(x))";
     /// `rhs`
     pub const RHS: &str = "trailing_ones(x) for t < n; n−1 for x = 2^n−1";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Fiber via pinning";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Total successor curvature flux over R_n equals 2^n − 2.
@@ -1483,6 +2051,10 @@ pub mod cf_4 {
     pub const LHS: &str = "Σ_{x ∈ R_n} CurvatureFlux(x, succ(x))";
     /// `rhs`
     pub const RHS: &str = "2^n − 2";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → Fiber via pinning";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Additive holonomy is trivial (abelian group).
@@ -1493,6 +2065,10 @@ pub mod hg_1 {
     pub const LHS: &str = "additive holonomy";
     /// `rhs`
     pub const RHS: &str = "trivial (abelian ⇒ path-independent)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Hamming → Geometry via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Dihedral generator holonomy group is D_{2^n}.
@@ -1503,6 +2079,10 @@ pub mod hg_2 {
     pub const LHS: &str = "{neg, bnot, succ, pred} holonomy";
     /// `rhs`
     pub const RHS: &str = "D_{2^n}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Hamming → Geometry via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Unit multiplication holonomy equals the unit group.
@@ -1513,6 +2093,10 @@ pub mod hg_3 {
     pub const LHS: &str = "{mul(•, u) : u ∈ R_n×} holonomy";
     /// `rhs`
     pub const RHS: &str = "R_n× ≅ Z/2 × Z/2^{n−2}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Hamming → Geometry via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Full holonomy group is the affine group.
@@ -1523,6 +2107,10 @@ pub mod hg_4 {
     pub const LHS: &str = "Hol(R_n)";
     /// `rhs`
     pub const RHS: &str = "Aff(R_n) = R_n× ⋉ R_n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Hamming → Geometry via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Holonomy group decomposition into dihedral and non-trivial units.
@@ -1533,6 +2121,10 @@ pub mod hg_5 {
     pub const LHS: &str = "Hol(R_n) decomposition";
     /// `rhs`
     pub const RHS: &str = "D_{2^n} ⋅ {mul(•,u) : u ∈ R_n×, u ≠ ±1}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Hamming → Geometry via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Category left identity: compose(id, f) = f.
@@ -1543,6 +2135,10 @@ pub mod t_c1 {
     pub const LHS: &str = "compose(id, f)";
     /// `rhs`
     pub const RHS: &str = "f";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Composition via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Category right identity: compose(f, id) = f.
@@ -1553,6 +2149,10 @@ pub mod t_c2 {
     pub const LHS: &str = "compose(f, id)";
     /// `rhs`
     pub const RHS: &str = "f";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Composition via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Category associativity of transform composition.
@@ -1563,6 +2163,10 @@ pub mod t_c3 {
     pub const LHS: &str = "compose(f, compose(g, h))";
     /// `rhs`
     pub const RHS: &str = "compose(compose(f, g), h)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Composition via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Composability condition: f composesWith g iff target(f) = source(g).
@@ -1573,6 +2177,10 @@ pub mod t_c4 {
     pub const LHS: &str = "f composesWith g";
     /// `rhs`
     pub const RHS: &str = "target(f) = source(g)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Composition via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Negation is a ring-metric isometry.
@@ -1583,6 +2191,10 @@ pub mod t_i1 {
     pub const LHS: &str = "d_R(neg(x), neg(y))";
     /// `rhs`
     pub const RHS: &str = "d_R(x, y)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Isometry via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Bitwise complement is a Hamming-metric isometry.
@@ -1593,6 +2205,10 @@ pub mod t_i2 {
     pub const LHS: &str = "d_H(bnot(x), bnot(y))";
     /// `rhs`
     pub const RHS: &str = "d_H(x, y)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Isometry via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Successor as composed isometries: succ = neg ∘ bnot preserves d_R but not d_H.
@@ -1603,6 +2219,10 @@ pub mod t_i3 {
     pub const LHS: &str = "succ = neg ∘ bnot";
     /// `rhs`
     pub const RHS: &str = "preserves d_R but not d_H";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Isometry via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Ring isometries form a group under composition.
@@ -1613,6 +2233,10 @@ pub mod t_i4 {
     pub const LHS: &str = "ring isometries";
     /// `rhs`
     pub const RHS: &str = "form a group under composition";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Isometry via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// CurvatureObservable measures failure of ring isometry to be Hamming isometry.
@@ -1623,6 +2247,10 @@ pub mod t_i5 {
     pub const LHS: &str = "CurvatureObservable";
     /// `rhs`
     pub const RHS: &str = "measures failure of ring isometry to be Hamming isometry";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Isometry via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding injectivity.
@@ -1633,6 +2261,10 @@ pub mod t_e1 {
     pub const LHS: &str = "ι(x) = ι(y)";
     /// `rhs`
     pub const RHS: &str = "x = y";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Embedding via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding is a ring homomorphism.
@@ -1643,6 +2275,10 @@ pub mod t_e2 {
     pub const LHS: &str = "ι(add(x,y))";
     /// `rhs`
     pub const RHS: &str = "add(ι(x), ι(y)); ι(mul(x,y)) = mul(ι(x), ι(y))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Embedding via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding transitivity: composition of embeddings is an embedding.
@@ -1653,6 +2289,10 @@ pub mod t_e3 {
     pub const LHS: &str = "ι₂ ∘ ι₁ : R_n → R_k";
     /// `rhs`
     pub const RHS: &str = "is an embedding (transitivity)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Embedding via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding address coherence: glyph ∘ ι ∘ addresses is well-defined.
@@ -1663,6 +2303,10 @@ pub mod t_e4 {
     pub const LHS: &str = "glyph ∘ ι ∘ addresses";
     /// `rhs`
     pub const RHS: &str = "well-defined";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Embedding via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Dihedral group acts on constraints by transforming them.
@@ -1673,6 +2317,10 @@ pub mod t_a1 {
     pub const LHS: &str = "g ∈ D_{2^n} on Constraint C";
     /// `rhs`
     pub const RHS: &str = "g⋅C (transformed constraint)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Action via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Dihedral group action on partitions permutes components.
@@ -1683,6 +2331,10 @@ pub mod t_a2 {
     pub const LHS: &str = "g ∈ D_{2^n} on Partition";
     /// `rhs`
     pub const RHS: &str = "permutes components";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Action via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Dihedral orbits determine irreducibility boundaries.
@@ -1693,6 +2345,10 @@ pub mod t_a3 {
     pub const LHS: &str = "D_{2^n} orbits on R_n";
     /// `rhs`
     pub const RHS: &str = "determine irreducibility boundaries";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Action via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fixed points of negation are {0, 2^{n−1}}; bnot has no fixed points.
@@ -1703,6 +2359,10 @@ pub mod t_a4 {
     pub const LHS: &str = "fixed points of neg";
     /// `rhs`
     pub const RHS: &str = "{0, 2^{n−1}}; bnot has none (n > 0)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Transform → Action via structure";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Automorphism group consists of unit multiplications.
@@ -1713,6 +2373,10 @@ pub mod au_1 {
     pub const LHS: &str = "Aut(R_n)";
     /// `rhs`
     pub const RHS: &str = "{μ_u : x ↦ mul(u, x) | u ∈ R_n×}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Automorphism → Structure via symmetry";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Automorphism group is isomorphic to the unit group.
@@ -1723,6 +2387,10 @@ pub mod au_2 {
     pub const LHS: &str = "Aut(R_n)";
     /// `rhs`
     pub const RHS: &str = "≅ R_n× ≅ Z/2 × Z/2^{n−2}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Automorphism → Structure via symmetry";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Automorphism group order is 2^{n−1}.
@@ -1733,6 +2401,10 @@ pub mod au_3 {
     pub const LHS: &str = "|Aut(R_n)|";
     /// `rhs`
     pub const RHS: &str = "2^{n−1}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Automorphism → Structure via symmetry";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Intersection of automorphism group with dihedral group is {id, neg}.
@@ -1743,6 +2415,10 @@ pub mod au_4 {
     pub const LHS: &str = "Aut(R_n) ∩ D_{2^n}";
     /// `rhs`
     pub const RHS: &str = "{id, neg}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Automorphism → Structure via symmetry";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Affine group is generated by D_{2^n} and μ_3.
@@ -1753,6 +2429,10 @@ pub mod au_5 {
     pub const LHS: &str = "Aff(R_n)";
     /// `rhs`
     pub const RHS: &str = "⟨D_{2^n}, μ_3⟩";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Automorphism → Structure via symmetry";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding functor action on morphisms.
@@ -1763,6 +2443,10 @@ pub mod ef_1 {
     pub const LHS: &str = "F_ι(f)";
     /// `rhs`
     pub const RHS: &str = "ι ∘ f ∘ ι⁻¹ on Im(ι)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Embedding → Factorization via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding functor preserves composition.
@@ -1773,6 +2457,10 @@ pub mod ef_2 {
     pub const LHS: &str = "F_ι(f ∘ g)";
     /// `rhs`
     pub const RHS: &str = "F_ι(f) ∘ F_ι(g)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Embedding → Factorization via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding functor preserves identities.
@@ -1783,6 +2471,10 @@ pub mod ef_3 {
     pub const LHS: &str = "F_ι(id_{R_n})";
     /// `rhs`
     pub const RHS: &str = "id_{Im(ι)}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Embedding → Factorization via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding functor composition is functorial.
@@ -1793,6 +2485,10 @@ pub mod ef_4 {
     pub const LHS: &str = "F_{ι₂ ∘ ι₁}";
     /// `rhs`
     pub const RHS: &str = "F_{ι₂} ∘ F_{ι₁}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Embedding → Factorization via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding functor preserves ring isometries.
@@ -1803,6 +2499,10 @@ pub mod ef_5 {
     pub const LHS: &str = "F_ι(ring isometry)";
     /// `rhs`
     pub const RHS: &str = "ring isometry at level m";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Embedding → Factorization via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding functor maps dihedral subgroup into target dihedral group.
@@ -1813,6 +2513,10 @@ pub mod ef_6 {
     pub const LHS: &str = "F_ι(D_{2^n})";
     /// `rhs`
     pub const RHS: &str = "⊆ D_{2^m} as subgroup";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Embedding → Factorization via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Embedding functor maps unit group into target unit group.
@@ -1823,6 +2527,10 @@ pub mod ef_7 {
     pub const LHS: &str = "F_ι(R_n×)";
     /// `rhs`
     pub const RHS: &str = "⊆ R_m× as subgroup";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Embedding → Factorization via decomposition";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Braille glyph encoding: 6-bit blocks to Braille characters.
@@ -1833,6 +2541,10 @@ pub mod aa_1 {
     pub const LHS: &str = "glyph(x)";
     /// `rhs`
     pub const RHS: &str = "[braille(x[0:5]), braille(x[6:11]), ...]";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Addressing via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Braille XOR homomorphism: Braille encoding commutes with XOR.
@@ -1843,6 +2555,10 @@ pub mod aa_2 {
     pub const LHS: &str = "braille(a ⊕ b)";
     /// `rhs`
     pub const RHS: &str = "braille(a) ⊕ braille(b)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Addressing via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Braille complement: glyph of bnot(x) is character-wise complement of glyph(x).
@@ -1853,6 +2569,10 @@ pub mod aa_3 {
     pub const LHS: &str = "glyph(bnot(x))";
     /// `rhs`
     pub const RHS: &str = "complement each Braille character of glyph(x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Addressing via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Addition does not lift to address space: no glyph homomorphism for add.
@@ -1863,6 +2583,10 @@ pub mod aa_4 {
     pub const LHS: &str = "glyph(add(x, y))";
     /// `rhs`
     pub const RHS: &str = "≠ f(glyph(x), glyph(y)) in general";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Addressing via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Liftable operations are exactly the Boolean operations.
@@ -1873,6 +2597,10 @@ pub mod aa_5 {
     pub const LHS: &str = "liftable operations";
     /// `rhs`
     pub const RHS: &str = "{xor, and, or, bnot}; NOT {add, sub, mul, neg, succ, pred}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Addressing via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Negation decomposes into liftable bnot and non-liftable succ.
@@ -1883,6 +2611,10 @@ pub mod aa_6 {
     pub const LHS: &str = "neg(x) = succ(bnot(x))";
     /// `rhs`
     pub const RHS: &str = "bnot lifts, succ does not";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Addressing via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Address metric is sum of per-character Hamming distances.
@@ -1893,6 +2625,10 @@ pub mod am_1 {
     pub const LHS: &str = "d_addr(a, b)";
     /// `rhs`
     pub const RHS: &str = "Σ_i popcount(braille_i(a) ⊕ braille_i(b))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Metric via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Address metric equals Hamming metric on ring elements.
@@ -1903,6 +2639,10 @@ pub mod am_2 {
     pub const LHS: &str = "d_addr(glyph(x), glyph(y))";
     /// `rhs`
     pub const RHS: &str = "d_H(x, y)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Metric via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Address metric does not preserve ring metric in general.
@@ -1913,6 +2653,10 @@ pub mod am_3 {
     pub const LHS: &str = "d_addr";
     /// `rhs`
     pub const RHS: &str = "does NOT preserve d_R in general";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Metric via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Address incompatibility metric.
@@ -1923,6 +2667,10 @@ pub mod am_4 {
     pub const LHS: &str = "d_Δ(x, y)";
     /// `rhs`
     pub const RHS: &str = "|d_R(x,y) − d_addr(glyph(x), glyph(y))|";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Metric via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Entropy of a fiber budget state.
@@ -1933,6 +2681,10 @@ pub mod th_1 {
     pub const LHS: &str = "S(state)";
     /// `rhs`
     pub const RHS: &str = "freeCount × ln 2";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Thermodynamic → Observable via entropy";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Maximum entropy: unconstrained state has S = n × ln 2.
@@ -1943,6 +2695,10 @@ pub mod th_2 {
     pub const LHS: &str = "S(⊥)";
     /// `rhs`
     pub const RHS: &str = "n × ln 2";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Thermodynamic → Observable via entropy";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Zero entropy: fully resolved state has S = 0.
@@ -1953,6 +2709,10 @@ pub mod th_3 {
     pub const LHS: &str = "S(⊤)";
     /// `rhs`
     pub const RHS: &str = "0";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Thermodynamic → Observable via entropy";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Landauer bound on total resolution cost.
@@ -1963,6 +2723,10 @@ pub mod th_4 {
     pub const LHS: &str = "total resolution cost";
     /// `rhs`
     pub const RHS: &str = "n × k_B T × ln 2";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Thermodynamic → Observable via entropy";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Critical inverse temperature for UOR fiber system.
@@ -1973,6 +2737,10 @@ pub mod th_5 {
     pub const LHS: &str = "β*";
     /// `rhs`
     pub const RHS: &str = "ln 2";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Thermodynamic → Observable via entropy";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint application removes entropy; convergence rate equals cooling rate.
@@ -1983,6 +2751,10 @@ pub mod th_6 {
     pub const LHS: &str = "constraint application";
     /// `rhs`
     pub const RHS: &str = "removes entropy; convergenceRate = cooling rate";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Thermodynamic → Observable via entropy";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// CatastropheThreshold is the temperature of a partition phase transition.
@@ -1993,6 +2765,10 @@ pub mod th_7 {
     pub const LHS: &str = "CatastropheThreshold";
     /// `rhs`
     pub const RHS: &str = "temperature of partition phase transition";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Thermodynamic → Observable via entropy";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Step formula as free-energy cost of a constraint boundary.
@@ -2003,6 +2779,10 @@ pub mod th_8 {
     pub const LHS: &str = "step_g";
     /// `rhs`
     pub const RHS: &str = "free-energy cost of constraint boundary";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Thermodynamic → Observable via entropy";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Computational hardness maps to type incompleteness (high temperature).
@@ -2013,6 +2793,10 @@ pub mod th_9 {
     pub const LHS: &str = "computational hardness";
     /// `rhs`
     pub const RHS: &str = "type incompleteness (high temperature)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Thermodynamic → Observable via entropy";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Type resolution is measurement; cost ≥ entropy removed.
@@ -2023,6 +2807,10 @@ pub mod th_10 {
     pub const LHS: &str = "type resolution";
     /// `rhs`
     pub const RHS: &str = "measurement; cost ≥ entropy removed";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Thermodynamic → Observable via entropy";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Adiabatic schedule: decreasing freeCount, cost-per-fiber ordering.
@@ -2033,6 +2821,10 @@ pub mod ar_1 {
     pub const LHS: &str = "adiabatic schedule";
     /// `rhs`
     pub const RHS: &str = "decreasing freeCount × cost-per-fiber order";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Resolution via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Adiabatic cost is sum of constraint costs in optimal order.
@@ -2043,6 +2835,10 @@ pub mod ar_2 {
     pub const LHS: &str = "Cost_adiabatic";
     /// `rhs`
     pub const RHS: &str = "Σ_i cost(C_{σ(i)}) where σ is optimal";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Resolution via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Adiabatic cost satisfies Landauer bound.
@@ -2053,6 +2849,10 @@ pub mod ar_3 {
     pub const LHS: &str = "Cost_adiabatic";
     /// `rhs`
     pub const RHS: &str = "≥ n × k_B T × ln 2";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Resolution via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Adiabatic efficiency η ≤ 1.
@@ -2063,6 +2863,10 @@ pub mod ar_4 {
     pub const LHS: &str = "η = (n × ln 2) / Cost_adiabatic";
     /// `rhs`
     pub const RHS: &str = "≤ 1";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Resolution via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Greedy vs adiabatic cost difference: ≤ 5% for n ≤ 16.
@@ -2073,6 +2877,10 @@ pub mod ar_5 {
     pub const LHS: &str = "greedy vs adiabatic difference";
     /// `rhs`
     pub const RHS: &str = "≤ 5% for n ≤ 16";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Analytical → Resolution via calculus";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Phase space definition.
@@ -2083,6 +2891,10 @@ pub mod pd_1 {
     pub const LHS: &str = "phase space";
     /// `rhs`
     pub const RHS: &str = "{(n, g) : n ∈ Z₊, g constraint boundary}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Partition → Dynamics via evolution";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Phase boundaries occur where g divides 2^n − 1 or g is a power of 2.
@@ -2093,6 +2905,10 @@ pub mod pd_2 {
     pub const LHS: &str = "phase boundaries";
     /// `rhs`
     pub const RHS: &str = "g | (2^n − 1) or g = 2^k";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Partition → Dynamics via evolution";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Parity boundary divides R_n into equal halves.
@@ -2103,6 +2919,10 @@ pub mod pd_3 {
     pub const LHS: &str = "parity boundary";
     /// `rhs`
     pub const RHS: &str = "|Unit| = 2^{n−1}, |non-Unit| = 2^{n−1}";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Partition → Dynamics via evolution";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Resonance lines in the phase diagram.
@@ -2113,6 +2933,10 @@ pub mod pd_4 {
     pub const LHS: &str = "resonance lines";
     /// `rhs`
     pub const RHS: &str = "n = k ⋅ ord_g(2)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Partition → Dynamics via evolution";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Phase count at level n is at most 2^n (typically O(n)).
@@ -2123,6 +2947,10 @@ pub mod pd_5 {
     pub const LHS: &str = "phase count at level n";
     /// `rhs`
     pub const RHS: &str = "≤ 2^n (typical O(n))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Partition → Dynamics via evolution";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Reversible pinning stores prior state in ancilla fiber.
@@ -2133,6 +2961,10 @@ pub mod rc_1 {
     pub const LHS: &str = "reversible pinning of fiber k";
     /// `rhs`
     pub const RHS: &str = "store prior state in ancilla fiber k'";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Convergence via rate";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Reversible pinning has zero total entropy change.
@@ -2143,6 +2975,10 @@ pub mod rc_2 {
     pub const LHS: &str = "reversible pinning entropy";
     /// `rhs`
     pub const RHS: &str = "ΔS_total = 0";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Convergence via rate";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Deferred Landauer cost at ancilla erasure.
@@ -2153,6 +2989,10 @@ pub mod rc_3 {
     pub const LHS: &str = "deferred Landauer cost";
     /// `rhs`
     pub const RHS: &str = "n × k_B T × ln 2 at ancilla erasure";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Convergence via rate";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Reversible total cost equals irreversible total cost (redistributed).
@@ -2163,6 +3003,10 @@ pub mod rc_4 {
     pub const LHS: &str = "reversible total cost";
     /// `rhs`
     pub const RHS: &str = "= irreversible total cost (redistributed)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Convergence via rate";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Quantum UOR: superposed fibers, cost proportional to winning path.
@@ -2173,6 +3017,10 @@ pub mod rc_5 {
     pub const LHS: &str = "quantum UOR";
     /// `rhs`
     pub const RHS: &str = "superposed fibers, cost ∝ winning path";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Resolution → Convergence via rate";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Ring derivative: ∂_R f(x) = f(succ(x)) - f(x).
@@ -2183,6 +3031,10 @@ pub mod dc_1 {
     pub const LHS: &str = "∂_R f(x)";
     /// `rhs`
     pub const RHS: &str = "f(succ(x)) - f(x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Hamming derivative: ∂_H f(x) = f(bnot(x)) - f(x).
@@ -2193,6 +3045,10 @@ pub mod dc_2 {
     pub const LHS: &str = "∂_H f(x)";
     /// `rhs`
     pub const RHS: &str = "f(bnot(x)) - f(x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Hamming derivative of identity: ∂_H id(x) = -(2x + 1) mod 2^n.
@@ -2203,6 +3059,10 @@ pub mod dc_3 {
     pub const LHS: &str = "∂_H id(x)";
     /// `rhs`
     pub const RHS: &str = "bnot(x) - x = -(2x + 1) mod 2^n";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Commutator from derivatives: \[neg, bnot\](x) = ∂_R neg(x) - ∂_H neg(x).
@@ -2213,6 +3073,10 @@ pub mod dc_4 {
     pub const LHS: &str = "[neg, bnot](x)";
     /// `rhs`
     pub const RHS: &str = "∂_R neg(x) - ∂_H neg(x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Carry dependence: the difference ∂_R f - ∂_H f decomposes into carry contributions.
@@ -2223,6 +3087,10 @@ pub mod dc_5 {
     pub const LHS: &str = "∂_R f - ∂_H f";
     /// `rhs`
     pub const RHS: &str = "Σ carry contributions";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Jacobian definition: J_k(x) = ∂_R f_k(x) where f_k = fiber_k.
@@ -2233,6 +3101,10 @@ pub mod dc_6 {
     pub const LHS: &str = "J_k(x)";
     /// `rhs`
     pub const RHS: &str = "∂_R f_k(x) where f_k = fiber_k";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Top-fiber anomaly: J_{n-1}(x) may differ from lower fibers.
@@ -2243,6 +3115,10 @@ pub mod dc_7 {
     pub const LHS: &str = "J_{n-1}(x)";
     /// `rhs`
     pub const RHS: &str = "may differ from lower fibers";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Rank-curvature identity: rank(J(x)) = d_H(x, succ(x)) - 1 for generic x.
@@ -2253,6 +3129,10 @@ pub mod dc_8 {
     pub const LHS: &str = "rank(J(x))";
     /// `rhs`
     pub const RHS: &str = "= d_H(x, succ(x)) - 1 for generic x";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Total curvature from Jacobian: κ(x) = Σ_k J_k(x).
@@ -2263,6 +3143,10 @@ pub mod dc_9 {
     pub const LHS: &str = "κ(x)";
     /// `rhs`
     pub const RHS: &str = "Σ_k J_k(x)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Curvature-weighted ordering: optimal next constraint maximizes J_k over free fibers.
@@ -2273,6 +3157,10 @@ pub mod dc_10 {
     pub const LHS: &str = "optimal next constraint";
     /// `rhs`
     pub const RHS: &str = "argmax J_k over free fibers";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Curvature equipartition: Σ_{x} J_k(x) ≈ (2^n - 2)/n for each k.
@@ -2283,6 +3171,10 @@ pub mod dc_11 {
     pub const LHS: &str = "Σ_{x} J_k(x)";
     /// `rhs`
     pub const RHS: &str = "≈ (2^n - 2)/n for each k";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → DifferentialCalculus → Jacobian";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraint nerve: N(C) is the simplicial complex on constraints.
@@ -2293,6 +3185,10 @@ pub mod ha_1 {
     pub const LHS: &str = "N(C)";
     /// `rhs`
     pub const RHS: &str = "simplicial complex on constraints";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → HomologicalAlgebra → Betti";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Stall iff non-trivial homology: resolution stalls ⟺ H_k(N(C)) ≠ 0 for some k > 0.
@@ -2303,6 +3199,10 @@ pub mod ha_2 {
     pub const LHS: &str = "resolution stalls";
     /// `rhs`
     pub const RHS: &str = "⟺ H_k(N(C)) ≠ 0 for some k > 0";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → HomologicalAlgebra → Betti";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Betti-entropy theorem: S_residual ≥ Σ_k β_k × ln 2.
@@ -2313,6 +3213,10 @@ pub mod ha_3 {
     pub const LHS: &str = "S_residual";
     /// `rhs`
     pub const RHS: &str = "≥ Σ_k β_k × ln 2";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Observable → HomologicalAlgebra → Betti";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Euler-Poincaré formula for constraint nerve.
@@ -2323,6 +3227,10 @@ pub mod it_2 {
     pub const LHS: &str = "χ(N(C))";
     /// `rhs`
     pub const RHS: &str = "Σ_k (-1)^k β_k";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "DifferentialCalculus + HomologicalAlgebra → IndexTheorem";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Spectral Euler characteristic.
@@ -2333,6 +3241,10 @@ pub mod it_3 {
     pub const LHS: &str = "χ(N(C))";
     /// `rhs`
     pub const RHS: &str = "Σ_k (-1)^k dim(H_k)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "DifferentialCalculus + HomologicalAlgebra → IndexTheorem";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Spectral gap bounds convergence rate from below.
@@ -2343,6 +3255,10 @@ pub mod it_6 {
     pub const LHS: &str = "λ_1(N(C))";
     /// `rhs`
     pub const RHS: &str = "lower bounds convergence rate";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "DifferentialCalculus + HomologicalAlgebra → IndexTheorem";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// UOR index theorem (topological form): total curvature minus Euler characteristic equals residual entropy in bits.
@@ -2353,6 +3269,10 @@ pub mod it_7a {
     pub const LHS: &str = "Σ κ_k - χ(N(C))";
     /// `rhs`
     pub const RHS: &str = "= S_residual / ln 2";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "DifferentialCalculus + HomologicalAlgebra → IndexTheorem";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// UOR index theorem (entropy-topology duality).
@@ -2363,6 +3283,10 @@ pub mod it_7b {
     pub const LHS: &str = "S_residual";
     /// `rhs`
     pub const RHS: &str = "= (Σ κ_k - χ) × ln 2";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "DifferentialCalculus + HomologicalAlgebra → IndexTheorem";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// UOR index theorem (spectral cost bound): resolution cost ≥ n - χ(N(C)).
@@ -2373,6 +3297,10 @@ pub mod it_7c {
     pub const LHS: &str = "resolution cost";
     /// `rhs`
     pub const RHS: &str = "≥ n - χ(N(C))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "DifferentialCalculus + HomologicalAlgebra → IndexTheorem";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// UOR index theorem (completeness criterion): resolution is complete iff χ(N(C)) = n and all Betti numbers vanish.
@@ -2383,6 +3311,10 @@ pub mod it_7d {
     pub const LHS: &str = "resolution complete";
     /// `rhs`
     pub const RHS: &str = "⟺ χ(N(C)) = n and all β_k = 0";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "DifferentialCalculus + HomologicalAlgebra → IndexTheorem";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Ring → Constraints map: negation transforms a residue constraint.
@@ -2393,6 +3325,10 @@ pub mod phi_1 {
     pub const LHS: &str = "φ₁(neg, ResidueConstraint(m,r))";
     /// `rhs`
     pub const RHS: &str = "ResidueConstraint(m, m-r)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Inter-algebra map: source → target";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Constraints → Fibers map: composition maps to union of fiber pinnings.
@@ -2403,6 +3339,10 @@ pub mod phi_2 {
     pub const LHS: &str = "φ₂(compose(A,B))";
     /// `rhs`
     pub const RHS: &str = "φ₂(A) ∪ φ₂(B)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Inter-algebra map: source → target";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Fibers → Partition map: a closed fiber state determines a unique 4-component partition.
@@ -2413,6 +3353,10 @@ pub mod phi_3 {
     pub const LHS: &str = "φ₃(closed fiber state)";
     /// `rhs`
     pub const RHS: &str = "unique 4-component partition";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Inter-algebra map: source → target";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Resolution pipeline: φ₄ = φ₃ ∘ φ₂ ∘ φ₁ is the composite resolution map.
@@ -2423,6 +3367,10 @@ pub mod phi_4 {
     pub const LHS: &str = "φ₄(T, x)";
     /// `rhs`
     pub const RHS: &str = "φ₃(φ₂(φ₁(T, x)))";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Inter-algebra map: source → target";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Operations → Observables map: negation preserves d_R, may change d_H.
@@ -2433,6 +3381,10 @@ pub mod phi_5 {
     pub const LHS: &str = "φ₅(neg)";
     /// `rhs`
     pub const RHS: &str = "preserves d_R, may change d_H";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Inter-algebra map: source → target";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// Observables → Refinement map: observables on a state yield a refinement suggestion.
@@ -2443,6 +3395,80 @@ pub mod phi_6 {
     pub const LHS: &str = "φ₆(state, observables)";
     /// `rhs`
     pub const RHS: &str = "RefinementSuggestion";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Inter-algebra map: source → target";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
+}
+
+/// ψ_1: Constraints → SimplicialComplex (nerve construction). Maps a set of constraints to its nerve simplicial complex.
+pub mod psi_1 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "constraint set";
+    /// `lhs`
+    pub const LHS: &str = "N(constraints)";
+    /// `rhs`
+    pub const RHS: &str = "SimplicialComplex";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "Constraint → NerveFunctor → SimplicialComplex";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
+}
+
+/// ψ_2: SimplicialComplex → ChainComplex (chain functor). Maps a simplicial complex to its chain complex.
+pub mod psi_2 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "simplicial complex K";
+    /// `lhs`
+    pub const LHS: &str = "C(K)";
+    /// `rhs`
+    pub const RHS: &str = "ChainComplex";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "SimplicialComplex → ChainFunctor → ChainComplex";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
+}
+
+/// ψ_3: ChainComplex → HomologyGroups (homology functor). Computes homology groups from a chain complex.
+pub mod psi_3 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "chain complex C";
+    /// `lhs`
+    pub const LHS: &str = "H_k(C)";
+    /// `rhs`
+    pub const RHS: &str = "ker(∂_k) / im(∂_{k+1})";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "ChainComplex → BoundaryOperator → HomologyGroup";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
+}
+
+/// ψ_5: ChainComplex → CochainComplex (dualization functor). Dualizes a chain complex to obtain a cochain complex.
+pub mod psi_5 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "chain complex C, ring R";
+    /// `lhs`
+    pub const LHS: &str = "C^k";
+    /// `rhs`
+    pub const RHS: &str = "Hom(C_k, R)";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "ChainComplex → dual → CochainComplex";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
+}
+
+/// ψ_6: CochainComplex → CohomologyGroups (cohomology functor). Computes cohomology groups from a cochain complex.
+pub mod psi_6 {
+    /// `forAll`
+    pub const FOR_ALL: &str = "cochain complex C";
+    /// `lhs`
+    pub const LHS: &str = "H^k(C)";
+    /// `rhs`
+    pub const RHS: &str = "ker(δ^k) / im(δ^{k-1})";
+    /// `verificationPath`
+    pub const VERIFICATION_PATH: &str = "CochainComplex → CoboundaryOperator → CohomologyGroup";
+    /// `verificationStatus`
+    pub const VERIFICATION_STATUS: &str = "derivable";
 }
 
 /// The dihedral group of order 2^(n+1), generated by neg (ring reflection) and bnot (hypercube reflection). Every element of this group acts as an isometry on the type space 𝒯_n.
