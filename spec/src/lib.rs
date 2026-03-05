@@ -1,7 +1,7 @@
 //! UOR Foundation ontology encoded as typed Rust data.
 //!
 //! The `uor-ontology` crate provides the complete UOR Foundation ontology —
-//! 16 namespaces, 130 classes, 234 properties, and 304 named individuals —
+//! 16 namespaces, 132 classes, 241 properties, and 557 named individuals —
 //! as static Rust data structures, along with serializers that produce
 //! JSON-LD, Turtle, and N-Triples output.
 //!
@@ -63,7 +63,7 @@ impl Ontology {
     pub fn full() -> &'static Ontology {
         static ONTOLOGY: std::sync::OnceLock<Ontology> = std::sync::OnceLock::new();
         ONTOLOGY.get_or_init(|| Ontology {
-            version: "3.0.0",
+            version: "3.2.0",
             base_iri: "https://uor.foundation/",
             namespaces: vec![
                 namespaces::u::module(),
@@ -118,14 +118,14 @@ mod tests {
             .iter()
             .map(|m| m.classes.len())
             .sum();
-        // 130 classes: 123 v3.0.0 + 7 Amendment 23 vocabulary classes.
-        assert_eq!(total, 130);
+        // 132 classes: 130 v3.1.0 - 1 VerificationStatus + 1 QuantumLevel + 2 proof classes.
+        assert_eq!(total, 132);
     }
 
     #[test]
     fn property_count() {
-        // 234 = 230 v3.0.0 + 12 new Amendment 23 properties − 8 removed properties.
-        assert_eq!(Ontology::full().property_count(), 234);
+        // 241 = 234 v3.1.0 - 1 hasVerificationStatus - 1 proof:quantum + 4 proof new + 5 schema new.
+        assert_eq!(Ontology::full().property_count(), 241);
     }
 
     #[test]
@@ -135,8 +135,8 @@ mod tests {
             .iter()
             .map(|m| m.individuals.len())
             .sum();
-        // 304 individuals: 269 v3.0.0 + 35 Amendment 23 vocabulary individuals.
-        assert_eq!(total, 304);
+        // 557 individuals: 304 v3.1.0 - 2 status + 4 Q-levels + 251 proof individuals.
+        assert_eq!(total, 557);
     }
 
     #[test]

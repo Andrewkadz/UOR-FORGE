@@ -42,7 +42,7 @@ The UOR Foundation ontology is expressed in OWL 2 DL. All OWL 2 DL restrictions 
 
 ## Named Individuals
 
-All 304 named individuals must be typed with a known OWL class:
+All 557 named individuals must be typed with a known OWL class:
 - 10 operation individuals: `op:neg`, `op:bnot`, `op:succ`, `op:pred`, `op:add`, `op:sub`, `op:mul`, `op:xor`, `op:and`, `op:or`
 - 2 schema individuals: `schema:pi1`, `schema:zero`
 - 1 identity individual: `op:criticalIdentity`
@@ -54,7 +54,8 @@ All 304 named individuals must be typed with a known OWL class:
 - 2 homology functor individuals: `homology:nerveFunctorN`, `homology:chainFunctorC`
 - 4 cohomology identity individuals: `cohomology:coboundarySquaredZero`, `cohomology:deRhamDuality`, `cohomology:sheafCohomologyBridge`, `cohomology:localGlobalPrinciple`
 - 8 verification domain individuals: `op:Enumerative`, `op:Algebraic`, `op:Geometric`, `op:Analytical`, `op:Thermodynamic`, `op:Topological`, `op:Pipeline`, `op:IndexTheoretic`
-- 2 verification status individuals: `op:Verifiable`, `op:Derivable`
+- 4 quantum level individuals: `schema:Q0`, `schema:Q1`, `schema:Q2`, `schema:Q3`
+- 251 proof individuals: `proof:prf_criticalIdentity` (CriticalIdentityProof), `proof:prf_criticalIdentity_axiomatic` (AxiomaticDerivation dual), `proof:prf_phi_1`–`proof:prf_phi_6` (ComputationCertificate), and 243 `proof:prf_*` AxiomaticDerivation individuals covering all remaining op/homology/cohomology identities
 - 9 geometric character individuals: `op:RingReflection`, `op:HypercubeReflection`, `op:Rotation`, `op:RotationInverse`, `op:Translation`, `op:Scaling`, `op:HypercubeTranslation`, `op:HypercubeProjection`, `op:HypercubeJoin`
 - 4 complexity class individuals: `resolver:ConstantTime`, `resolver:LogarithmicTime`, `resolver:LinearTime`, `resolver:ExponentialTime`
 - 6 rewrite rule individuals: `derivation:CriticalIdentityRule`, `derivation:InvolutionRule`, `derivation:AssociativityRule`, `derivation:CommutativityRule`, `derivation:IdentityElementRule`, `derivation:NormalizationRule`

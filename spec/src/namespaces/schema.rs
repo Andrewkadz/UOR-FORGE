@@ -92,6 +92,20 @@ fn classes() -> Vec<Class> {
             subclass_of: &[OWL_THING],
             disjoint_with: &[],
         },
+        // v3.2: QuantumLevel class for Q-n generalization
+        Class {
+            id: "https://uor.foundation/schema/QuantumLevel",
+            label: "QuantumLevel",
+            comment: "A named quantum level Q_k at which the UOR ring operates. \
+                      Level Q_k uses 8*(k+1) bits, 2^(8*(k+1)) states, and modulus \
+                      2^(8*(k+1)). The named individuals Q0-Q3 are the spec-defined \
+                      reference levels. The class is open: Prism implementations \
+                      operating at higher levels declare their own QuantumLevel \
+                      individuals. The nextLevel property forms an unbounded chain \
+                      Q0 -> Q1 -> Q2 -> ...",
+            subclass_of: &[OWL_THING],
+            disjoint_with: &[],
+        },
     ]
 }
 
@@ -229,6 +243,56 @@ fn properties() -> Vec<Property> {
             domain: Some("https://uor.foundation/schema/Literal"),
             range: "https://uor.foundation/schema/Datum",
         },
+        // v3.2: QuantumLevel properties
+        Property {
+            id: "https://uor.foundation/schema/quantumIndex",
+            label: "quantumIndex",
+            comment: "The index k of this quantum level. Q0 has index 0, Q1 has \
+                      index 1, etc.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/schema/QuantumLevel"),
+            range: XSD_NON_NEGATIVE_INTEGER,
+        },
+        Property {
+            id: "https://uor.foundation/schema/bitsWidth",
+            label: "bitsWidth",
+            comment: "The bit width 8*(k+1) of this quantum level.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/schema/QuantumLevel"),
+            range: XSD_POSITIVE_INTEGER,
+        },
+        Property {
+            id: "https://uor.foundation/schema/cycleSize",
+            label: "cycleSize",
+            comment: "The number of distinct states 2^(8*(k+1)) at this quantum level.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/schema/QuantumLevel"),
+            range: XSD_POSITIVE_INTEGER,
+        },
+        Property {
+            id: "https://uor.foundation/schema/nextLevel",
+            label: "nextLevel",
+            comment: "The next quantum level in the chain: Q_k -> Q_(k+1). The chain \
+                      is unbounded; Q3 points to Q4, which is not a named individual \
+                      in the spec but may be declared by Prism implementations.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/schema/QuantumLevel"),
+            range: "https://uor.foundation/schema/QuantumLevel",
+        },
+        Property {
+            id: "https://uor.foundation/schema/atQuantumLevel",
+            label: "atQuantumLevel",
+            comment: "The quantum level at which this Ring instance operates. Links a \
+                      concrete Ring individual to its QuantumLevel.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/schema/Ring"),
+            range: "https://uor.foundation/schema/QuantumLevel",
+        },
     ]
 }
 
@@ -258,6 +322,102 @@ fn individuals() -> Vec<Individual> {
                 "https://uor.foundation/schema/value",
                 IndividualValue::Int(0),
             )],
+        },
+        // v3.2: QuantumLevel individuals Q0-Q3
+        Individual {
+            id: "https://uor.foundation/schema/Q0",
+            type_: "https://uor.foundation/schema/QuantumLevel",
+            label: "Q0",
+            comment: "Quantum level 0: 8-bit ring Z/256Z, 256 states. The reference \
+                      level for all ComputationCertificate proofs in the spec.",
+            properties: &[
+                (
+                    "https://uor.foundation/schema/quantumIndex",
+                    IndividualValue::Int(0),
+                ),
+                (
+                    "https://uor.foundation/schema/bitsWidth",
+                    IndividualValue::Int(8),
+                ),
+                (
+                    "https://uor.foundation/schema/cycleSize",
+                    IndividualValue::Int(256),
+                ),
+                (
+                    "https://uor.foundation/schema/nextLevel",
+                    IndividualValue::IriRef("https://uor.foundation/schema/Q1"),
+                ),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/schema/Q1",
+            type_: "https://uor.foundation/schema/QuantumLevel",
+            label: "Q1",
+            comment: "Quantum level 1: 16-bit ring Z/65536Z, 65,536 states.",
+            properties: &[
+                (
+                    "https://uor.foundation/schema/quantumIndex",
+                    IndividualValue::Int(1),
+                ),
+                (
+                    "https://uor.foundation/schema/bitsWidth",
+                    IndividualValue::Int(16),
+                ),
+                (
+                    "https://uor.foundation/schema/cycleSize",
+                    IndividualValue::Int(65536),
+                ),
+                (
+                    "https://uor.foundation/schema/nextLevel",
+                    IndividualValue::IriRef("https://uor.foundation/schema/Q2"),
+                ),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/schema/Q2",
+            type_: "https://uor.foundation/schema/QuantumLevel",
+            label: "Q2",
+            comment: "Quantum level 2: 24-bit ring Z/16777216Z, 16,777,216 states.",
+            properties: &[
+                (
+                    "https://uor.foundation/schema/quantumIndex",
+                    IndividualValue::Int(2),
+                ),
+                (
+                    "https://uor.foundation/schema/bitsWidth",
+                    IndividualValue::Int(24),
+                ),
+                (
+                    "https://uor.foundation/schema/cycleSize",
+                    IndividualValue::Int(16_777_216),
+                ),
+                (
+                    "https://uor.foundation/schema/nextLevel",
+                    IndividualValue::IriRef("https://uor.foundation/schema/Q3"),
+                ),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/schema/Q3",
+            type_: "https://uor.foundation/schema/QuantumLevel",
+            label: "Q3",
+            comment: "Quantum level 3: 32-bit ring Z/4294967296Z, 4,294,967,296 states. \
+                      The highest named level in the spec. nextLevel is absent — Prism \
+                      implementations may extend the chain.",
+            properties: &[
+                (
+                    "https://uor.foundation/schema/quantumIndex",
+                    IndividualValue::Int(3),
+                ),
+                (
+                    "https://uor.foundation/schema/bitsWidth",
+                    IndividualValue::Int(32),
+                ),
+                (
+                    "https://uor.foundation/schema/cycleSize",
+                    IndividualValue::Int(4_294_967_296),
+                ),
+            ],
         },
     ]
 }

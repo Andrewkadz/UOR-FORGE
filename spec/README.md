@@ -11,9 +11,9 @@ published Rust trait library, see
 ## Contents
 
 - 16 namespaces in dependency order
-- 130 OWL classes
-- 234 OWL properties (233 namespace-level + 1 global annotation)
-- 304 named individuals
+- 132 OWL classes
+- 241 OWL properties (240 namespace-level + 1 global annotation)
+- 557 named individuals
 - Three serialization formats: JSON-LD 1.1, Turtle 1.1, N-Triples
 
 ## Usage
@@ -23,7 +23,7 @@ use uor_ontology::{Ontology, iris};
 
 let ontology = Ontology::full();
 assert_eq!(ontology.namespaces.len(), 16);
-assert_eq!(ontology.class_count(), 130);
+assert_eq!(ontology.class_count(), 132);
 
 // Look up a class by IRI
 let address = ontology.find_class("https://uor.foundation/u/Address");

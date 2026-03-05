@@ -6,7 +6,6 @@
 
 use crate::enums::GeometricCharacter;
 use crate::enums::VerificationDomain;
-use crate::enums::VerificationStatus;
 use crate::Primitives;
 
 /// An operation on the ring Z/(2^n)Z. The root class for all UOR kernel operations.
@@ -51,8 +50,6 @@ pub trait Identity<P: Primitives> {
     fn for_all(&self) -> &P::String;
     /// The mathematical discipline(s) through which this identity is established. Range is op:VerificationDomain. Non-functional: composite identities (e.g. IT_7a–IT_7d) reference multiple domain individuals.
     fn verification_domain(&self) -> &[VerificationDomain];
-    /// The verification status of this identity: op:Verifiable (exhaustively checkable) or op:Derivable (follows from axioms). Functional: each identity has exactly one status.
-    fn has_verification_status(&self) -> VerificationStatus;
 }
 
 /// A group: a set with an associative binary operation, an identity element, and inverses for every element.
@@ -92,12 +89,6 @@ pub mod pipeline {}
 /// Established by the composition of Analytical and Topological reasoning. The only domain requiring multiple op:verificationDomain assertions. Covers the UOR Index Theorem (IT_7a–IT_7d).
 pub mod index_theoretic {}
 
-/// The identity can be confirmed by exhaustive enumeration over R_n.
-pub mod verifiable {}
-
-/// The identity follows from previously established axioms or definitions by equational reasoning.
-pub mod derivable {}
-
 /// Reflection through the origin of the additive ring: neg(x) = -x mod 2^n. One of the two generators of D_{2^n}.
 pub mod ring_reflection {}
 
@@ -129,8 +120,6 @@ pub mod hypercube_join {}
 pub mod critical_identity {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs` -> `succ`
     pub const LHS: &str = "https://uor.foundation/op/succ";
     /// `rhs`
@@ -148,8 +137,6 @@ pub mod critical_identity {
 pub mod ad_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "d ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "addresses(glyph(d))";
     /// `rhs`
@@ -164,8 +151,6 @@ pub mod ad_1 {
 pub mod ad_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "a ∈ Addr(R_n), ι : R_n → R_{n'}";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "glyph(ι(addresses(a)))";
     /// `rhs`
@@ -180,8 +165,6 @@ pub mod ad_2 {
 pub mod r_a1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y, z ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "add(x, add(y, z))";
     /// `rhs`
@@ -196,8 +179,6 @@ pub mod r_a1 {
 pub mod r_a2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "add(x, 0)";
     /// `rhs`
@@ -212,8 +193,6 @@ pub mod r_a2 {
 pub mod r_a3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "add(x, neg(x))";
     /// `rhs`
@@ -228,8 +207,6 @@ pub mod r_a3 {
 pub mod r_a4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "add(x, y)";
     /// `rhs`
@@ -244,8 +221,6 @@ pub mod r_a4 {
 pub mod r_a5 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "sub(x, y)";
     /// `rhs`
@@ -260,8 +235,6 @@ pub mod r_a5 {
 pub mod r_a6 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "neg(neg(x))";
     /// `rhs`
@@ -276,8 +249,6 @@ pub mod r_a6 {
 pub mod r_m1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y, z ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "mul(x, mul(y, z))";
     /// `rhs`
@@ -292,8 +263,6 @@ pub mod r_m1 {
 pub mod r_m2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "mul(x, 1)";
     /// `rhs`
@@ -308,8 +277,6 @@ pub mod r_m2 {
 pub mod r_m3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "mul(x, y)";
     /// `rhs`
@@ -324,8 +291,6 @@ pub mod r_m3 {
 pub mod r_m4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y, z ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "mul(x, add(y, z))";
     /// `rhs`
@@ -340,8 +305,6 @@ pub mod r_m4 {
 pub mod r_m5 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "mul(x, 0)";
     /// `rhs`
@@ -356,8 +319,6 @@ pub mod r_m5 {
 pub mod b_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y, z ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "xor(x, xor(y, z))";
     /// `rhs`
@@ -372,8 +333,6 @@ pub mod b_1 {
 pub mod b_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "xor(x, 0)";
     /// `rhs`
@@ -388,8 +347,6 @@ pub mod b_2 {
 pub mod b_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "xor(x, x)";
     /// `rhs`
@@ -404,8 +361,6 @@ pub mod b_3 {
 pub mod b_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y, z ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "and(x, and(y, z))";
     /// `rhs`
@@ -420,8 +375,6 @@ pub mod b_4 {
 pub mod b_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "and(x, 2^n - 1)";
     /// `rhs`
@@ -436,8 +389,6 @@ pub mod b_5 {
 pub mod b_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "and(x, 0)";
     /// `rhs`
@@ -452,8 +403,6 @@ pub mod b_6 {
 pub mod b_7 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y, z ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "or(x, or(y, z))";
     /// `rhs`
@@ -468,8 +417,6 @@ pub mod b_7 {
 pub mod b_8 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "or(x, 0)";
     /// `rhs`
@@ -484,8 +431,6 @@ pub mod b_8 {
 pub mod b_9 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "and(x, or(x, y))";
     /// `rhs`
@@ -500,8 +445,6 @@ pub mod b_9 {
 pub mod b_10 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y, z ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "and(x, or(y, z))";
     /// `rhs`
@@ -516,8 +459,6 @@ pub mod b_10 {
 pub mod b_11 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "bnot(and(x, y))";
     /// `rhs`
@@ -532,8 +473,6 @@ pub mod b_11 {
 pub mod b_12 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "bnot(or(x, y))";
     /// `rhs`
@@ -548,8 +487,6 @@ pub mod b_12 {
 pub mod b_13 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "bnot(bnot(x))";
     /// `rhs`
@@ -564,8 +501,6 @@ pub mod b_13 {
 pub mod x_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "neg(x)";
     /// `rhs`
@@ -580,8 +515,6 @@ pub mod x_1 {
 pub mod x_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "bnot(x)";
     /// `rhs`
@@ -596,8 +529,6 @@ pub mod x_2 {
 pub mod x_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "succ(x)";
     /// `rhs`
@@ -612,8 +543,6 @@ pub mod x_3 {
 pub mod x_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "pred(x)";
     /// `rhs`
@@ -628,8 +557,6 @@ pub mod x_4 {
 pub mod x_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "neg(x)";
     /// `rhs`
@@ -644,8 +571,6 @@ pub mod x_5 {
 pub mod x_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "bnot(x)";
     /// `rhs`
@@ -660,8 +585,6 @@ pub mod x_6 {
 pub mod x_7 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ Z (before mod)";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "xor(x, y)";
     /// `rhs`
@@ -676,8 +599,6 @@ pub mod x_7 {
 pub mod d_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "succ^{2^n}(x)";
     /// `rhs`
@@ -692,8 +613,6 @@ pub mod d_1 {
 pub mod d_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "neg(succ(neg(x)))";
     /// `rhs`
@@ -708,8 +627,6 @@ pub mod d_3 {
 pub mod d_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "bnot(neg(x))";
     /// `rhs`
@@ -724,8 +641,6 @@ pub mod d_4 {
 pub mod d_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "D_{2^n}";
     /// `rhs`
@@ -740,8 +655,6 @@ pub mod d_5 {
 pub mod u_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 3";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "R_n×";
     /// `rhs`
@@ -756,8 +669,6 @@ pub mod u_1 {
 pub mod u_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ∈ {1, 2}";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "R_1× ≅ {1}; R_2× ≅ Z/2";
     /// `rhs`
@@ -772,8 +683,6 @@ pub mod u_2 {
 pub mod u_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "u = (-1)^a · 3^b ∈ R_n×";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "ord(u)";
     /// `rhs`
@@ -788,8 +697,6 @@ pub mod u_3 {
 pub mod u_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "g odd";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "ord_g(2)";
     /// `rhs`
@@ -804,8 +711,6 @@ pub mod u_4 {
 pub mod u_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "g odd, g > 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "step_g";
     /// `rhs`
@@ -820,8 +725,6 @@ pub mod u_5 {
 pub mod ag_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "u ∈ R_n×, u ≠ ±1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "μ_u";
     /// `rhs`
@@ -836,8 +739,6 @@ pub mod ag_1 {
 pub mod ag_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Aff(R_n)";
     /// `rhs`
@@ -852,8 +753,6 @@ pub mod ag_2 {
 pub mod ag_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "|Aff(R_n)|";
     /// `rhs`
@@ -868,8 +767,6 @@ pub mod ag_3 {
 pub mod ag_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "D_{2^n}";
     /// `rhs`
@@ -884,8 +781,6 @@ pub mod ag_4 {
 pub mod ca_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n, 0 ≤ k < n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "add(x,y)_k";
     /// `rhs`
@@ -900,8 +795,6 @@ pub mod ca_1 {
 pub mod ca_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "c_{k+1}(x,y)";
     /// `rhs`
@@ -916,8 +809,6 @@ pub mod ca_2 {
 pub mod ca_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "c(x, y)";
     /// `rhs`
@@ -932,8 +823,6 @@ pub mod ca_3 {
 pub mod ca_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n, all positions";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "c(x, 0)";
     /// `rhs`
@@ -948,8 +837,6 @@ pub mod ca_4 {
 pub mod ca_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n, k > v_2(x)";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "c(x, neg(x))_k";
     /// `rhs`
@@ -964,8 +851,6 @@ pub mod ca_5 {
 pub mod ca_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "d_Δ(x, y) > 0";
     /// `rhs`
@@ -980,8 +865,6 @@ pub mod ca_6 {
 pub mod c_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraints A, B";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "pins(compose(A, B))";
     /// `rhs`
@@ -996,8 +879,6 @@ pub mod c_1 {
 pub mod c_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraints A, B";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "compose(A, B)";
     /// `rhs`
@@ -1012,8 +893,6 @@ pub mod c_2 {
 pub mod c_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraints A, B, C";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "compose(compose(A,B), C)";
     /// `rhs`
@@ -1028,8 +907,6 @@ pub mod c_3 {
 pub mod c_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint A";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "compose(A, A)";
     /// `rhs`
@@ -1044,8 +921,6 @@ pub mod c_4 {
 pub mod c_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint A, identity ε";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "compose(A, ε)";
     /// `rhs`
@@ -1060,8 +935,6 @@ pub mod c_5 {
 pub mod c_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint A, annihilator Ω";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "compose(A, Ω)";
     /// `rhs`
@@ -1076,8 +949,6 @@ pub mod c_6 {
 pub mod cdi {
     /// `forAll`
     pub const FOR_ALL: &str = "T ∈ T_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "carry(residue(T))";
     /// `rhs`
@@ -1092,8 +963,6 @@ pub mod cdi {
 pub mod cl_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint equivalence classes";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Constraint/≡";
     /// `rhs`
@@ -1108,8 +977,6 @@ pub mod cl_1 {
 pub mod cl_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraints A, B";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "A ∨ B";
     /// `rhs`
@@ -1124,8 +991,6 @@ pub mod cl_2 {
 pub mod cl_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraints A, B";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "pins(A ∧ B)";
     /// `rhs`
@@ -1140,8 +1005,6 @@ pub mod cl_3 {
 pub mod cl_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraints A, B, C";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "(A ∨ B) ∧ C";
     /// `rhs`
@@ -1156,8 +1019,6 @@ pub mod cl_4 {
 pub mod cl_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint A";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "A ∧ A̅ = ε, A ∨ A̅ = Ω";
     /// `rhs`
@@ -1172,8 +1033,6 @@ pub mod cl_5 {
 pub mod cm_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint set {C_1,...,C_k}";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "C_i redundant in {C_1,...,C_k}";
     /// `rhs`
@@ -1188,8 +1047,6 @@ pub mod cm_1 {
 pub mod cm_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "CompositeConstraint";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "minimal cover";
     /// `rhs`
@@ -1204,8 +1061,6 @@ pub mod cm_2 {
 pub mod cm_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "n fibers, constraint set";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "min constraints to cover n fibers";
     /// `rhs`
@@ -1220,8 +1075,6 @@ pub mod cm_3 {
 pub mod cr_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "ResidueConstraint";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "cost(ResidueConstraint(m, r))";
     /// `rhs`
@@ -1236,8 +1089,6 @@ pub mod cr_1 {
 pub mod cr_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "CarryConstraint";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "cost(CarryConstraint(p))";
     /// `rhs`
@@ -1252,8 +1103,6 @@ pub mod cr_2 {
 pub mod cr_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "DepthConstraint";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "cost(DepthConstraint(d_min, d_max))";
     /// `rhs`
@@ -1268,8 +1117,6 @@ pub mod cr_3 {
 pub mod cr_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraints A, B";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "cost(compose(A, B))";
     /// `rhs`
@@ -1284,8 +1131,6 @@ pub mod cr_4 {
 pub mod cr_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint set";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "optimal resolution order";
     /// `rhs`
@@ -1300,8 +1145,6 @@ pub mod cr_5 {
 pub mod f_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "FiberCoordinate";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "pinned fiber";
     /// `rhs`
@@ -1316,8 +1159,6 @@ pub mod f_1 {
 pub mod f_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "FiberBudget";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "pin operations to close";
     /// `rhs`
@@ -1332,8 +1173,6 @@ pub mod f_2 {
 pub mod f_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "FiberBudget";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "pinnedCount + freeCount";
     /// `rhs`
@@ -1348,8 +1187,6 @@ pub mod f_3 {
 pub mod f_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "FiberBudget";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "isClosed";
     /// `rhs`
@@ -1364,8 +1201,6 @@ pub mod f_4 {
 pub mod fl_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "FiberBudget lattice";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "⊥";
     /// `rhs`
@@ -1380,8 +1215,6 @@ pub mod fl_1 {
 pub mod fl_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "FiberBudget lattice";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "⊤";
     /// `rhs`
@@ -1396,8 +1229,6 @@ pub mod fl_2 {
 pub mod fl_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "FiberBudget states S₁, S₂";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "join(S₁, S₂)";
     /// `rhs`
@@ -1412,8 +1243,6 @@ pub mod fl_3 {
 pub mod fl_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "FiberBudget lattice";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "lattice height";
     /// `rhs`
@@ -1428,8 +1257,6 @@ pub mod fl_4 {
 pub mod fpm_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "x ∈ Unit";
     /// `rhs`
@@ -1444,8 +1271,6 @@ pub mod fpm_1 {
 pub mod fpm_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n, type T";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "x ∈ Exterior";
     /// `rhs`
@@ -1460,8 +1285,6 @@ pub mod fpm_2 {
 pub mod fpm_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "x ∈ Irreducible";
     /// `rhs`
@@ -1476,8 +1299,6 @@ pub mod fpm_3 {
 pub mod fpm_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "x ∈ Reducible";
     /// `rhs`
@@ -1492,8 +1313,6 @@ pub mod fpm_4 {
 pub mod fpm_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "x = 2^{v(x)} ⋅ u";
     /// `rhs`
@@ -1508,8 +1327,6 @@ pub mod fpm_5 {
 pub mod fpm_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "|{x: v(x) = k}|";
     /// `rhs`
@@ -1524,8 +1341,6 @@ pub mod fpm_6 {
 pub mod fpm_7 {
     /// `forAll`
     pub const FOR_ALL: &str = "R_n, n ≥ 3";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "base type partition";
     /// `rhs`
@@ -1540,8 +1355,6 @@ pub mod fpm_7 {
 pub mod fs_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n, 0 ≤ k < n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "fiber_k(x)";
     /// `rhs`
@@ -1556,8 +1369,6 @@ pub mod fs_1 {
 pub mod fs_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "fiber_0(x)";
     /// `rhs`
@@ -1572,8 +1383,6 @@ pub mod fs_2 {
 pub mod fs_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "fiber_k(x) given fibers 0..k−1";
     /// `rhs`
@@ -1588,8 +1397,6 @@ pub mod fs_3 {
 pub mod fs_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "fibers 0..k together";
     /// `rhs`
@@ -1604,8 +1411,6 @@ pub mod fs_4 {
 pub mod fs_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "all n fibers";
     /// `rhs`
@@ -1620,8 +1425,6 @@ pub mod fs_5 {
 pub mod fs_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "stratum(x)";
     /// `rhs`
@@ -1636,8 +1439,6 @@ pub mod fs_6 {
 pub mod fs_7 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n, base type";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "depth(x)";
     /// `rhs`
@@ -1652,8 +1453,6 @@ pub mod fs_7 {
 pub mod re_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "T ∈ T_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Π_D(T)";
     /// `rhs`
@@ -1668,8 +1467,6 @@ pub mod re_1 {
 pub mod ir_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "resolution states";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "pinnedCount(state_{i+1})";
     /// `rhs`
@@ -1684,8 +1481,6 @@ pub mod ir_1 {
 pub mod ir_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "resolution loop";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "iterations to converge";
     /// `rhs`
@@ -1700,8 +1495,6 @@ pub mod ir_2 {
 pub mod ir_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "ResolutionState";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "convergenceRate";
     /// `rhs`
@@ -1716,8 +1509,6 @@ pub mod ir_3 {
 pub mod ir_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "complete constraint set";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "constraint set spans all fibers";
     /// `rhs`
@@ -1732,8 +1523,6 @@ pub mod ir_4 {
 pub mod sf_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "factor g, quantum n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "n ≡ 0 (mod ord_g(2))";
     /// `rhs`
@@ -1748,8 +1537,6 @@ pub mod sf_1 {
 pub mod sf_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint ordering";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "constraints with smaller step_g";
     /// `rhs`
@@ -1764,8 +1551,6 @@ pub mod sf_2 {
 pub mod rd_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "T ∈ T_n, [C₁,...,Cₖ]";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "same type T and constraint sequence";
     /// `rhs`
@@ -1780,8 +1565,6 @@ pub mod rd_1 {
 pub mod rd_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "closing constraint set";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "complete constraint set, any order";
     /// `rhs`
@@ -1796,8 +1579,6 @@ pub mod rd_2 {
 pub mod se_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "T ∈ T_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "EvaluationResolver";
     /// `rhs`
@@ -1812,8 +1593,6 @@ pub mod se_1 {
 pub mod se_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "T ∈ T_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "DihedralFactorizationResolver";
     /// `rhs`
@@ -1828,8 +1607,6 @@ pub mod se_2 {
 pub mod se_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "T ∈ T_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "CanonicalFormResolver";
     /// `rhs`
@@ -1844,8 +1621,6 @@ pub mod se_3 {
 pub mod se_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "T ∈ T_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Π_D(T) = Π_C(T) = Π_E(T)";
     /// `rhs`
@@ -1860,8 +1635,6 @@ pub mod se_4 {
 pub mod oo_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint C_i, pinned set S";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "benefit(C_i, S)";
     /// `rhs`
@@ -1876,8 +1649,6 @@ pub mod oo_1 {
 pub mod oo_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "ResidueConstraint or CarryConstraint";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "cost(C_i)";
     /// `rhs`
@@ -1892,8 +1663,6 @@ pub mod oo_2 {
 pub mod oo_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "each resolution step";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "greedy selection";
     /// `rhs`
@@ -1908,8 +1677,6 @@ pub mod oo_3 {
 pub mod oo_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "weighted set cover";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "greedy approximation";
     /// `rhs`
@@ -1924,8 +1691,6 @@ pub mod oo_4 {
 pub mod oo_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "cost-tied constraints";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "equal cost tiebreaker";
     /// `rhs`
@@ -1940,8 +1705,6 @@ pub mod oo_5 {
 pub mod cb_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "worst case";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "min convergenceRate";
     /// `rhs`
@@ -1956,8 +1719,6 @@ pub mod cb_1 {
 pub mod cb_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "best case";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "max convergenceRate";
     /// `rhs`
@@ -1972,8 +1733,6 @@ pub mod cb_2 {
 pub mod cb_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "ResidueConstraint(m, r)";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "expected rate (residue)";
     /// `rhs`
@@ -1988,8 +1747,6 @@ pub mod cb_3 {
 pub mod cb_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "stall detection";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "convergenceRate < 1 for 2 iterations";
     /// `rhs`
@@ -2004,8 +1761,6 @@ pub mod cb_4 {
 pub mod cb_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "sufficiency criterion";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "∪_i pins(C_i) = {0,...,n−1}";
     /// `rhs`
@@ -2020,8 +1775,6 @@ pub mod cb_5 {
 pub mod cb_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "well-formed model";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "iterations for k constraints";
     /// `rhs`
@@ -2036,8 +1789,6 @@ pub mod cb_6 {
 pub mod ob_m1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y, z ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_R(x, z)";
     /// `rhs`
@@ -2052,8 +1803,6 @@ pub mod ob_m1 {
 pub mod ob_m2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y, z ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_H(x, z)";
     /// `rhs`
@@ -2068,8 +1817,6 @@ pub mod ob_m2 {
 pub mod ob_m3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_Δ(x, y)";
     /// `rhs`
@@ -2084,8 +1831,6 @@ pub mod ob_m3 {
 pub mod ob_m4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_R(neg(x), neg(y))";
     /// `rhs`
@@ -2100,8 +1845,6 @@ pub mod ob_m4 {
 pub mod ob_m5 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_H(bnot(x), bnot(y))";
     /// `rhs`
@@ -2116,8 +1859,6 @@ pub mod ob_m5 {
 pub mod ob_m6 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_R(succ(x), succ(y))";
     /// `rhs`
@@ -2132,8 +1873,6 @@ pub mod ob_m6 {
 pub mod ob_c1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "[neg, bnot](x)";
     /// `rhs`
@@ -2148,8 +1887,6 @@ pub mod ob_c1 {
 pub mod ob_c2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n, constant k";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "[neg, add(•,k)](x)";
     /// `rhs`
@@ -2164,8 +1901,6 @@ pub mod ob_c2 {
 pub mod ob_c3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n, constant k";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "[bnot, xor(•,k)](x)";
     /// `rhs`
@@ -2180,8 +1915,6 @@ pub mod ob_c3 {
 pub mod ob_h1 {
     /// `forAll`
     pub const FOR_ALL: &str = "additive group";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "closed additive path monodromy";
     /// `rhs`
@@ -2196,8 +1929,6 @@ pub mod ob_h1 {
 pub mod ob_h2 {
     /// `forAll`
     pub const FOR_ALL: &str = "dihedral generators";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "closed {neg,bnot} path monodromy";
     /// `rhs`
@@ -2212,8 +1943,6 @@ pub mod ob_h2 {
 pub mod ob_h3 {
     /// `forAll`
     pub const FOR_ALL: &str = "closed succ path";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "succ-only path WindingNumber";
     /// `rhs`
@@ -2228,8 +1957,6 @@ pub mod ob_h3 {
 pub mod ob_p1 {
     /// `forAll`
     pub const FOR_ALL: &str = "paths p₁, p₂";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "PathLength(p₁ ⋅ p₂)";
     /// `rhs`
@@ -2244,8 +1971,6 @@ pub mod ob_p1 {
 pub mod ob_p2 {
     /// `forAll`
     pub const FOR_ALL: &str = "paths p₁, p₂";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "TotalVariation(p₁ ⋅ p₂)";
     /// `rhs`
@@ -2260,8 +1985,6 @@ pub mod ob_p2 {
 pub mod ob_p3 {
     /// `forAll`
     pub const FOR_ALL: &str = "cascades c₁, c₂";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "CascadeLength(c₁ ; c₂)";
     /// `rhs`
@@ -2276,8 +1999,6 @@ pub mod ob_p3 {
 pub mod ct_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "stratum transitions";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "catastrophe boundaries";
     /// `rhs`
@@ -2292,8 +2013,6 @@ pub mod ct_1 {
 pub mod ct_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "odd prime p";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "odd prime catastrophe";
     /// `rhs`
@@ -2308,8 +2027,6 @@ pub mod ct_2 {
 pub mod ct_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "factor g";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "CatastropheThreshold(g)";
     /// `rhs`
@@ -2324,8 +2041,6 @@ pub mod ct_3 {
 pub mod ct_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "composite g";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "composite catastrophe g = p⋅q";
     /// `rhs`
@@ -2340,8 +2055,6 @@ pub mod ct_4 {
 pub mod cf_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "path γ";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "CurvatureFlux(γ)";
     /// `rhs`
@@ -2356,8 +2069,6 @@ pub mod cf_1 {
 pub mod cf_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "type T";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "ResolutionCost(T)";
     /// `rhs`
@@ -2372,8 +2083,6 @@ pub mod cf_2 {
 pub mod cf_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "CurvatureFlux(x, succ(x))";
     /// `rhs`
@@ -2388,8 +2097,6 @@ pub mod cf_3 {
 pub mod cf_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Σ_{x ∈ R_n} CurvatureFlux(x, succ(x))";
     /// `rhs`
@@ -2404,8 +2111,6 @@ pub mod cf_4 {
 pub mod hg_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "additive group";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "additive holonomy";
     /// `rhs`
@@ -2420,8 +2125,6 @@ pub mod hg_1 {
 pub mod hg_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "dihedral generators";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "{neg, bnot, succ, pred} holonomy";
     /// `rhs`
@@ -2436,8 +2139,6 @@ pub mod hg_2 {
 pub mod hg_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "unit group";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "{mul(•, u) : u ∈ R_n×} holonomy";
     /// `rhs`
@@ -2452,8 +2153,6 @@ pub mod hg_3 {
 pub mod hg_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Hol(R_n)";
     /// `rhs`
@@ -2468,8 +2167,6 @@ pub mod hg_4 {
 pub mod hg_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Hol(R_n) decomposition";
     /// `rhs`
@@ -2484,8 +2181,6 @@ pub mod hg_5 {
 pub mod t_c1 {
     /// `forAll`
     pub const FOR_ALL: &str = "f ∈ Transform";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "compose(id, f)";
     /// `rhs`
@@ -2500,8 +2195,6 @@ pub mod t_c1 {
 pub mod t_c2 {
     /// `forAll`
     pub const FOR_ALL: &str = "f ∈ Transform";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "compose(f, id)";
     /// `rhs`
@@ -2516,8 +2209,6 @@ pub mod t_c2 {
 pub mod t_c3 {
     /// `forAll`
     pub const FOR_ALL: &str = "f, g, h ∈ Transform";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "compose(f, compose(g, h))";
     /// `rhs`
@@ -2532,8 +2223,6 @@ pub mod t_c3 {
 pub mod t_c4 {
     /// `forAll`
     pub const FOR_ALL: &str = "f, g ∈ Transform";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "f composesWith g";
     /// `rhs`
@@ -2548,8 +2237,6 @@ pub mod t_c4 {
 pub mod t_i1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_R(neg(x), neg(y))";
     /// `rhs`
@@ -2564,8 +2251,6 @@ pub mod t_i1 {
 pub mod t_i2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_H(bnot(x), bnot(y))";
     /// `rhs`
@@ -2580,8 +2265,6 @@ pub mod t_i2 {
 pub mod t_i3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "succ = neg ∘ bnot";
     /// `rhs`
@@ -2596,8 +2279,6 @@ pub mod t_i3 {
 pub mod t_i4 {
     /// `forAll`
     pub const FOR_ALL: &str = "Isometry";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "ring isometries";
     /// `rhs`
@@ -2612,8 +2293,6 @@ pub mod t_i4 {
 pub mod t_i5 {
     /// `forAll`
     pub const FOR_ALL: &str = "Isometry";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "CurvatureObservable";
     /// `rhs`
@@ -2628,8 +2307,6 @@ pub mod t_i5 {
 pub mod t_e1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n (injectivity)";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "ι(x) = ι(y)";
     /// `rhs`
@@ -2644,8 +2321,6 @@ pub mod t_e1 {
 pub mod t_e2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "ι(add(x,y))";
     /// `rhs`
@@ -2660,8 +2335,6 @@ pub mod t_e2 {
 pub mod t_e3 {
     /// `forAll`
     pub const FOR_ALL: &str = "ι₁: R_n → R_m, ι₂: R_m → R_k";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "ι₂ ∘ ι₁ : R_n → R_k";
     /// `rhs`
@@ -2676,8 +2349,6 @@ pub mod t_e3 {
 pub mod t_e4 {
     /// `forAll`
     pub const FOR_ALL: &str = "embedding ι";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "glyph ∘ ι ∘ addresses";
     /// `rhs`
@@ -2692,8 +2363,6 @@ pub mod t_e4 {
 pub mod t_a1 {
     /// `forAll`
     pub const FOR_ALL: &str = "g ∈ D_{2^n}, C ∈ Constraint";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "g ∈ D_{2^n} on Constraint C";
     /// `rhs`
@@ -2708,8 +2377,6 @@ pub mod t_a1 {
 pub mod t_a2 {
     /// `forAll`
     pub const FOR_ALL: &str = "g ∈ D_{2^n}";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "g ∈ D_{2^n} on Partition";
     /// `rhs`
@@ -2724,8 +2391,6 @@ pub mod t_a2 {
 pub mod t_a3 {
     /// `forAll`
     pub const FOR_ALL: &str = "DihedralFactorizationResolver";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "D_{2^n} orbits on R_n";
     /// `rhs`
@@ -2740,8 +2405,6 @@ pub mod t_a3 {
 pub mod t_a4 {
     /// `forAll`
     pub const FOR_ALL: &str = "R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "fixed points of neg";
     /// `rhs`
@@ -2756,8 +2419,6 @@ pub mod t_a4 {
 pub mod au_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Aut(R_n)";
     /// `rhs`
@@ -2772,8 +2433,6 @@ pub mod au_1 {
 pub mod au_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 3";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Aut(R_n)";
     /// `rhs`
@@ -2788,8 +2447,6 @@ pub mod au_2 {
 pub mod au_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "|Aut(R_n)|";
     /// `rhs`
@@ -2804,8 +2461,6 @@ pub mod au_3 {
 pub mod au_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Aut(R_n) ∩ D_{2^n}";
     /// `rhs`
@@ -2820,8 +2475,6 @@ pub mod au_4 {
 pub mod au_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "n ≥ 1";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Aff(R_n)";
     /// `rhs`
@@ -2836,8 +2489,6 @@ pub mod au_5 {
 pub mod ef_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "ι: R_n → R_m, f ∈ Cat(R_n)";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "F_ι(f)";
     /// `rhs`
@@ -2852,8 +2503,6 @@ pub mod ef_1 {
 pub mod ef_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "ι: R_n → R_m";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "F_ι(f ∘ g)";
     /// `rhs`
@@ -2868,8 +2517,6 @@ pub mod ef_2 {
 pub mod ef_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "ι: R_n → R_m";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "F_ι(id_{R_n})";
     /// `rhs`
@@ -2884,8 +2531,6 @@ pub mod ef_3 {
 pub mod ef_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "ι₁: R_n → R_m, ι₂: R_m → R_k";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "F_{ι₂ ∘ ι₁}";
     /// `rhs`
@@ -2900,8 +2545,6 @@ pub mod ef_4 {
 pub mod ef_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "ι: R_n → R_m";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "F_ι(ring isometry)";
     /// `rhs`
@@ -2916,8 +2559,6 @@ pub mod ef_5 {
 pub mod ef_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "ι: R_n → R_m";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "F_ι(D_{2^n})";
     /// `rhs`
@@ -2932,8 +2573,6 @@ pub mod ef_6 {
 pub mod ef_7 {
     /// `forAll`
     pub const FOR_ALL: &str = "ι: R_n → R_m";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "F_ι(R_n×)";
     /// `rhs`
@@ -2948,8 +2587,6 @@ pub mod ef_7 {
 pub mod aa_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n (6-bit blocks)";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "glyph(x)";
     /// `rhs`
@@ -2964,8 +2601,6 @@ pub mod aa_1 {
 pub mod aa_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "a, b ∈ {0,1}^6";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "braille(a ⊕ b)";
     /// `rhs`
@@ -2980,8 +2615,6 @@ pub mod aa_2 {
 pub mod aa_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "glyph(bnot(x))";
     /// `rhs`
@@ -2996,8 +2629,6 @@ pub mod aa_3 {
 pub mod aa_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "glyph(add(x, y))";
     /// `rhs`
@@ -3012,8 +2643,6 @@ pub mod aa_4 {
 pub mod aa_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "operations on R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "liftable operations";
     /// `rhs`
@@ -3028,8 +2657,6 @@ pub mod aa_5 {
 pub mod aa_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "neg(x) = succ(bnot(x))";
     /// `rhs`
@@ -3044,8 +2671,6 @@ pub mod aa_6 {
 pub mod am_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "addresses a, b";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_addr(a, b)";
     /// `rhs`
@@ -3060,8 +2685,6 @@ pub mod am_1 {
 pub mod am_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_addr(glyph(x), glyph(y))";
     /// `rhs`
@@ -3076,8 +2699,6 @@ pub mod am_2 {
 pub mod am_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "addresses";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_addr";
     /// `rhs`
@@ -3092,8 +2713,6 @@ pub mod am_3 {
 pub mod am_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x, y ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "d_Δ(x, y)";
     /// `rhs`
@@ -3108,8 +2727,6 @@ pub mod am_4 {
 pub mod th_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "state ∈ FiberBudget";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "S(state)";
     /// `rhs`
@@ -3124,8 +2741,6 @@ pub mod th_1 {
 pub mod th_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "unconstrained type";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "S(⊥)";
     /// `rhs`
@@ -3140,8 +2755,6 @@ pub mod th_2 {
 pub mod th_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "fully resolved type";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "S(⊤)";
     /// `rhs`
@@ -3156,8 +2769,6 @@ pub mod th_3 {
 pub mod th_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "Landauer bound";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "total resolution cost";
     /// `rhs`
@@ -3172,8 +2783,6 @@ pub mod th_4 {
 pub mod th_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "UOR fiber system";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "β*";
     /// `rhs`
@@ -3188,8 +2797,6 @@ pub mod th_5 {
 pub mod th_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "resolution loop";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "constraint application";
     /// `rhs`
@@ -3204,8 +2811,6 @@ pub mod th_6 {
 pub mod th_7 {
     /// `forAll`
     pub const FOR_ALL: &str = "partition bifurcation";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "CatastropheThreshold";
     /// `rhs`
@@ -3220,8 +2825,6 @@ pub mod th_7 {
 pub mod th_8 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint boundary g";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "step_g";
     /// `rhs`
@@ -3236,8 +2839,6 @@ pub mod th_8 {
 pub mod th_9 {
     /// `forAll`
     pub const FOR_ALL: &str = "type specification";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "computational hardness";
     /// `rhs`
@@ -3252,8 +2853,6 @@ pub mod th_9 {
 pub mod th_10 {
     /// `forAll`
     pub const FOR_ALL: &str = "resolution process";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "type resolution";
     /// `rhs`
@@ -3268,8 +2867,6 @@ pub mod th_10 {
 pub mod ar_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint ordering";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "adiabatic schedule";
     /// `rhs`
@@ -3284,8 +2881,6 @@ pub mod ar_1 {
 pub mod ar_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "optimal ordering";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Cost_adiabatic";
     /// `rhs`
@@ -3300,8 +2895,6 @@ pub mod ar_2 {
 pub mod ar_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "Landauer bound";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Cost_adiabatic";
     /// `rhs`
@@ -3316,8 +2909,6 @@ pub mod ar_3 {
 pub mod ar_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "adiabatic efficiency";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "η = (n × ln 2) / Cost_adiabatic";
     /// `rhs`
@@ -3332,8 +2923,6 @@ pub mod ar_4 {
 pub mod ar_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "empirical, Q0–Q4";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "greedy vs adiabatic difference";
     /// `rhs`
@@ -3348,8 +2937,6 @@ pub mod ar_5 {
 pub mod pd_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "UOR phase diagram";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "phase space";
     /// `rhs`
@@ -3364,8 +2951,6 @@ pub mod pd_1 {
 pub mod pd_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "(n, g) plane";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "phase boundaries";
     /// `rhs`
@@ -3380,8 +2965,6 @@ pub mod pd_2 {
 pub mod pd_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "g = 2";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "parity boundary";
     /// `rhs`
@@ -3396,8 +2979,6 @@ pub mod pd_3 {
 pub mod pd_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "(n, g) plane";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "resonance lines";
     /// `rhs`
@@ -3412,8 +2993,6 @@ pub mod pd_4 {
 pub mod pd_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "quantum level n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "phase count at level n";
     /// `rhs`
@@ -3428,8 +3007,6 @@ pub mod pd_5 {
 pub mod rc_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "FiberCoordinate k";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "reversible pinning of fiber k";
     /// `rhs`
@@ -3444,8 +3021,6 @@ pub mod rc_1 {
 pub mod rc_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "reversible strategy";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "reversible pinning entropy";
     /// `rhs`
@@ -3460,8 +3035,6 @@ pub mod rc_2 {
 pub mod rc_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "ancilla cleanup";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "deferred Landauer cost";
     /// `rhs`
@@ -3476,8 +3049,6 @@ pub mod rc_3 {
 pub mod rc_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "reversible strategy";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "reversible total cost";
     /// `rhs`
@@ -3492,8 +3063,6 @@ pub mod rc_4 {
 pub mod rc_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "hypothetical quantum";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "quantum UOR";
     /// `rhs`
@@ -3508,8 +3077,6 @@ pub mod rc_5 {
 pub mod dc_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "f : R_n → R_n, x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "∂_R f(x)";
     /// `rhs`
@@ -3524,8 +3091,6 @@ pub mod dc_1 {
 pub mod dc_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "f : R_n → R_n, x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "∂_H f(x)";
     /// `rhs`
@@ -3540,8 +3105,6 @@ pub mod dc_2 {
 pub mod dc_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "∂_H id(x)";
     /// `rhs`
@@ -3556,8 +3119,6 @@ pub mod dc_3 {
 pub mod dc_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "[neg, bnot](x)";
     /// `rhs`
@@ -3572,8 +3133,6 @@ pub mod dc_4 {
 pub mod dc_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "f : R_n → R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "∂_R f - ∂_H f";
     /// `rhs`
@@ -3588,8 +3147,6 @@ pub mod dc_5 {
 pub mod dc_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n, 0 ≤ k < n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "J_k(x)";
     /// `rhs`
@@ -3604,8 +3161,6 @@ pub mod dc_6 {
 pub mod dc_7 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "J_{n-1}(x)";
     /// `rhs`
@@ -3620,8 +3175,6 @@ pub mod dc_7 {
 pub mod dc_8 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "rank(J(x))";
     /// `rhs`
@@ -3636,8 +3189,6 @@ pub mod dc_8 {
 pub mod dc_9 {
     /// `forAll`
     pub const FOR_ALL: &str = "x ∈ R_n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "κ(x)";
     /// `rhs`
@@ -3652,8 +3203,6 @@ pub mod dc_9 {
 pub mod dc_10 {
     /// `forAll`
     pub const FOR_ALL: &str = "resolution step";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "optimal next constraint";
     /// `rhs`
@@ -3668,8 +3217,6 @@ pub mod dc_10 {
 pub mod dc_11 {
     /// `forAll`
     pub const FOR_ALL: &str = "0 ≤ k < n";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Σ_{x} J_k(x)";
     /// `rhs`
@@ -3684,8 +3231,6 @@ pub mod dc_11 {
 pub mod ha_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint set C";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "N(C)";
     /// `rhs`
@@ -3700,8 +3245,6 @@ pub mod ha_1 {
 pub mod ha_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint set C";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "resolution stalls";
     /// `rhs`
@@ -3716,8 +3259,6 @@ pub mod ha_2 {
 pub mod ha_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint configuration C";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "S_residual";
     /// `rhs`
@@ -3732,8 +3273,6 @@ pub mod ha_3 {
 pub mod it_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint nerve N(C)";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "χ(N(C))";
     /// `rhs`
@@ -3749,8 +3288,6 @@ pub mod it_2 {
 pub mod it_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint nerve N(C)";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "χ(N(C))";
     /// `rhs`
@@ -3766,8 +3303,6 @@ pub mod it_3 {
 pub mod it_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint nerve N(C)";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "λ_1(N(C))";
     /// `rhs`
@@ -3783,8 +3318,6 @@ pub mod it_6 {
 pub mod it_7a {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint configuration C";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "Σ κ_k - χ(N(C))";
     /// `rhs`
@@ -3804,8 +3337,6 @@ pub mod it_7a {
 pub mod it_7b {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint configuration C";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "S_residual";
     /// `rhs`
@@ -3825,8 +3356,6 @@ pub mod it_7b {
 pub mod it_7c {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint configuration C";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "resolution cost";
     /// `rhs`
@@ -3846,8 +3375,6 @@ pub mod it_7c {
 pub mod it_7d {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint nerve N(C)";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "resolution complete";
     /// `rhs`
@@ -3867,8 +3394,6 @@ pub mod it_7d {
 pub mod phi_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "ring op, constraint";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "φ₁(neg, ResidueConstraint(m,r))";
     /// `rhs`
@@ -3883,8 +3408,6 @@ pub mod phi_1 {
 pub mod phi_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraints A, B";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "φ₂(compose(A,B))";
     /// `rhs`
@@ -3899,8 +3422,6 @@ pub mod phi_2 {
 pub mod phi_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "closed FiberBudget";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "φ₃(closed fiber state)";
     /// `rhs`
@@ -3915,8 +3436,6 @@ pub mod phi_3 {
 pub mod phi_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "T ∈ T_n, x ∈ R_n";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "φ₄(T, x)";
     /// `rhs`
@@ -3931,8 +3450,6 @@ pub mod phi_4 {
 pub mod phi_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "op ∈ Operation";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "φ₅(neg)";
     /// `rhs`
@@ -3947,8 +3464,6 @@ pub mod phi_5 {
 pub mod phi_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "ResolutionState";
-    /// `hasVerificationStatus` -> `Verifiable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Verifiable";
     /// `lhs`
     pub const LHS: &str = "φ₆(state, observables)";
     /// `rhs`
@@ -3963,8 +3478,6 @@ pub mod phi_6 {
 pub mod psi_1 {
     /// `forAll`
     pub const FOR_ALL: &str = "constraint set";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "N(constraints)";
     /// `rhs`
@@ -3979,8 +3492,6 @@ pub mod psi_1 {
 pub mod psi_2 {
     /// `forAll`
     pub const FOR_ALL: &str = "simplicial complex K";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "C(K)";
     /// `rhs`
@@ -3995,8 +3506,6 @@ pub mod psi_2 {
 pub mod psi_3 {
     /// `forAll`
     pub const FOR_ALL: &str = "chain complex C";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "H_k(C)";
     /// `rhs`
@@ -4011,8 +3520,6 @@ pub mod psi_3 {
 pub mod psi_5 {
     /// `forAll`
     pub const FOR_ALL: &str = "chain complex C, ring R";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "C^k";
     /// `rhs`
@@ -4027,8 +3534,6 @@ pub mod psi_5 {
 pub mod psi_6 {
     /// `forAll`
     pub const FOR_ALL: &str = "cochain complex C";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "H^k(C)";
     /// `rhs`

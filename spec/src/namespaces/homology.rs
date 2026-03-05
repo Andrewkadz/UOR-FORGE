@@ -361,10 +361,7 @@ fn individuals() -> Vec<Individual> {
                     "https://uor.foundation/op/forAll",
                     IndividualValue::Str("c \u{2208} C_{k+1}"),
                 ),
-                (
-                    "https://uor.foundation/op/hasVerificationStatus",
-                    IndividualValue::IriRef("https://uor.foundation/op/Derivable"),
-                ),
+
                 (
                     "https://uor.foundation/op/verificationDomain",
                     IndividualValue::IriRef("https://uor.foundation/op/Topological"),
@@ -407,10 +404,7 @@ fn individuals() -> Vec<Individual> {
                     "https://uor.foundation/op/forAll",
                     IndividualValue::Str("simplicial complex K"),
                 ),
-                (
-                    "https://uor.foundation/op/hasVerificationStatus",
-                    IndividualValue::IriRef("https://uor.foundation/op/Derivable"),
-                ),
+
                 (
                     "https://uor.foundation/op/verificationDomain",
                     IndividualValue::IriRef("https://uor.foundation/op/Topological"),
@@ -439,10 +433,7 @@ fn individuals() -> Vec<Individual> {
                     "https://uor.foundation/op/forAll",
                     IndividualValue::Str("finite simplicial complex K"),
                 ),
-                (
-                    "https://uor.foundation/op/hasVerificationStatus",
-                    IndividualValue::IriRef("https://uor.foundation/op/Derivable"),
-                ),
+
                 (
                     "https://uor.foundation/op/verificationDomain",
                     IndividualValue::IriRef("https://uor.foundation/op/Topological"),

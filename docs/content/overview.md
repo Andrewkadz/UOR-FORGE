@@ -121,9 +121,6 @@ Ring, Boolean, Cross-Structure, Dihedral, Unit, Affine, and Carry. Each identity
 properties specifying the equation and its domain.
 
 Every identity carries typed grounding properties:
-- {@prop https://uor.foundation/op/hasVerificationStatus}: a reference to either
-  {@ind https://uor.foundation/op/Verifiable} (exhaustively checkable) or
-  {@ind https://uor.foundation/op/Derivable} (follows from axioms).
 - {@prop https://uor.foundation/op/verificationDomain}: one or more references to a
   {@class https://uor.foundation/op/VerificationDomain} individual identifying the
   mathematical discipline (Enumerative, Algebraic, Geometric, Analytical, Thermodynamic,

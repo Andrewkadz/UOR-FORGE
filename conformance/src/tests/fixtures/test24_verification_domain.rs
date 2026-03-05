@@ -15,15 +15,12 @@ op:Topological a op:VerificationDomain .
 op:Pipeline a op:VerificationDomain .
 op:IndexTheoretic a op:VerificationDomain .
 
-op:Verifiable a op:VerificationStatus .
-op:Derivable a op:VerificationStatus .
 
 # Spot-check: R_A1 (verifiable, Enumerative)
 op:R_A1 a op:Identity ;
     op:lhs "add(x, add(y, z))" ;
     op:rhs "add(add(x, y), z)" ;
     op:forAll "x, y, z ∈ R_n" ;
-    op:hasVerificationStatus op:Verifiable ;
     op:verificationDomain op:Enumerative ;
     op:verificationPathNote "exhaustive_enumeration(R_n)" .
 
@@ -32,7 +29,6 @@ op:TH_1 a op:Identity ;
     op:lhs "S(fiber_state)" ;
     op:rhs "free_count × ln(2)" ;
     op:forAll "fiber state" ;
-    op:hasVerificationStatus op:Derivable ;
     op:verificationDomain op:Thermodynamic ;
     op:verificationPathNote "Landauer bound" .
 
@@ -41,7 +37,6 @@ op:IT_7a a op:Identity ;
     op:lhs "Σ κ_k - χ(N(C))" ;
     op:rhs "= S_residual / ln 2" ;
     op:forAll "constraint configuration C" ;
-    op:hasVerificationStatus op:Derivable ;
     op:verificationDomain op:IndexTheoretic, op:Analytical, op:Topological ;
     op:verificationPathNote "DifferentialCalculus + HomologicalAlgebra → IndexTheorem" .
 
@@ -50,7 +45,6 @@ op:phi_1 a op:Identity ;
     op:lhs "φ₁(neg, ResidueConstraint(m,r))" ;
     op:rhs "ResidueConstraint(m, m-r)" ;
     op:forAll "ring op, constraint" ;
-    op:hasVerificationStatus op:Verifiable ;
     op:verificationDomain op:Pipeline ;
     op:verificationPathNote "Inter-algebra map: source → target" .
 "#;

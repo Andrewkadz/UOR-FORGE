@@ -181,24 +181,6 @@ impl fmt::Display for VerificationDomain {
     }
 }
 
-/// The verification status of an identity: verifiable or derivable.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum VerificationStatus {
-    /// The identity can be confirmed by exhaustive enumeration over R_n.
-    Verifiable,
-    /// The identity follows from previously established axioms or definitions by equational reasoning.
-    Derivable,
-}
-
-impl fmt::Display for VerificationStatus {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Verifiable => f.write_str("verifiable"),
-            Self::Derivable => f.write_str("derivable"),
-        }
-    }
-}
-
 /// The computational complexity classification of a resolver.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ComplexityClass {
@@ -291,6 +273,49 @@ impl fmt::Display for CoordinateKind {
             Self::Stratum => f.write_str("stratum"),
             Self::Spectrum => f.write_str("spectrum"),
             Self::Address => f.write_str("address"),
+        }
+    }
+}
+
+/// A named quantum level Q_k at which the UOR ring operates.
+#[non_exhaustive]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum QuantumLevel {
+    /// Quantum level 0: 8-bit ring Z/256Z, 256 states. The reference level for all ComputationCertificate proofs in the spec.
+    Q0,
+    /// Quantum level 1: 16-bit ring Z/65536Z, 65,536 states.
+    Q1,
+    /// Quantum level 2: 24-bit ring Z/16777216Z, 16,777,216 states.
+    Q2,
+    /// Quantum level 3: 32-bit ring Z/4294967296Z, 4,294,967,296 states. The highest named level in the spec. nextLevel is absent — Prism implementations may extend the chain.
+    Q3,
+}
+
+impl fmt::Display for QuantumLevel {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Q0 => f.write_str("q0"),
+            Self::Q1 => f.write_str("q1"),
+            Self::Q2 => f.write_str("q2"),
+            Self::Q3 => f.write_str("q3"),
+        }
+    }
+}
+
+/// The modality of a proof: computation (exhaustive verification at a specific quantum level) or axiomatic (derivation from ring axioms).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum ProofModality {
+    /// A proof confirmed by exhaustive execution over R_n at a specific quantum level.
+    Computation,
+    /// A proof derived from ring axioms that holds at all quantum levels.
+    Axiomatic,
+}
+
+impl fmt::Display for ProofModality {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Computation => f.write_str("computation"),
+            Self::Axiomatic => f.write_str("axiomatic"),
         }
     }
 }

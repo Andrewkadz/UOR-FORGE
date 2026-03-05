@@ -104,8 +104,6 @@ pub trait ChainFunctor<P: Primitives> {}
 pub mod boundary_squared_zero {
     /// `forAll`
     pub const FOR_ALL: &str = "c ∈ C_{k+1}";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "∂_k(∂_{k+1}(c))";
     /// `rhs`
@@ -126,8 +124,6 @@ pub mod chain_functor_c {}
 pub mod psi_4 {
     /// `forAll`
     pub const FOR_ALL: &str = "simplicial complex K";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "β_k(K)";
     /// `rhs`
@@ -142,8 +138,6 @@ pub mod psi_4 {
 pub mod index_bridge {
     /// `forAll`
     pub const FOR_ALL: &str = "finite simplicial complex K";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "χ(K)";
     /// `rhs`

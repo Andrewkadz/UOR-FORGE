@@ -18,6 +18,8 @@ pub struct DetectedEnum {
     pub comment: &'static str,
     /// Variants: (variant_name, doc_comment).
     pub variants: Vec<(String, String)>,
+    /// Whether to emit `#[non_exhaustive]` on the generated enum.
+    pub non_exhaustive: bool,
 }
 
 /// Detects all enums from the ontology.
@@ -42,6 +44,7 @@ pub fn detect_enums(ontology: &Ontology) -> Vec<DetectedEnum> {
                 "Bridge: kernel-computed, user-consumed.".to_string(),
             ),
         ],
+        non_exhaustive: false,
     });
 
     // 2. PrimitiveOp enum from the 10 operation individuals
@@ -66,6 +69,7 @@ pub fn detect_enums(ontology: &Ontology) -> Vec<DetectedEnum> {
                 name: "PrimitiveOp",
                 comment: "The 10 primitive operations defined in the UOR Foundation.",
                 variants: op_variants,
+                non_exhaustive: false,
             });
         }
     }
@@ -94,6 +98,7 @@ pub fn detect_enums(ontology: &Ontology) -> Vec<DetectedEnum> {
                 name: "MetricAxis",
                 comment: "The three metric axes in the UOR tri-metric classification.",
                 variants: axis_variants,
+                non_exhaustive: false,
             });
         }
     }
@@ -112,6 +117,7 @@ pub fn detect_enums(ontology: &Ontology) -> Vec<DetectedEnum> {
                 "Fiber is still available for refinement.".to_string(),
             ),
         ],
+        non_exhaustive: false,
     });
 
     // 5. GeometricCharacter enum — from named individuals of type op:GeometricCharacter
@@ -129,13 +135,6 @@ pub fn detect_enums(ontology: &Ontology) -> Vec<DetectedEnum> {
         "op",
         "VerificationDomain",
         "The mathematical domain in which an identity is established.",
-        &mut enums,
-    );
-    detect_vocabulary_enum(
-        ontology,
-        "op",
-        "VerificationStatus",
-        "The verification status of an identity: verifiable or derivable.",
         &mut enums,
     );
     detect_vocabulary_enum(
@@ -166,6 +165,39 @@ pub fn detect_enums(ontology: &Ontology) -> Vec<DetectedEnum> {
         "A classification of coordinate types for coordinate queries.",
         &mut enums,
     );
+
+    // 12. QuantumLevel enum — from named individuals of type schema:QuantumLevel
+    detect_vocabulary_enum(
+        ontology,
+        "schema",
+        "QuantumLevel",
+        "A named quantum level Q_k at which the UOR ring operates.",
+        &mut enums,
+    );
+    // Mark QuantumLevel as non_exhaustive (open chain: Prism implementations may extend)
+    if let Some(ql) = enums.iter_mut().find(|e| e.name == "QuantumLevel") {
+        ql.non_exhaustive = true;
+    }
+
+    // 13. ProofModality enum (hardcoded — codegen enum, not an OWL class)
+    enums.push(DetectedEnum {
+        name: "ProofModality",
+        comment: "The modality of a proof: computation (exhaustive verification at a \
+                  specific quantum level) or axiomatic (derivation from ring axioms).",
+        variants: vec![
+            (
+                "Computation".to_string(),
+                "A proof confirmed by exhaustive execution over R_n at a specific \
+                 quantum level."
+                    .to_string(),
+            ),
+            (
+                "Axiomatic".to_string(),
+                "A proof derived from ring axioms that holds at all quantum levels.".to_string(),
+            ),
+        ],
+        non_exhaustive: false,
+    });
 
     enums
 }
@@ -206,6 +238,7 @@ fn detect_vocabulary_enum(
                 name: class_name,
                 comment,
                 variants,
+                non_exhaustive: false,
             });
         }
     }
@@ -252,6 +285,9 @@ pub fn generate_enums_file(ontology: &Ontology) -> String {
 
     for e in &enums {
         f.doc_comment(e.comment);
+        if e.non_exhaustive {
+            f.line("#[non_exhaustive]");
+        }
         f.line("#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]");
         let _ = writeln!(f.buf, "pub enum {} {{", e.name);
         for (variant, comment) in &e.variants {
@@ -309,8 +345,8 @@ mod tests {
         let ontology = Ontology::full();
         let enums = detect_enums(ontology);
         assert!(
-            enums.len() >= 11,
-            "Expected at least 11 enums, got {}",
+            enums.len() >= 12,
+            "Expected at least 12 enums, got {}",
             enums.len()
         );
 
@@ -321,11 +357,12 @@ mod tests {
         assert!(names.contains(&"FiberState"));
         assert!(names.contains(&"GeometricCharacter"));
         assert!(names.contains(&"VerificationDomain"));
-        assert!(names.contains(&"VerificationStatus"));
         assert!(names.contains(&"ComplexityClass"));
         assert!(names.contains(&"RewriteRule"));
         assert!(names.contains(&"MeasurementUnit"));
         assert!(names.contains(&"CoordinateKind"));
+        assert!(names.contains(&"QuantumLevel"));
+        assert!(names.contains(&"ProofModality"));
     }
 
     #[test]

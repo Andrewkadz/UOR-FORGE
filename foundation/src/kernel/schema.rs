@@ -4,6 +4,7 @@
 //!
 //! Space: Kernel
 
+use crate::enums::QuantumLevel;
 use crate::Primitives;
 
 /// An element of the ring Z/(2^n)Z at a specific quantum level n. The primary semantic value type. Disjoint from Term: datums are values, terms are syntactic expressions that evaluate to datums.
@@ -66,6 +67,8 @@ pub trait Ring<P: Primitives> {
     fn negation(&self) -> &Self::Involution;
     /// The hypercube reflection involution: bnot(x) = (2^n - 1) ⊕ x. The second generator of the dihedral group D_{2^n}.
     fn complement(&self) -> &Self::Involution;
+    /// The quantum level at which this Ring instance operates. Links a concrete Ring individual to its QuantumLevel.
+    fn at_quantum_level(&self) -> QuantumLevel;
 }
 
 /// The unique generator of R_n under successor. Value = 1 at every quantum level. Under iterated application of succ, π₁ generates every element of the ring.
@@ -78,4 +81,50 @@ pub mod pi1 {
 pub mod zero {
     /// `value`
     pub const VALUE: i64 = 0;
+}
+
+/// Quantum level 0: 8-bit ring Z/256Z, 256 states. The reference level for all ComputationCertificate proofs in the spec.
+pub mod q0 {
+    /// `bitsWidth`
+    pub const BITS_WIDTH: i64 = 8;
+    /// `cycleSize`
+    pub const CYCLE_SIZE: i64 = 256;
+    /// `nextLevel` -> `Q1`
+    pub const NEXT_LEVEL: &str = "https://uor.foundation/schema/Q1";
+    /// `quantumIndex`
+    pub const QUANTUM_INDEX: i64 = 0;
+}
+
+/// Quantum level 1: 16-bit ring Z/65536Z, 65,536 states.
+pub mod q1 {
+    /// `bitsWidth`
+    pub const BITS_WIDTH: i64 = 16;
+    /// `cycleSize`
+    pub const CYCLE_SIZE: i64 = 65536;
+    /// `nextLevel` -> `Q2`
+    pub const NEXT_LEVEL: &str = "https://uor.foundation/schema/Q2";
+    /// `quantumIndex`
+    pub const QUANTUM_INDEX: i64 = 1;
+}
+
+/// Quantum level 2: 24-bit ring Z/16777216Z, 16,777,216 states.
+pub mod q2 {
+    /// `bitsWidth`
+    pub const BITS_WIDTH: i64 = 24;
+    /// `cycleSize`
+    pub const CYCLE_SIZE: i64 = 16777216;
+    /// `nextLevel` -> `Q3`
+    pub const NEXT_LEVEL: &str = "https://uor.foundation/schema/Q3";
+    /// `quantumIndex`
+    pub const QUANTUM_INDEX: i64 = 2;
+}
+
+/// Quantum level 3: 32-bit ring Z/4294967296Z, 4,294,967,296 states. The highest named level in the spec. nextLevel is absent — Prism implementations may extend the chain.
+pub mod q3 {
+    /// `bitsWidth`
+    pub const BITS_WIDTH: i64 = 32;
+    /// `cycleSize`
+    pub const CYCLE_SIZE: i64 = 4294967296;
+    /// `quantumIndex`
+    pub const QUANTUM_INDEX: i64 = 3;
 }

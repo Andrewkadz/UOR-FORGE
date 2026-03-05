@@ -1,6 +1,6 @@
 //! SHACL validator.
 //!
-//! Validates the 29 OWL instance test graphs against the UOR SHACL shapes.
+//! Validates the 31 OWL instance test graphs against the UOR SHACL shapes.
 //! Each test graph is defined as a Turtle string in `tests/fixtures/`.
 //! Validation checks structural constraints without a full SHACL engine:
 //! - Required properties are present
@@ -10,7 +10,7 @@
 use crate::report::{ConformanceReport, TestResult};
 use crate::tests;
 
-/// Runs all 29 SHACL instance conformance tests.
+/// Runs all 31 SHACL instance conformance tests.
 pub fn validate() -> ConformanceReport {
     let mut report = ConformanceReport::new();
 
@@ -155,6 +155,16 @@ pub fn validate() -> ConformanceReport {
         tests::fixtures::TEST29_COORDINATE_KIND,
         &mut report,
     );
+    run_test(
+        "test30_proof_coverage",
+        tests::fixtures::TEST30_PROOF_COVERAGE,
+        &mut report,
+    );
+    run_test(
+        "test31_quantum_level",
+        tests::fixtures::TEST31_QUANTUM_LEVEL,
+        &mut report,
+    );
 
     report
 }
@@ -211,6 +221,8 @@ fn run_test(name: &str, turtle_src: &str, report: &mut ConformanceReport) {
         "test27_rewrite_rule" => validate_rewrite_rule_shacl(turtle_src),
         "test28_measurement_unit" => validate_measurement_unit_shacl(turtle_src),
         "test29_coordinate_kind" => validate_coordinate_kind_shacl(turtle_src),
+        "test30_proof_coverage" => validate_proof_coverage_shacl(turtle_src),
+        "test31_quantum_level" => validate_quantum_level_shacl(turtle_src),
         _ => Ok(()),
     };
 
@@ -587,11 +599,6 @@ fn validate_index_bridge(src: &str) -> Result<(), String> {
     check_contains(src, "op:psi_6", "Missing psi_6")?;
     check_contains(
         src,
-        "op:hasVerificationStatus",
-        "Missing op:hasVerificationStatus",
-    )?;
-    check_contains(
-        src,
         "op:verificationDomain",
         "Missing op:verificationDomain",
     )?;
@@ -604,11 +611,6 @@ fn validate_identity_grounding_shacl(src: &str) -> Result<(), String> {
     check_contains(src, "op:F_1", "Missing F_1")?;
     check_contains(src, "op:DC_1", "Missing DC_1")?;
     check_contains(src, "op:psi_1", "Missing psi_1")?;
-    check_contains(
-        src,
-        "op:hasVerificationStatus",
-        "Missing hasVerificationStatus property",
-    )?;
     check_contains(
         src,
         "op:verificationDomain",
@@ -628,19 +630,8 @@ fn validate_verification_domain_shacl(src: &str) -> Result<(), String> {
         "op:VerificationDomain",
         "Missing VerificationDomain type",
     )?;
-    check_contains(
-        src,
-        "op:VerificationStatus",
-        "Missing VerificationStatus type",
-    )?;
-    check_contains(
-        src,
-        "op:hasVerificationStatus",
-        "Missing hasVerificationStatus",
-    )?;
     check_contains(src, "op:verificationDomain", "Missing verificationDomain")?;
     check_contains(src, "op:Enumerative", "Missing Enumerative individual")?;
-    check_contains(src, "op:Verifiable", "Missing Verifiable individual")?;
     Ok(())
 }
 
@@ -725,6 +716,52 @@ fn validate_coordinate_kind_shacl(src: &str) -> Result<(), String> {
         "query:SpectrumCoordinate",
         "Missing SpectrumCoordinate individual",
     )?;
+    Ok(())
+}
+
+fn validate_proof_coverage_shacl(src: &str) -> Result<(), String> {
+    check_contains(
+        src,
+        "proof:ComputationCertificate",
+        "Missing ComputationCertificate type",
+    )?;
+    check_contains(
+        src,
+        "proof:AxiomaticDerivation",
+        "Missing AxiomaticDerivation type",
+    )?;
+    check_contains(
+        src,
+        "proof:CriticalIdentityProof",
+        "Missing CriticalIdentityProof type",
+    )?;
+    check_contains(
+        src,
+        "proof:provesIdentity",
+        "Missing provesIdentity property",
+    )?;
+    check_contains(
+        src,
+        "proof:atQuantumLevel",
+        "Missing atQuantumLevel property",
+    )?;
+    check_contains(
+        src,
+        "proof:universalScope",
+        "Missing universalScope property",
+    )?;
+    check_contains(src, "proof:verified", "Missing verified property")?;
+    Ok(())
+}
+
+fn validate_quantum_level_shacl(src: &str) -> Result<(), String> {
+    check_contains(src, "schema:QuantumLevel", "Missing QuantumLevel type")?;
+    check_contains(src, "schema:quantumIndex", "Missing quantumIndex property")?;
+    check_contains(src, "schema:bitsWidth", "Missing bitsWidth property")?;
+    check_contains(src, "schema:cycleSize", "Missing cycleSize property")?;
+    check_contains(src, "schema:nextLevel", "Missing nextLevel property")?;
+    check_contains(src, "schema:Q0", "Missing Q0 individual")?;
+    check_contains(src, "schema:Q1", "Missing Q1 individual")?;
     Ok(())
 }
 

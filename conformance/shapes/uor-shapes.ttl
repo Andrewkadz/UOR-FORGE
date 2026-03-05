@@ -121,7 +121,6 @@ uor-sh:IdentityShape
     sh:property [ sh:path op:rhs ; sh:minCount 1 ; sh:maxCount 1 ] ;
     sh:property [ sh:path op:forAll ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
     sh:property [ sh:path op:verificationDomain ; sh:minCount 1 ; sh:class op:VerificationDomain ] ;
-    sh:property [ sh:path op:hasVerificationStatus ; sh:minCount 1 ; sh:maxCount 1 ; sh:class op:VerificationStatus ] ;
     sh:property [ sh:path op:verificationPathNote ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 uor-sh:GroupShape

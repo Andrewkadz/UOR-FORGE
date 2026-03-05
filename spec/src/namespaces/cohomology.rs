@@ -300,10 +300,7 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("δ^{k+1}(δ^k(f))")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("0")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("f ∈ C^k")),
-                (
-                    "https://uor.foundation/op/hasVerificationStatus",
-                    IndividualValue::IriRef("https://uor.foundation/op/Derivable"),
-                ),
+
                 (
                     "https://uor.foundation/op/verificationDomain",
                     IndividualValue::IriRef("https://uor.foundation/op/Topological"),
@@ -326,10 +323,7 @@ fn individuals() -> Vec<Individual> {
                     "https://uor.foundation/op/forAll",
                     IndividualValue::Str("simplicial complex K, ring R"),
                 ),
-                (
-                    "https://uor.foundation/op/hasVerificationStatus",
-                    IndividualValue::IriRef("https://uor.foundation/op/Derivable"),
-                ),
+
                 (
                     "https://uor.foundation/op/verificationDomain",
                     IndividualValue::IriRef("https://uor.foundation/op/Topological"),
@@ -352,10 +346,7 @@ fn individuals() -> Vec<Individual> {
                     "https://uor.foundation/op/forAll",
                     IndividualValue::Str("constant sheaf F_R over K"),
                 ),
-                (
-                    "https://uor.foundation/op/hasVerificationStatus",
-                    IndividualValue::IriRef("https://uor.foundation/op/Derivable"),
-                ),
+
                 (
                     "https://uor.foundation/op/verificationDomain",
                     IndividualValue::IriRef("https://uor.foundation/op/Topological"),
@@ -375,10 +366,7 @@ fn individuals() -> Vec<Individual> {
                 ("https://uor.foundation/op/lhs", IndividualValue::Str("H^1(K; F) = 0")),
                 ("https://uor.foundation/op/rhs", IndividualValue::Str("all local sections glue")),
                 ("https://uor.foundation/op/forAll", IndividualValue::Str("sheaf F over K")),
-                (
-                    "https://uor.foundation/op/hasVerificationStatus",
-                    IndividualValue::IriRef("https://uor.foundation/op/Derivable"),
-                ),
+
                 (
                     "https://uor.foundation/op/verificationDomain",
                     IndividualValue::IriRef("https://uor.foundation/op/Topological"),

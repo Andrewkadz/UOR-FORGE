@@ -106,8 +106,6 @@ pub trait GluingObstruction<P: Primitives> {
 pub mod coboundary_squared_zero {
     /// `forAll`
     pub const FOR_ALL: &str = "f ∈ C^k";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "δ^{k+1}(δ^k(f))";
     /// `rhs`
@@ -122,8 +120,6 @@ pub mod coboundary_squared_zero {
 pub mod de_rham_duality {
     /// `forAll`
     pub const FOR_ALL: &str = "simplicial complex K, ring R";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "H^k(K; R)";
     /// `rhs`
@@ -138,8 +134,6 @@ pub mod de_rham_duality {
 pub mod sheaf_cohomology_bridge {
     /// `forAll`
     pub const FOR_ALL: &str = "constant sheaf F_R over K";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "H^k(K; F_R)";
     /// `rhs`
@@ -154,8 +148,6 @@ pub mod sheaf_cohomology_bridge {
 pub mod local_global_principle {
     /// `forAll`
     pub const FOR_ALL: &str = "sheaf F over K";
-    /// `hasVerificationStatus` -> `Derivable`
-    pub const HAS_VERIFICATION_STATUS: &str = "https://uor.foundation/op/Derivable";
     /// `lhs`
     pub const LHS: &str = "H^1(K; F) = 0";
     /// `rhs`

@@ -40,13 +40,15 @@ ontology class (130 total).
 | test20_sheaf_consistency | `tests/fixtures/test20_sheaf_consistency.rs` | `cohomology:Sheaf` → `Stalk` → `Section` → `GluingObstruction` |
 | test21_topological_delta | `tests/fixtures/test21_topological_delta.rs` | `morphism:TopologicalDelta` with Betti/Euler/nerve before+after |
 | test22_index_bridge | `tests/fixtures/test22_index_bridge.rs` | Full φ+ψ pipeline (6 phi_ + 6 psi_ individuals) |
-| test23_identity_grounding | `tests/fixtures/test23_identity_grounding.rs` | `op:hasVerificationStatus`/`verificationDomain`/`verificationPathNote` spot-check |
-| test24_verification_domain | `tests/fixtures/test24_verification_domain.rs` | `VerificationDomain`/`VerificationStatus` vocabulary + typed identity grounding |
+| test23_identity_grounding | `tests/fixtures/test23_identity_grounding.rs` | `verificationDomain`/`verificationPathNote` spot-check |
+| test24_verification_domain | `tests/fixtures/test24_verification_domain.rs` | `VerificationDomain` vocabulary + typed identity grounding |
 | test25_geometric_character | `tests/fixtures/test25_geometric_character.rs` | `GeometricCharacter` vocabulary + typed operation links |
 | test26_complexity_class | `tests/fixtures/test26_complexity_class.rs` | `ComplexityClass` vocabulary + typed resolver links |
 | test27_rewrite_rule | `tests/fixtures/test27_rewrite_rule.rs` | `RewriteRule` vocabulary + `groundedIn` cross-reference |
 | test28_measurement_unit | `tests/fixtures/test28_measurement_unit.rs` | `MeasurementUnit` vocabulary + typed observable links |
 | test29_coordinate_kind | `tests/fixtures/test29_coordinate_kind.rs` | `CoordinateKind` vocabulary + typed coordinate queries |
+| test30_proof_coverage | `tests/fixtures/test30_proof_coverage.rs` | `proof:ComputationCertificate`/`AxiomaticDerivation`/`CriticalIdentityProof` + `provesIdentity`/`atQuantumLevel`/`universalScope` |
+| test31_quantum_level | `tests/fixtures/test31_quantum_level.rs` | `schema:QuantumLevel` individuals Q0–Q3 with `quantumIndex`/`bitsWidth`/`cycleSize`/`nextLevel` |
 
 ## Structural Validation
 

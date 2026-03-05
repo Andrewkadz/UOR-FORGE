@@ -46,7 +46,7 @@ This crate is the single source of truth. It is internal (`publish = false`).
 
 - **`mapping.rs`**: Namespace → module, XSD → Rust type, class IRI → path tables
 - **`traits.rs`**: Class → trait, property → method generation
-- **`enums.rs`**: Enum detection (PrimitiveOp, MetricAxis, Space, FiberState, GeometricCharacter, VerificationDomain, VerificationStatus, ComplexityClass, RewriteRule, MeasurementUnit, CoordinateKind)
+- **`enums.rs`**: Enum detection (PrimitiveOp, MetricAxis, Space, FiberState, GeometricCharacter, VerificationDomain, QuantumLevel, ComplexityClass, RewriteRule, MeasurementUnit, CoordinateKind, ProofModality)
 - **`individuals.rs`**: Named individual → const module / PrimitiveOp impl generation
 - **`emit.rs`**: Rust source code writer
 
@@ -55,10 +55,10 @@ This crate is the single source of truth. It is internal (`publish = false`).
 `uor-foundation` is the **generated** published crate. Every file in `foundation/src/`
 is produced by `uor-crate` — never hand-edited.
 
-- **122 traits** (one per OWL class, generic over `Primitives`)
-- **226 methods** (one per property with a domain)
-- **11 enums** (Space, PrimitiveOp, MetricAxis, FiberState, GeometricCharacter, VerificationDomain, VerificationStatus, ComplexityClass, RewriteRule, MeasurementUnit, CoordinateKind)
-- **291 constant modules** (for named individuals)
+- **124 traits** (one per OWL class, generic over `Primitives`)
+- **231 methods** (one per property with a domain)
+- **12 enums** (Space, PrimitiveOp, MetricAxis, FiberState, GeometricCharacter, VerificationDomain, QuantumLevel, ComplexityClass, RewriteRule, MeasurementUnit, CoordinateKind, ProofModality)
+- **544 constant modules** (for named individuals)
 - **Zero mandatory dependencies** — pure traits
 
 Module structure: `kernel/` (3 namespaces), `bridge/` (10 namespaces), `user/` (3 namespaces).

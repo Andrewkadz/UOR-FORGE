@@ -2,9 +2,9 @@
 //!
 //! Verifies that the built ontology artifact contains the correct counts:
 //! - 16 namespaces (3 Kernel / 10 Bridge / 3 User)
-//! - 130 classes
-//! - 233 namespace-level properties + 1 global annotation = 234 via property_count()
-//! - 304 named individuals (each with required property assertions)
+//! - 132 classes
+//! - 240 namespace-level properties + 1 global annotation = 241 via property_count()
+//! - 557 named individuals (each with required property assertions)
 
 use std::path::Path;
 
@@ -16,9 +16,9 @@ use crate::report::{ConformanceReport, TestResult};
 
 /// Expected inventory counts for the UOR Foundation ontology.
 const EXPECTED_NAMESPACES: usize = 16;
-const EXPECTED_CLASSES: usize = 130;
-const EXPECTED_PROPERTIES: usize = 234;
-const EXPECTED_INDIVIDUALS: usize = 304;
+const EXPECTED_CLASSES: usize = 132;
+const EXPECTED_PROPERTIES: usize = 241;
+const EXPECTED_INDIVIDUALS: usize = 557;
 
 /// Validates the ontology inventory counts in the built JSON-LD artifact.
 ///
@@ -42,6 +42,10 @@ pub fn validate(artifacts: &Path) -> Result<ConformanceReport> {
 
     // Hardening: identity grounding (all op:Identity individuals have typed verification properties)
     validate_identity_grounding(&mut report);
+
+    // v3.2: proof coverage and quantum scope
+    validate_proof_coverage(&mut report);
+    validate_quantum_scope(&mut report);
 
     // Amendment 23: vocabulary individual validators
     validate_verification_domain_individuals(&mut report);
@@ -374,21 +378,15 @@ fn validate_identity_completeness(report: &mut ConformanceReport) {
     }
 }
 
-/// Validates that all `op:Identity` individuals are grounded with typed
-/// verification properties: `hasVerificationStatus` (IriRef to op:Verifiable
-/// or op:Derivable), at least one `verificationDomain` (IriRef to a domain
-/// individual), and optionally `verificationPathNote`.
+/// Validates that all `op:Identity` individuals are grounded with at least one
+/// `verificationDomain` (IriRef to a domain individual) and optionally
+/// `verificationPathNote`.
 fn validate_identity_grounding(report: &mut ConformanceReport) {
     let ontology = uor_ontology::Ontology::full();
     let validator = "ontology/inventory/identity_grounding";
 
     let identity_type = "https://uor.foundation/op/Identity";
-    let status_prop = "https://uor.foundation/op/hasVerificationStatus";
     let domain_prop = "https://uor.foundation/op/verificationDomain";
-    let valid_statuses = [
-        "https://uor.foundation/op/Verifiable",
-        "https://uor.foundation/op/Derivable",
-    ];
     let valid_domains = [
         "https://uor.foundation/op/Enumerative",
         "https://uor.foundation/op/Algebraic",
@@ -401,8 +399,6 @@ fn validate_identity_grounding(report: &mut ConformanceReport) {
     ];
 
     let mut total = 0usize;
-    let mut verifiable = 0usize;
-    let mut derivable = 0usize;
     let mut all_valid = true;
 
     for module in &ontology.namespaces {
@@ -411,42 +407,6 @@ fn validate_identity_grounding(report: &mut ConformanceReport) {
                 continue;
             }
             total += 1;
-
-            // Check hasVerificationStatus
-            let status = ind
-                .properties
-                .iter()
-                .find(|(k, _)| *k == status_prop)
-                .map(|(_, v)| v);
-
-            match status {
-                Some(uor_ontology::IndividualValue::IriRef(iri))
-                    if valid_statuses.contains(iri) =>
-                {
-                    if *iri == "https://uor.foundation/op/Verifiable" {
-                        verifiable += 1;
-                    } else {
-                        derivable += 1;
-                    }
-                }
-                Some(_) => {
-                    report.push(TestResult::fail(
-                        validator,
-                        format!(
-                            "Identity {} has invalid hasVerificationStatus (must be IriRef to op:Verifiable or op:Derivable)",
-                            ind.id
-                        ),
-                    ));
-                    all_valid = false;
-                }
-                None => {
-                    report.push(TestResult::fail(
-                        validator,
-                        format!("Identity {} missing hasVerificationStatus", ind.id),
-                    ));
-                    all_valid = false;
-                }
-            }
 
             // Check verificationDomain (at least one, each from closed set)
             let domains: Vec<_> = ind
@@ -489,15 +449,12 @@ fn validate_identity_grounding(report: &mut ConformanceReport) {
     if all_valid && total > 0 {
         report.push(TestResult::pass(
             validator,
-            format!(
-                "All {} identities grounded ({} verifiable, {} derivable)",
-                total, verifiable, derivable
-            ),
+            format!("All {} identities grounded with verificationDomain", total),
         ));
     }
 }
 
-/// Validates the 8 VerificationDomain and 2 VerificationStatus vocabulary individuals.
+/// Validates the 8 VerificationDomain vocabulary individuals.
 fn validate_verification_domain_individuals(report: &mut ConformanceReport) {
     let ontology = uor_ontology::Ontology::full();
     let validator = "ontology/inventory/verification_domain";
@@ -512,10 +469,6 @@ fn validate_verification_domain_individuals(report: &mut ConformanceReport) {
         "https://uor.foundation/op/Pipeline",
         "https://uor.foundation/op/IndexTheoretic",
     ];
-    let status_iris = [
-        "https://uor.foundation/op/Verifiable",
-        "https://uor.foundation/op/Derivable",
-    ];
 
     let mut all_found = true;
     for iri in &domain_iris {
@@ -527,20 +480,11 @@ fn validate_verification_domain_individuals(report: &mut ConformanceReport) {
             all_found = false;
         }
     }
-    for iri in &status_iris {
-        if ontology.find_individual(iri).is_none() {
-            report.push(TestResult::fail(
-                validator,
-                format!("VerificationStatus individual {} not found", iri),
-            ));
-            all_found = false;
-        }
-    }
 
     if all_found {
         report.push(TestResult::pass(
             validator,
-            "All 8 VerificationDomain + 2 VerificationStatus individuals present",
+            "All 8 VerificationDomain individuals present",
         ));
     }
 }
@@ -744,6 +688,146 @@ fn validate_coordinate_kind_individuals(report: &mut ConformanceReport) {
         report.push(TestResult::pass(
             validator,
             "All 3 CoordinateKind individuals present",
+        ));
+    }
+}
+
+/// Validates that every `op:Identity` individual has a corresponding proof individual
+/// with `proof:provesIdentity` linking to it.
+fn validate_proof_coverage(report: &mut ConformanceReport) {
+    let ontology = uor_ontology::Ontology::full();
+    let validator = "ontology/inventory/proof_coverage";
+
+    let identity_type = "https://uor.foundation/op/Identity";
+    let proves_prop = "https://uor.foundation/proof/provesIdentity";
+
+    // Collect all identity IRIs across all namespaces
+    let mut identity_iris: Vec<&str> = Vec::new();
+    for module in &ontology.namespaces {
+        for ind in &module.individuals {
+            if ind.type_ == identity_type {
+                identity_iris.push(ind.id);
+            }
+        }
+    }
+
+    // Collect all IRIs that are targets of proof:provesIdentity
+    let mut proved_iris: std::collections::HashSet<&str> = std::collections::HashSet::new();
+    if let Some(proof_module) = ontology.find_namespace("proof") {
+        for ind in &proof_module.individuals {
+            for (k, v) in ind.properties {
+                if *k == proves_prop {
+                    if let uor_ontology::IndividualValue::IriRef(iri) = v {
+                        proved_iris.insert(iri);
+                    }
+                }
+            }
+        }
+    }
+
+    let uncovered: Vec<_> = identity_iris
+        .iter()
+        .filter(|iri| !proved_iris.contains(**iri))
+        .collect();
+
+    if uncovered.is_empty() {
+        report.push(TestResult::pass(
+            validator,
+            format!(
+                "All {} identities covered by proof individuals",
+                identity_iris.len()
+            ),
+        ));
+    } else {
+        report.push(TestResult::fail(
+            validator,
+            format!(
+                "{} identities not covered by proof individuals: {:?}",
+                uncovered.len(),
+                &uncovered[..uncovered.len().min(5)]
+            ),
+        ));
+    }
+}
+
+/// Validates quantum scope consistency: `ComputationCertificate` individuals
+/// must have `atQuantumLevel` and must NOT have `universalScope`;
+/// `AxiomaticDerivation` individuals must have `universalScope` and must NOT
+/// have `atQuantumLevel`.
+fn validate_quantum_scope(report: &mut ConformanceReport) {
+    let ontology = uor_ontology::Ontology::full();
+    let validator = "ontology/inventory/quantum_scope";
+
+    let cert_type = "https://uor.foundation/proof/ComputationCertificate";
+    let crit_type = "https://uor.foundation/proof/CriticalIdentityProof";
+    let axiomatic_type = "https://uor.foundation/proof/AxiomaticDerivation";
+    let at_ql_prop = "https://uor.foundation/proof/atQuantumLevel";
+    let univ_prop = "https://uor.foundation/proof/universalScope";
+
+    let mut all_valid = true;
+    let mut cert_count = 0usize;
+    let mut axiomatic_count = 0usize;
+
+    if let Some(proof_module) = ontology.find_namespace("proof") {
+        for ind in &proof_module.individuals {
+            let is_cert = ind.type_ == cert_type || ind.type_ == crit_type;
+            let is_axiomatic = ind.type_ == axiomatic_type;
+
+            if is_cert {
+                cert_count += 1;
+                let has_ql = ind.properties.iter().any(|(k, _)| *k == at_ql_prop);
+                let has_univ = ind.properties.iter().any(|(k, _)| *k == univ_prop);
+                if !has_ql {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!("ComputationCertificate {} missing atQuantumLevel", ind.id),
+                    ));
+                    all_valid = false;
+                }
+                if has_univ {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!(
+                            "ComputationCertificate {} should not have universalScope",
+                            ind.id
+                        ),
+                    ));
+                    all_valid = false;
+                }
+            }
+
+            if is_axiomatic {
+                axiomatic_count += 1;
+                let has_univ = ind.properties.iter().any(|(k, _)| *k == univ_prop);
+                let has_ql = ind.properties.iter().any(|(k, _)| *k == at_ql_prop);
+                if !has_univ {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!("AxiomaticDerivation {} missing universalScope", ind.id),
+                    ));
+                    all_valid = false;
+                }
+                if has_ql {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!(
+                            "AxiomaticDerivation {} should not have atQuantumLevel",
+                            ind.id
+                        ),
+                    ));
+                    all_valid = false;
+                }
+            }
+        }
+    }
+
+    if all_valid && (cert_count + axiomatic_count) > 0 {
+        report.push(TestResult::pass(
+            validator,
+            format!(
+                "Quantum scope valid: {} computation certificates, {} axiomatic derivations",
+                cert_count, axiomatic_count
+            ),
         ));
     }
 }

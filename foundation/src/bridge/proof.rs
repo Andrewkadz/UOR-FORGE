@@ -4,12 +4,11 @@
 //!
 //! Space: Bridge
 
+use crate::enums::QuantumLevel;
 use crate::Primitives;
 
 /// A kernel-produced attestation that a given algebraic property holds. The root class for all proof types.
 pub trait Proof<P: Primitives> {
-    /// The quantum level at which this proof was verified.
-    fn quantum(&self) -> P::PositiveInteger;
     /// Whether this proof has been verified by the kernel.
     fn verified(&self) -> P::Boolean;
     /// The time at which this proof was produced.
@@ -27,11 +26,24 @@ pub trait Proof<P: Primitives> {
 /// A proof of coherence: the type system and ring structure are mutually consistent at a given quantum level.
 pub trait CoherenceProof<P: Primitives>: Proof<P> {}
 
-/// A proof of the critical identity: neg(bnot(x)) = succ(x) for all x in R_n. This is the foundational theorem of the UOR kernel.
-pub trait CriticalIdentityProof<P: Primitives>: Proof<P> {
-    /// Human-readable statement of the critical identity proven. E.g., 'neg(bnot(x)) = succ(x) for all x in R_n'.
-    fn critical_identity(&self) -> &P::String;
+/// A proof confirmed by exhaustive execution over R_n at a specific quantum level. The kernel ran the identity against all 2^n inputs and observed that it holds. The proof:atQuantumLevel property records the level; proof:witness links to the WitnessData. CriticalIdentityProof is a subclass of ComputationCertificate.
+pub trait ComputationCertificate<P: Primitives>: Proof<P> {
+    /// The quantum level at which this computation certificate was produced. A ComputationCertificate at schema:Q0 confirms the identity holds for all 256 inputs of R_8. A certificate at schema:Q1 confirms it for all 65,536 inputs of R_16.
+    fn at_quantum_level(&self) -> QuantumLevel;
 }
+
+/// A proof that follows from previously established axioms or definitions by equational, structural, or topological reasoning. The proof:derivationWitness property links to a derivation:Derivation individual recording the rewrite chain. All pipeline, constraint, observable, and topological identities are AxiomaticDerivations.
+pub trait AxiomaticDerivation<P: Primitives>: Proof<P> {
+    /// True when this axiomatic derivation holds for all quantum levels by the definition of Z/(2^n)Z. False when the derivation depends on a property specific to a particular ring size. All current AxiomaticDerivation individuals in the spec carry universalScope true.
+    fn universal_scope(&self) -> P::Boolean;
+    /// Associated type for `Derivation`.
+    type Derivation: crate::bridge::derivation::Derivation<P>;
+    /// The derivation chain that witnesses this axiomatic derivation. Links a proof:AxiomaticDerivation to the derivation:Derivation individual recording the rewrite sequence. Optional at the spec level — the conformance suite requires only that the proof individual exists; full derivation chains live in generated artifacts.
+    fn derivation_witness(&self) -> &[Self::Derivation];
+}
+
+/// A proof of the critical identity: neg(bnot(x)) = succ(x) for all x in R_n. This is the foundational theorem of the UOR kernel.
+pub trait CriticalIdentityProof<P: Primitives>: ComputationCertificate<P> {}
 
 /// Supporting data for a proof: specific examples, counter-examples checked, or intermediate computation results.
 pub trait WitnessData<P: Primitives> {
@@ -45,4 +57,2514 @@ pub trait WitnessData<P: Primitives> {
     fn succ_x(&self) -> &[P::Integer];
     /// Whether the identity neg(bnot(x)) = succ(x) holds for this specific witness.
     fn holds(&self) -> &[P::Boolean];
+}
+
+/// Computation certificate for the critical identity neg(bnot(x)) = succ(x) at Q0.
+pub mod prf_critical_identity {
+    /// `atQuantumLevel` -> `Q0`
+    pub const AT_QUANTUM_LEVEL: &str = "https://uor.foundation/schema/Q0";
+    /// `provesIdentity` -> `criticalIdentity`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/criticalIdentity";
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of the critical identity neg(bnot(x)) = succ(x). Holds at all quantum levels.
+pub mod prf_critical_identity_axiomatic {
+    /// `provesIdentity` -> `criticalIdentity`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/criticalIdentity";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Computation certificate for phi_1 at Q0.
+pub mod prf_phi_1 {
+    /// `atQuantumLevel` -> `Q0`
+    pub const AT_QUANTUM_LEVEL: &str = "https://uor.foundation/schema/Q0";
+    /// `provesIdentity` -> `phi_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/phi_1";
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Computation certificate for phi_2 at Q0.
+pub mod prf_phi_2 {
+    /// `atQuantumLevel` -> `Q0`
+    pub const AT_QUANTUM_LEVEL: &str = "https://uor.foundation/schema/Q0";
+    /// `provesIdentity` -> `phi_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/phi_2";
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Computation certificate for phi_3 at Q0.
+pub mod prf_phi_3 {
+    /// `atQuantumLevel` -> `Q0`
+    pub const AT_QUANTUM_LEVEL: &str = "https://uor.foundation/schema/Q0";
+    /// `provesIdentity` -> `phi_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/phi_3";
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Computation certificate for phi_4 at Q0.
+pub mod prf_phi_4 {
+    /// `atQuantumLevel` -> `Q0`
+    pub const AT_QUANTUM_LEVEL: &str = "https://uor.foundation/schema/Q0";
+    /// `provesIdentity` -> `phi_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/phi_4";
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Computation certificate for phi_5 at Q0.
+pub mod prf_phi_5 {
+    /// `atQuantumLevel` -> `Q0`
+    pub const AT_QUANTUM_LEVEL: &str = "https://uor.foundation/schema/Q0";
+    /// `provesIdentity` -> `phi_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/phi_5";
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Computation certificate for phi_6 at Q0.
+pub mod prf_phi_6 {
+    /// `atQuantumLevel` -> `Q0`
+    pub const AT_QUANTUM_LEVEL: &str = "https://uor.foundation/schema/Q0";
+    /// `provesIdentity` -> `phi_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/phi_6";
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AD_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ad_1 {
+    /// `provesIdentity` -> `AD_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AD_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AD_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ad_2 {
+    /// `provesIdentity` -> `AD_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AD_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_A1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_a1 {
+    /// `provesIdentity` -> `R_A1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_A1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_A2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_a2 {
+    /// `provesIdentity` -> `R_A2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_A2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_A3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_a3 {
+    /// `provesIdentity` -> `R_A3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_A3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_A4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_a4 {
+    /// `provesIdentity` -> `R_A4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_A4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_A5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_a5 {
+    /// `provesIdentity` -> `R_A5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_A5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_A6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_a6 {
+    /// `provesIdentity` -> `R_A6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_A6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_M1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_m1 {
+    /// `provesIdentity` -> `R_M1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_M1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_M2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_m2 {
+    /// `provesIdentity` -> `R_M2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_M2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_M3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_m3 {
+    /// `provesIdentity` -> `R_M3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_M3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_M4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_m4 {
+    /// `provesIdentity` -> `R_M4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_M4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of R_M5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_r_m5 {
+    /// `provesIdentity` -> `R_M5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/R_M5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_1 {
+    /// `provesIdentity` -> `B_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_2 {
+    /// `provesIdentity` -> `B_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_3 {
+    /// `provesIdentity` -> `B_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_4 {
+    /// `provesIdentity` -> `B_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_5 {
+    /// `provesIdentity` -> `B_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_6 {
+    /// `provesIdentity` -> `B_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_7. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_7 {
+    /// `provesIdentity` -> `B_7`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_7";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_8. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_8 {
+    /// `provesIdentity` -> `B_8`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_8";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_9. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_9 {
+    /// `provesIdentity` -> `B_9`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_9";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_10. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_10 {
+    /// `provesIdentity` -> `B_10`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_10";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_11. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_11 {
+    /// `provesIdentity` -> `B_11`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_11";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_12. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_12 {
+    /// `provesIdentity` -> `B_12`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_12";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of B_13. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_b_13 {
+    /// `provesIdentity` -> `B_13`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/B_13";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of X_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_x_1 {
+    /// `provesIdentity` -> `X_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/X_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of X_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_x_2 {
+    /// `provesIdentity` -> `X_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/X_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of X_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_x_3 {
+    /// `provesIdentity` -> `X_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/X_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of X_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_x_4 {
+    /// `provesIdentity` -> `X_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/X_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of X_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_x_5 {
+    /// `provesIdentity` -> `X_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/X_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of X_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_x_6 {
+    /// `provesIdentity` -> `X_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/X_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of X_7. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_x_7 {
+    /// `provesIdentity` -> `X_7`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/X_7";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of D_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_d_1 {
+    /// `provesIdentity` -> `D_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/D_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of D_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_d_3 {
+    /// `provesIdentity` -> `D_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/D_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of D_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_d_4 {
+    /// `provesIdentity` -> `D_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/D_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of D_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_d_5 {
+    /// `provesIdentity` -> `D_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/D_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of U_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_u_1 {
+    /// `provesIdentity` -> `U_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/U_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of U_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_u_2 {
+    /// `provesIdentity` -> `U_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/U_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of U_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_u_3 {
+    /// `provesIdentity` -> `U_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/U_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of U_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_u_4 {
+    /// `provesIdentity` -> `U_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/U_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of U_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_u_5 {
+    /// `provesIdentity` -> `U_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/U_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AG_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ag_1 {
+    /// `provesIdentity` -> `AG_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AG_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AG_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ag_2 {
+    /// `provesIdentity` -> `AG_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AG_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AG_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ag_3 {
+    /// `provesIdentity` -> `AG_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AG_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AG_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ag_4 {
+    /// `provesIdentity` -> `AG_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AG_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CA_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ca_1 {
+    /// `provesIdentity` -> `CA_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CA_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CA_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ca_2 {
+    /// `provesIdentity` -> `CA_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CA_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CA_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ca_3 {
+    /// `provesIdentity` -> `CA_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CA_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CA_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ca_4 {
+    /// `provesIdentity` -> `CA_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CA_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CA_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ca_5 {
+    /// `provesIdentity` -> `CA_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CA_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CA_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ca_6 {
+    /// `provesIdentity` -> `CA_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CA_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of C_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_c_1 {
+    /// `provesIdentity` -> `C_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/C_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of C_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_c_2 {
+    /// `provesIdentity` -> `C_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/C_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of C_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_c_3 {
+    /// `provesIdentity` -> `C_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/C_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of C_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_c_4 {
+    /// `provesIdentity` -> `C_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/C_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of C_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_c_5 {
+    /// `provesIdentity` -> `C_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/C_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of C_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_c_6 {
+    /// `provesIdentity` -> `C_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/C_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CDI. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cdi {
+    /// `provesIdentity` -> `CDI`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CDI";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CL_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cl_1 {
+    /// `provesIdentity` -> `CL_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CL_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CL_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cl_2 {
+    /// `provesIdentity` -> `CL_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CL_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CL_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cl_3 {
+    /// `provesIdentity` -> `CL_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CL_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CL_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cl_4 {
+    /// `provesIdentity` -> `CL_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CL_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CL_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cl_5 {
+    /// `provesIdentity` -> `CL_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CL_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CM_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cm_1 {
+    /// `provesIdentity` -> `CM_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CM_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CM_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cm_2 {
+    /// `provesIdentity` -> `CM_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CM_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CM_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cm_3 {
+    /// `provesIdentity` -> `CM_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CM_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CR_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cr_1 {
+    /// `provesIdentity` -> `CR_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CR_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CR_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cr_2 {
+    /// `provesIdentity` -> `CR_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CR_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CR_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cr_3 {
+    /// `provesIdentity` -> `CR_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CR_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CR_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cr_4 {
+    /// `provesIdentity` -> `CR_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CR_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CR_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cr_5 {
+    /// `provesIdentity` -> `CR_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CR_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of F_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_f_1 {
+    /// `provesIdentity` -> `F_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/F_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of F_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_f_2 {
+    /// `provesIdentity` -> `F_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/F_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of F_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_f_3 {
+    /// `provesIdentity` -> `F_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/F_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of F_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_f_4 {
+    /// `provesIdentity` -> `F_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/F_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FL_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fl_1 {
+    /// `provesIdentity` -> `FL_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FL_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FL_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fl_2 {
+    /// `provesIdentity` -> `FL_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FL_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FL_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fl_3 {
+    /// `provesIdentity` -> `FL_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FL_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FL_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fl_4 {
+    /// `provesIdentity` -> `FL_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FL_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FPM_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fpm_1 {
+    /// `provesIdentity` -> `FPM_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FPM_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FPM_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fpm_2 {
+    /// `provesIdentity` -> `FPM_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FPM_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FPM_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fpm_3 {
+    /// `provesIdentity` -> `FPM_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FPM_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FPM_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fpm_4 {
+    /// `provesIdentity` -> `FPM_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FPM_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FPM_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fpm_5 {
+    /// `provesIdentity` -> `FPM_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FPM_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FPM_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fpm_6 {
+    /// `provesIdentity` -> `FPM_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FPM_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FPM_7. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fpm_7 {
+    /// `provesIdentity` -> `FPM_7`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FPM_7";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FS_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fs_1 {
+    /// `provesIdentity` -> `FS_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FS_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FS_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fs_2 {
+    /// `provesIdentity` -> `FS_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FS_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FS_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fs_3 {
+    /// `provesIdentity` -> `FS_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FS_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FS_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fs_4 {
+    /// `provesIdentity` -> `FS_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FS_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FS_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fs_5 {
+    /// `provesIdentity` -> `FS_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FS_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FS_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fs_6 {
+    /// `provesIdentity` -> `FS_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FS_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of FS_7. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_fs_7 {
+    /// `provesIdentity` -> `FS_7`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/FS_7";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of RE_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_re_1 {
+    /// `provesIdentity` -> `RE_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/RE_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IR_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ir_1 {
+    /// `provesIdentity` -> `IR_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IR_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IR_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ir_2 {
+    /// `provesIdentity` -> `IR_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IR_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IR_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ir_3 {
+    /// `provesIdentity` -> `IR_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IR_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IR_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ir_4 {
+    /// `provesIdentity` -> `IR_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IR_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of SF_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_sf_1 {
+    /// `provesIdentity` -> `SF_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SF_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of SF_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_sf_2 {
+    /// `provesIdentity` -> `SF_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SF_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of RD_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_rd_1 {
+    /// `provesIdentity` -> `RD_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/RD_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of RD_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_rd_2 {
+    /// `provesIdentity` -> `RD_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/RD_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of SE_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_se_1 {
+    /// `provesIdentity` -> `SE_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SE_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of SE_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_se_2 {
+    /// `provesIdentity` -> `SE_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SE_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of SE_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_se_3 {
+    /// `provesIdentity` -> `SE_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SE_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of SE_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_se_4 {
+    /// `provesIdentity` -> `SE_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SE_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OO_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_oo_1 {
+    /// `provesIdentity` -> `OO_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OO_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OO_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_oo_2 {
+    /// `provesIdentity` -> `OO_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OO_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OO_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_oo_3 {
+    /// `provesIdentity` -> `OO_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OO_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OO_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_oo_4 {
+    /// `provesIdentity` -> `OO_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OO_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OO_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_oo_5 {
+    /// `provesIdentity` -> `OO_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OO_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CB_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cb_1 {
+    /// `provesIdentity` -> `CB_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CB_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CB_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cb_2 {
+    /// `provesIdentity` -> `CB_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CB_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CB_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cb_3 {
+    /// `provesIdentity` -> `CB_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CB_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CB_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cb_4 {
+    /// `provesIdentity` -> `CB_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CB_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CB_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cb_5 {
+    /// `provesIdentity` -> `CB_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CB_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CB_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cb_6 {
+    /// `provesIdentity` -> `CB_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CB_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_M1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_m1 {
+    /// `provesIdentity` -> `OB_M1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_M1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_M2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_m2 {
+    /// `provesIdentity` -> `OB_M2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_M2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_M3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_m3 {
+    /// `provesIdentity` -> `OB_M3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_M3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_M4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_m4 {
+    /// `provesIdentity` -> `OB_M4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_M4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_M5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_m5 {
+    /// `provesIdentity` -> `OB_M5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_M5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_M6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_m6 {
+    /// `provesIdentity` -> `OB_M6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_M6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_C1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_c1 {
+    /// `provesIdentity` -> `OB_C1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_C1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_C2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_c2 {
+    /// `provesIdentity` -> `OB_C2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_C2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_C3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_c3 {
+    /// `provesIdentity` -> `OB_C3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_C3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_H1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_h1 {
+    /// `provesIdentity` -> `OB_H1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_H1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_H2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_h2 {
+    /// `provesIdentity` -> `OB_H2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_H2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_H3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_h3 {
+    /// `provesIdentity` -> `OB_H3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_H3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_P1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_p1 {
+    /// `provesIdentity` -> `OB_P1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_P1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_P2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_p2 {
+    /// `provesIdentity` -> `OB_P2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_P2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of OB_P3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ob_p3 {
+    /// `provesIdentity` -> `OB_P3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/OB_P3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CT_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ct_1 {
+    /// `provesIdentity` -> `CT_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CT_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CT_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ct_2 {
+    /// `provesIdentity` -> `CT_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CT_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CT_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ct_3 {
+    /// `provesIdentity` -> `CT_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CT_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CT_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ct_4 {
+    /// `provesIdentity` -> `CT_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CT_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CF_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cf_1 {
+    /// `provesIdentity` -> `CF_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CF_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CF_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cf_2 {
+    /// `provesIdentity` -> `CF_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CF_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CF_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cf_3 {
+    /// `provesIdentity` -> `CF_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CF_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of CF_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_cf_4 {
+    /// `provesIdentity` -> `CF_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CF_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of HG_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_hg_1 {
+    /// `provesIdentity` -> `HG_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/HG_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of HG_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_hg_2 {
+    /// `provesIdentity` -> `HG_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/HG_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of HG_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_hg_3 {
+    /// `provesIdentity` -> `HG_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/HG_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of HG_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_hg_4 {
+    /// `provesIdentity` -> `HG_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/HG_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of HG_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_hg_5 {
+    /// `provesIdentity` -> `HG_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/HG_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_C1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_c1 {
+    /// `provesIdentity` -> `T_C1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_C1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_C2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_c2 {
+    /// `provesIdentity` -> `T_C2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_C2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_C3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_c3 {
+    /// `provesIdentity` -> `T_C3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_C3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_C4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_c4 {
+    /// `provesIdentity` -> `T_C4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_C4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_I1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_i1 {
+    /// `provesIdentity` -> `T_I1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_I1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_I2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_i2 {
+    /// `provesIdentity` -> `T_I2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_I2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_I3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_i3 {
+    /// `provesIdentity` -> `T_I3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_I3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_I4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_i4 {
+    /// `provesIdentity` -> `T_I4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_I4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_I5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_i5 {
+    /// `provesIdentity` -> `T_I5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_I5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_E1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_e1 {
+    /// `provesIdentity` -> `T_E1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_E1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_E2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_e2 {
+    /// `provesIdentity` -> `T_E2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_E2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_E3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_e3 {
+    /// `provesIdentity` -> `T_E3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_E3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_E4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_e4 {
+    /// `provesIdentity` -> `T_E4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_E4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_A1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_a1 {
+    /// `provesIdentity` -> `T_A1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_A1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_A2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_a2 {
+    /// `provesIdentity` -> `T_A2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_A2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_A3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_a3 {
+    /// `provesIdentity` -> `T_A3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_A3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of T_A4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_t_a4 {
+    /// `provesIdentity` -> `T_A4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/T_A4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AU_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_au_1 {
+    /// `provesIdentity` -> `AU_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AU_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AU_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_au_2 {
+    /// `provesIdentity` -> `AU_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AU_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AU_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_au_3 {
+    /// `provesIdentity` -> `AU_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AU_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AU_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_au_4 {
+    /// `provesIdentity` -> `AU_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AU_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AU_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_au_5 {
+    /// `provesIdentity` -> `AU_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AU_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of EF_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ef_1 {
+    /// `provesIdentity` -> `EF_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/EF_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of EF_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ef_2 {
+    /// `provesIdentity` -> `EF_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/EF_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of EF_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ef_3 {
+    /// `provesIdentity` -> `EF_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/EF_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of EF_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ef_4 {
+    /// `provesIdentity` -> `EF_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/EF_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of EF_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ef_5 {
+    /// `provesIdentity` -> `EF_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/EF_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of EF_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ef_6 {
+    /// `provesIdentity` -> `EF_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/EF_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of EF_7. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ef_7 {
+    /// `provesIdentity` -> `EF_7`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/EF_7";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AA_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_aa_1 {
+    /// `provesIdentity` -> `AA_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AA_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AA_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_aa_2 {
+    /// `provesIdentity` -> `AA_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AA_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AA_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_aa_3 {
+    /// `provesIdentity` -> `AA_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AA_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AA_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_aa_4 {
+    /// `provesIdentity` -> `AA_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AA_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AA_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_aa_5 {
+    /// `provesIdentity` -> `AA_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AA_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AA_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_aa_6 {
+    /// `provesIdentity` -> `AA_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AA_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AM_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_am_1 {
+    /// `provesIdentity` -> `AM_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AM_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AM_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_am_2 {
+    /// `provesIdentity` -> `AM_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AM_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AM_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_am_3 {
+    /// `provesIdentity` -> `AM_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AM_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AM_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_am_4 {
+    /// `provesIdentity` -> `AM_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AM_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of TH_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_th_1 {
+    /// `provesIdentity` -> `TH_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/TH_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of TH_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_th_2 {
+    /// `provesIdentity` -> `TH_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/TH_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of TH_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_th_3 {
+    /// `provesIdentity` -> `TH_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/TH_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of TH_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_th_4 {
+    /// `provesIdentity` -> `TH_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/TH_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of TH_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_th_5 {
+    /// `provesIdentity` -> `TH_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/TH_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of TH_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_th_6 {
+    /// `provesIdentity` -> `TH_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/TH_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of TH_7. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_th_7 {
+    /// `provesIdentity` -> `TH_7`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/TH_7";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of TH_8. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_th_8 {
+    /// `provesIdentity` -> `TH_8`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/TH_8";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of TH_9. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_th_9 {
+    /// `provesIdentity` -> `TH_9`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/TH_9";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of TH_10. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_th_10 {
+    /// `provesIdentity` -> `TH_10`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/TH_10";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AR_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ar_1 {
+    /// `provesIdentity` -> `AR_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AR_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AR_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ar_2 {
+    /// `provesIdentity` -> `AR_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AR_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AR_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ar_3 {
+    /// `provesIdentity` -> `AR_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AR_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AR_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ar_4 {
+    /// `provesIdentity` -> `AR_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AR_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of AR_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ar_5 {
+    /// `provesIdentity` -> `AR_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/AR_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of PD_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_pd_1 {
+    /// `provesIdentity` -> `PD_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/PD_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of PD_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_pd_2 {
+    /// `provesIdentity` -> `PD_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/PD_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of PD_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_pd_3 {
+    /// `provesIdentity` -> `PD_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/PD_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of PD_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_pd_4 {
+    /// `provesIdentity` -> `PD_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/PD_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of PD_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_pd_5 {
+    /// `provesIdentity` -> `PD_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/PD_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of RC_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_rc_1 {
+    /// `provesIdentity` -> `RC_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/RC_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of RC_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_rc_2 {
+    /// `provesIdentity` -> `RC_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/RC_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of RC_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_rc_3 {
+    /// `provesIdentity` -> `RC_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/RC_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of RC_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_rc_4 {
+    /// `provesIdentity` -> `RC_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/RC_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of RC_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_rc_5 {
+    /// `provesIdentity` -> `RC_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/RC_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_1 {
+    /// `provesIdentity` -> `DC_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_2 {
+    /// `provesIdentity` -> `DC_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_3 {
+    /// `provesIdentity` -> `DC_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_4. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_4 {
+    /// `provesIdentity` -> `DC_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_5 {
+    /// `provesIdentity` -> `DC_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_6 {
+    /// `provesIdentity` -> `DC_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_7. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_7 {
+    /// `provesIdentity` -> `DC_7`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_7";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_8. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_8 {
+    /// `provesIdentity` -> `DC_8`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_8";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_9. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_9 {
+    /// `provesIdentity` -> `DC_9`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_9";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_10. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_10 {
+    /// `provesIdentity` -> `DC_10`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_10";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of DC_11. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_dc_11 {
+    /// `provesIdentity` -> `DC_11`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/DC_11";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of HA_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ha_1 {
+    /// `provesIdentity` -> `HA_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/HA_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of HA_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ha_2 {
+    /// `provesIdentity` -> `HA_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/HA_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of HA_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_ha_3 {
+    /// `provesIdentity` -> `HA_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/HA_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IT_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_it_2 {
+    /// `provesIdentity` -> `IT_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IT_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IT_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_it_3 {
+    /// `provesIdentity` -> `IT_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IT_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IT_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_it_6 {
+    /// `provesIdentity` -> `IT_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IT_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IT_7a. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_it_7a {
+    /// `provesIdentity` -> `IT_7a`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IT_7a";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IT_7b. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_it_7b {
+    /// `provesIdentity` -> `IT_7b`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IT_7b";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IT_7c. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_it_7c {
+    /// `provesIdentity` -> `IT_7c`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IT_7c";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of IT_7d. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_it_7d {
+    /// `provesIdentity` -> `IT_7d`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/IT_7d";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of psi_1. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_psi_1 {
+    /// `provesIdentity` -> `psi_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/psi_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of psi_2. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_psi_2 {
+    /// `provesIdentity` -> `psi_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/psi_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of psi_3. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_psi_3 {
+    /// `provesIdentity` -> `psi_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/psi_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of psi_5. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_psi_5 {
+    /// `provesIdentity` -> `psi_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/psi_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of psi_6. Holds at all quantum levels by definition of Z/(2^n)Z.
+pub mod prf_psi_6 {
+    /// `provesIdentity` -> `psi_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/psi_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of homology:boundarySquaredZero. Holds at all quantum levels by topological reasoning.
+pub mod prf_boundary_squared_zero {
+    /// `provesIdentity` -> `boundarySquaredZero`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/homology/boundarySquaredZero";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of homology:psi_4. Holds at all quantum levels by topological reasoning.
+pub mod prf_psi_4 {
+    /// `provesIdentity` -> `psi_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/homology/psi_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of homology:indexBridge. Holds at all quantum levels by topological reasoning.
+pub mod prf_index_bridge {
+    /// `provesIdentity` -> `indexBridge`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/homology/indexBridge";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of cohomology:coboundarySquaredZero. Holds at all quantum levels by topological reasoning.
+pub mod prf_coboundary_squared_zero {
+    /// `provesIdentity` -> `coboundarySquaredZero`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/cohomology/coboundarySquaredZero";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of cohomology:deRhamDuality. Holds at all quantum levels by topological reasoning.
+pub mod prf_de_rham_duality {
+    /// `provesIdentity` -> `deRhamDuality`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/cohomology/deRhamDuality";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of cohomology:sheafCohomologyBridge. Holds at all quantum levels by topological reasoning.
+pub mod prf_sheaf_cohomology_bridge {
+    /// `provesIdentity` -> `sheafCohomologyBridge`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/cohomology/sheafCohomologyBridge";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Axiomatic derivation of cohomology:localGlobalPrinciple. Holds at all quantum levels by topological reasoning.
+pub mod prf_local_global_principle {
+    /// `provesIdentity` -> `localGlobalPrinciple`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/cohomology/localGlobalPrinciple";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
 }
