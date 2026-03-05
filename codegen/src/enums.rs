@@ -179,7 +179,16 @@ pub fn detect_enums(ontology: &Ontology) -> Vec<DetectedEnum> {
         ql.non_exhaustive = true;
     }
 
-    // 13. ProofModality enum (hardcoded — codegen enum, not an OWL class)
+    // 13. SessionBoundaryType enum — Amendment 27: Session-Scoped Resolution
+    detect_vocabulary_enum(
+        ontology,
+        "state",
+        "SessionBoundaryType",
+        "The reason type for a session context-reset boundary.",
+        &mut enums,
+    );
+
+    // 14. ProofModality enum (hardcoded — codegen enum, not an OWL class)
     enums.push(DetectedEnum {
         name: "ProofModality",
         comment: "The modality of a proof: computation (exhaustive verification at a \
@@ -345,8 +354,8 @@ mod tests {
         let ontology = Ontology::full();
         let enums = detect_enums(ontology);
         assert!(
-            enums.len() >= 12,
-            "Expected at least 12 enums, got {}",
+            enums.len() >= 13,
+            "Expected at least 13 enums, got {}",
             enums.len()
         );
 
@@ -362,6 +371,7 @@ mod tests {
         assert!(names.contains(&"MeasurementUnit"));
         assert!(names.contains(&"CoordinateKind"));
         assert!(names.contains(&"QuantumLevel"));
+        assert!(names.contains(&"SessionBoundaryType"));
         assert!(names.contains(&"ProofModality"));
     }
 

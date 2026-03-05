@@ -55,6 +55,14 @@ pub trait RelationQuery<P: Primitives>: Query<P> {
     fn session_context(&self) -> &Self::Context;
 }
 
+/// A RelationQuery that explicitly declares its session membership, allowing the conformance suite to validate session-scoped fiber reduction across multi-turn Prism deployments.
+pub trait SessionQuery<P: Primitives>: RelationQuery<P> {
+    /// Associated type for `Session`.
+    type Session: crate::user::state::Session<P>;
+    /// The session this query belongs to.
+    fn session_membership(&self) -> &Self::Session;
+}
+
 /// The stratum coordinate: the layer position of a datum within the ring's stratification.
 pub mod stratum_coordinate {}
 

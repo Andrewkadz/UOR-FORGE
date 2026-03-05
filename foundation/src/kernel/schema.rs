@@ -71,6 +71,14 @@ pub trait Ring<P: Primitives> {
     fn at_quantum_level(&self) -> QuantumLevel;
 }
 
+/// The concrete ring Z/(2^16)Z at quantum level 16. Subclass of schema:Ring. Carries 65,536 elements. Q1Ring is the first extension of the default Q0 ring and is the target of Amendment 26's universality proofs.
+pub trait Q1Ring<P: Primitives>: Ring<P> {
+    /// Bit width of the Q1 ring: 16.
+    fn q1bit_width(&self) -> P::PositiveInteger;
+    /// Carrier set size of the Q1 ring: 65,536 elements.
+    fn q1capacity(&self) -> P::PositiveInteger;
+}
+
 /// The unique generator of R_n under successor. Value = 1 at every quantum level. Under iterated application of succ, π₁ generates every element of the ring.
 pub mod pi1 {
     /// `value`

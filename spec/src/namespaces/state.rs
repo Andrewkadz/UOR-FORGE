@@ -5,10 +5,14 @@
 //! hold bindings, frames provide visibility windows, and transitions record state
 //! changes.
 //!
+//! Amendment 27 adds the session lifecycle: `Session`, `BindingAccumulator`,
+//! `SessionBoundary`, and `SessionBoundaryType` (a typed controlled vocabulary for
+//! boundary reasons — ExplicitReset, ConvergenceBoundary, ContradictionBoundary).
+//!
 //! **Space classification:** `user` — state is managed by user-space (Prism).
 
 use crate::model::iris::*;
-use crate::model::{Class, Namespace, NamespaceModule, Property, PropertyKind, Space};
+use crate::model::{Class, Individual, Namespace, NamespaceModule, Property, PropertyKind, Space};
 
 /// Returns the `state/` namespace module.
 #[must_use]
@@ -26,7 +30,7 @@ pub fn module() -> NamespaceModule {
         },
         classes: classes(),
         properties: properties(),
-        individuals: vec![],
+        individuals: individuals(),
     }
 }
 
@@ -82,6 +86,43 @@ fn classes() -> Vec<Class> {
                 "https://uor.foundation/state/Binding",
                 "https://uor.foundation/state/Frame",
             ],
+        },
+        // Amendment 27: Session-Scoped Resolution
+        Class {
+            id: "https://uor.foundation/state/SessionBoundaryType",
+            label: "SessionBoundaryType",
+            comment: "A typed controlled vocabulary for session boundary reasons. \
+                      Each individual names a specific reason a context-reset boundary \
+                      was triggered during a multi-turn session.",
+            subclass_of: &[OWL_THING],
+            disjoint_with: &[],
+        },
+        Class {
+            id: "https://uor.foundation/state/Session",
+            label: "Session",
+            comment: "A bounded sequence of RelationQuery/response pairs sharing \
+                      a common state:Context. Sessions are the unit of coherent \
+                      multi-turn reasoning in Prism.",
+            subclass_of: &[OWL_THING],
+            disjoint_with: &[],
+        },
+        Class {
+            id: "https://uor.foundation/state/BindingAccumulator",
+            label: "BindingAccumulator",
+            comment: "The mutable accumulator that appends state:Binding instances \
+                      to a state:Context as each RelationQuery resolves. Tracks \
+                      monotonic reduction of aggregate free fiber space.",
+            subclass_of: &[OWL_THING],
+            disjoint_with: &[],
+        },
+        Class {
+            id: "https://uor.foundation/state/SessionBoundary",
+            label: "SessionBoundary",
+            comment: "Marks a context-reset event within a session stream. \
+                      Records why the context was reset and provides a clean \
+                      state:Context for subsequent queries.",
+            subclass_of: &[OWL_THING],
+            disjoint_with: &[],
         },
     ]
 }
@@ -250,6 +291,116 @@ fn properties() -> Vec<Property> {
             kind: PropertyKind::Object,
             functional: true,
             range: "https://uor.foundation/morphism/TopologicalDelta",
+        },
+        // Amendment 27: Session-Scoped Resolution properties
+        Property {
+            id: "https://uor.foundation/state/sessionBindings",
+            label: "sessionBindings",
+            comment: "The shared context holding all bindings accumulated across \
+                      the queries in this session.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/state/Session"),
+            range: "https://uor.foundation/state/Context",
+        },
+        Property {
+            id: "https://uor.foundation/state/sessionQueries",
+            label: "sessionQueries",
+            comment: "The number of RelationQuery evaluations completed in this session.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/state/Session"),
+            range: XSD_NON_NEGATIVE_INTEGER,
+        },
+        Property {
+            id: "https://uor.foundation/state/aggregateFiberDeficit",
+            label: "aggregateFiberDeficit",
+            comment: "The aggregate FiberBudget deficit across all accumulated bindings: \
+                      the total remaining free fibers that have not yet been closed by \
+                      resolution. Decreases monotonically as the session progresses.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/state/BindingAccumulator"),
+            range: "https://uor.foundation/partition/FiberBudget",
+        },
+        Property {
+            id: "https://uor.foundation/state/accumulatedBindings",
+            label: "accumulatedBindings",
+            comment: "A binding accumulated by this accumulator from a resolved \
+                      RelationQuery.",
+            kind: PropertyKind::Object,
+            functional: false,
+            domain: Some("https://uor.foundation/state/BindingAccumulator"),
+            range: "https://uor.foundation/state/Binding",
+        },
+        Property {
+            id: "https://uor.foundation/state/boundaryReason",
+            label: "boundaryReason",
+            comment: "A human-readable description of why this session boundary \
+                      was triggered.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/state/SessionBoundary"),
+            range: XSD_STRING,
+        },
+        Property {
+            id: "https://uor.foundation/state/boundaryType",
+            label: "boundaryType",
+            comment: "The typed reason category for this session boundary.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/state/SessionBoundary"),
+            range: "https://uor.foundation/state/SessionBoundaryType",
+        },
+        Property {
+            id: "https://uor.foundation/state/priorContext",
+            label: "priorContext",
+            comment: "The state:Context that was active before this boundary reset.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/state/SessionBoundary"),
+            range: "https://uor.foundation/state/Context",
+        },
+        Property {
+            id: "https://uor.foundation/state/freshContext",
+            label: "freshContext",
+            comment: "The clean state:Context produced after this boundary reset, \
+                      ready for subsequent queries.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/state/SessionBoundary"),
+            range: "https://uor.foundation/state/Context",
+        },
+    ]
+}
+
+// Amendment 27: SessionBoundaryType typed controlled vocabulary individuals
+fn individuals() -> Vec<Individual> {
+    vec![
+        Individual {
+            id: "https://uor.foundation/state/ExplicitReset",
+            type_: "https://uor.foundation/state/SessionBoundaryType",
+            label: "ExplicitReset",
+            comment: "The caller explicitly requested a context reset. \
+                      All accumulated bindings are discarded.",
+            properties: &[],
+        },
+        Individual {
+            id: "https://uor.foundation/state/ConvergenceBoundary",
+            type_: "https://uor.foundation/state/SessionBoundaryType",
+            label: "ConvergenceBoundary",
+            comment: "The session resolver determined that no further queries \
+                      can reduce the aggregate fiber deficit.",
+            properties: &[],
+        },
+        Individual {
+            id: "https://uor.foundation/state/ContradictionBoundary",
+            type_: "https://uor.foundation/state/SessionBoundaryType",
+            label: "ContradictionBoundary",
+            comment: "A new query produced a type contradiction with an \
+                      accumulated binding. Context must reset before \
+                      resolution can continue.",
+            properties: &[],
         },
     ]
 }

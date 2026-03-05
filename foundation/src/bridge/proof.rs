@@ -2578,3 +2578,173 @@ pub mod prf_surface_symmetry {
     /// `verified`
     pub const VERIFIED: bool = true;
 }
+
+/// Proof that a CompleteType T satisfies: resolution(x, T) terminates in O(1) for all x ∈ R_n. Follows from IT_7d: when χ(N(C)) = n and all β_k = 0, the resolver has no topological obstructions.
+pub mod prf_cc_1 {
+    /// `provesIdentity` -> `CC_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CC_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Proof that the ψ pipeline is monotone: each constraint application cannot increase the fiber deficit. Derived from the definition of the partition refinement order.
+pub mod prf_cc_2 {
+    /// `provesIdentity` -> `CC_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CC_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Proof that a CompletenessCertificate implies CompleteType: the certificate attestation is only issued when IT_7d holds, by construction of the CompletenessResolver.
+pub mod prf_cc_3 {
+    /// `provesIdentity` -> `CC_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CC_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Proof that the CompletenessAuditTrail witnessCount equals the number of CompletenessWitness records in the trail. Structural invariant of the audit accumulation protocol.
+pub mod prf_cc_4 {
+    /// `provesIdentity` -> `CC_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CC_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Proof that the ConstraintNerve nerve computation is deterministic: the same constraint set always produces the same nerve topology. Follows from the nerve functor being a functor (functoriality).
+pub mod prf_cc_5 {
+    /// `provesIdentity` -> `CC_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CC_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Universal proof that neg(bnot(x)) = succ(x) in Z/(2^n)Z for all n ≥ 1. Derived symbolically from ring axioms: bnot is bitwise complement, neg is two's complement negation, succ is modular increment. The critical identity in universal form.
+pub mod prf_ql_1 {
+    /// `provesIdentity` -> `QL_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/QL_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Universal proof that the ring carrier set size is exactly 2^n for all n ≥ 1. Follows from the definition of Z/(2^n)Z.
+pub mod prf_ql_2 {
+    /// `provesIdentity` -> `QL_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/QL_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Universal proof that Landauer erasure cost scales as n × k_B T ln 2 at quantum level n. Follows from the thermodynamic interpretation: each bit erased from an n-bit ring costs k_B T ln 2.
+pub mod prf_ql_3 {
+    /// `provesIdentity` -> `QL_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/QL_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Universal proof that the dihedral group D_{2^n} action on Z/(2^n)Z is faithful for all n ≥ 1. The stabilizer of any element is trivial under the full dihedral action.
+pub mod prf_ql_4 {
+    /// `provesIdentity` -> `QL_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/QL_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Universal proof that canonical form rewriting terminates at all quantum levels. The rewriting system is terminating by lexicographic descent on the term complexity measure.
+pub mod prf_ql_5 {
+    /// `provesIdentity` -> `QL_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/QL_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Universal proof that the completeness criterion χ(N(C)) = n generalizes to all quantum levels. Derived from the definition of the nerve construction and the Euler characteristic formula for simplicial complexes.
+pub mod prf_ql_6 {
+    /// `provesIdentity` -> `QL_6`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/QL_6";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Universal proof of the ring topology Euler characteristic identity: χ = 1 − n at quantum level n. Derived from the CW decomposition of the n-dimensional torus formed by the ring's cyclic group action.
+pub mod prf_ql_7 {
+    /// `provesIdentity` -> `QL_7`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/QL_7";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Proof of binding monotonicity: freeCount(B_{i+1}) ≤ freeCount(B_i) for all i in a Session. Follows from the definition of the BindingAccumulator: each appended binding either pins fibers or is a no-op; it never frees them.
+pub mod prf_sr_1 {
+    /// `provesIdentity` -> `SR_1`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SR_1";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Proof that the empty session is the identity element of the session algebra: freeCount(B_0) = total fiber space. The empty accumulator has no pinned fibers by definition.
+pub mod prf_sr_2 {
+    /// `provesIdentity` -> `SR_2`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SR_2";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Proof of session convergence: a session terminates iff freeCount reaches its minimum (the maximum pinned by the given constraint set). Follows from the compactness of the fiber space and monotonicity.
+pub mod prf_sr_3 {
+    /// `provesIdentity` -> `SR_3`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SR_3";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Proof that disjoint bindings compose without fiber conflict: if two bindings address disjoint fiber sets, their composition is well-defined and their union is also a valid binding.
+pub mod prf_sr_4 {
+    /// `provesIdentity` -> `SR_4`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SR_4";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}
+
+/// Proof of contradiction detection correctness: ContradictionBoundary fires iff there exist bindings b, b' in the same Context with the same address, different datum, and same constraint. This is the minimal condition for type contradiction.
+pub mod prf_sr_5 {
+    /// `provesIdentity` -> `SR_5`
+    pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/SR_5";
+    /// `universalScope`
+    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `verified`
+    pub const VERIFIED: bool = true;
+}

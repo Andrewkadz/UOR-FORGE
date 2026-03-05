@@ -8,6 +8,10 @@
 //! by pinning fibers, plus metric axes that classify constraints by their
 //! geometric effect.
 //!
+//! Amendment 25 adds the completeness certification pathway: `CompletenessCandidate`
+//! (a ConstrainedType undergoing certification) and `CompletenessWitness` (a single
+//! fiber-closing event), with four new properties supporting the certification loop.
+//!
 //! **Space classification:** `user` — parameterizable at runtime.
 
 use crate::model::iris::*;
@@ -170,6 +174,27 @@ fn classes() -> Vec<Class> {
                       Completeness is attested by a cert:CompletenessCertificate linked via \
                       cert:certifiedType.",
             subclass_of: &["https://uor.foundation/type/TypeDefinition"],
+            disjoint_with: &[],
+        },
+        // Amendment 25: Completeness Certification Pathway
+        Class {
+            id: "https://uor.foundation/type/CompletenessCandidate",
+            label: "CompletenessCandidate",
+            comment: "A ConstrainedType actively undergoing the completeness certification \
+                      pipeline. Links to the resolver:ResolutionState tracking the current \
+                      iteration and to the resolver:ConstraintNerve being computed. \
+                      Disjoint from CompleteType (which is already certified).",
+            subclass_of: &["https://uor.foundation/type/ConstrainedType"],
+            disjoint_with: &["https://uor.foundation/type/CompleteType"],
+        },
+        Class {
+            id: "https://uor.foundation/type/CompletenessWitness",
+            label: "CompletenessWitness",
+            comment: "A record of a single fiber-closing event: one constraint application \
+                      that reduced the FiberBudget deficit. Carries the applied constraint \
+                      and the fibersClosed count. Forms the ordered audit trail between \
+                      ConstrainedType and CompleteType.",
+            subclass_of: &[OWL_THING],
             disjoint_with: &[],
         },
     ]
@@ -350,6 +375,46 @@ fn properties() -> Vec<Property> {
             kind: PropertyKind::Datatype,
             functional: true,
             domain: Some("https://uor.foundation/type/Constraint"),
+            range: XSD_NON_NEGATIVE_INTEGER,
+        },
+        // Amendment 25: Completeness Certification Pathway properties
+        Property {
+            id: "https://uor.foundation/type/completenessCandidate",
+            label: "completenessCandidate",
+            comment: "The ConstrainedType being evaluated for completeness \
+                      by this CompletenessCandidate.",
+            kind: PropertyKind::Object,
+            functional: false,
+            domain: Some("https://uor.foundation/type/CompletenessCandidate"),
+            range: "https://uor.foundation/type/ConstrainedType",
+        },
+        Property {
+            id: "https://uor.foundation/type/candidateNerve",
+            label: "candidateNerve",
+            comment: "The constraint nerve being computed for this candidate. \
+                      The CompletenessResolver reads χ(N(C)) from this nerve \
+                      at each iteration via resolver:nerveEulerCharacteristic.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/type/CompletenessCandidate"),
+            range: "https://uor.foundation/resolver/ConstraintNerve",
+        },
+        Property {
+            id: "https://uor.foundation/type/witnessConstraint",
+            label: "witnessConstraint",
+            comment: "The constraint applied in this witness step.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/type/CompletenessWitness"),
+            range: "https://uor.foundation/type/Constraint",
+        },
+        Property {
+            id: "https://uor.foundation/type/fibersClosed",
+            label: "fibersClosed",
+            comment: "Number of fibers closed by this witness step.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/type/CompletenessWitness"),
             range: XSD_NON_NEGATIVE_INTEGER,
         },
     ]

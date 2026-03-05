@@ -4,6 +4,7 @@
 //!
 //! Space: User
 
+use crate::enums::SessionBoundaryType;
 use crate::Primitives;
 
 /// A bounded set of populated UOR addresses. The parameter space for a resolution cycle. Contexts hold bindings that map addresses to datum values.
@@ -81,3 +82,48 @@ pub trait Transition<P: Primitives> {
     /// A snapshot of topological invariants at this transition point.
     fn topological_snapshot(&self) -> &Self::TopologicalDelta;
 }
+
+/// A bounded sequence of RelationQuery/response pairs sharing a common state:Context. Sessions are the unit of coherent multi-turn reasoning in Prism.
+pub trait Session<P: Primitives> {
+    /// Associated type for `Context`.
+    type Context: Context<P>;
+    /// The shared context holding all bindings accumulated across the queries in this session.
+    fn session_bindings(&self) -> &Self::Context;
+    /// The number of RelationQuery evaluations completed in this session.
+    fn session_queries(&self) -> P::NonNegativeInteger;
+}
+
+/// The mutable accumulator that appends state:Binding instances to a state:Context as each RelationQuery resolves. Tracks monotonic reduction of aggregate free fiber space.
+pub trait BindingAccumulator<P: Primitives> {
+    /// Associated type for `FiberBudget`.
+    type FiberBudget: crate::bridge::partition::FiberBudget<P>;
+    /// The aggregate FiberBudget deficit across all accumulated bindings: the total remaining free fibers that have not yet been closed by resolution. Decreases monotonically as the session progresses.
+    fn aggregate_fiber_deficit(&self) -> &Self::FiberBudget;
+    /// Associated type for `Binding`.
+    type Binding: Binding<P>;
+    /// A binding accumulated by this accumulator from a resolved RelationQuery.
+    fn accumulated_bindings(&self) -> &[Self::Binding];
+}
+
+/// Marks a context-reset event within a session stream. Records why the context was reset and provides a clean state:Context for subsequent queries.
+pub trait SessionBoundary<P: Primitives> {
+    /// A human-readable description of why this session boundary was triggered.
+    fn boundary_reason(&self) -> &P::String;
+    /// The typed reason category for this session boundary.
+    fn boundary_type(&self) -> SessionBoundaryType;
+    /// Associated type for `Context`.
+    type Context: Context<P>;
+    /// The state:Context that was active before this boundary reset.
+    fn prior_context(&self) -> &Self::Context;
+    /// The clean state:Context produced after this boundary reset, ready for subsequent queries.
+    fn fresh_context(&self) -> &Self::Context;
+}
+
+/// The caller explicitly requested a context reset. All accumulated bindings are discarded.
+pub mod explicit_reset {}
+
+/// The session resolver determined that no further queries can reduce the aggregate fiber deficit.
+pub mod convergence_boundary {}
+
+/// A new query produced a type contradiction with an accumulated binding. Context must reset before resolution can continue.
+pub mod contradiction_boundary {}

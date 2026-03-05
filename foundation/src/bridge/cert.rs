@@ -43,4 +43,14 @@ pub trait CompletenessCertificate<P: Primitives>: Certificate<P> {
     type CompleteType: crate::user::type_::CompleteType<P>;
     /// The TypeDefinition whose completeness this certificate attests. The kernel issues this certificate after running the ψ pipeline on the type's constraint set and confirming IT_7d.
     fn certified_type(&self) -> &Self::CompleteType;
+    /// Associated type for `CompletenessAuditTrail`.
+    type CompletenessAuditTrail: CompletenessAuditTrail<P>;
+    /// The audit trail attesting the certification provenance. Links a CompletenessCertificate to its ordered sequence of CompletenessWitness records.
+    fn audit_trail(&self) -> &Self::CompletenessAuditTrail;
+}
+
+/// An ordered collection of CompletenessWitness records belonging to a CompletenessCertificate. Provides full provenance of the certification process: every constraint applied, every fiber closed, in sequence.
+pub trait CompletenessAuditTrail<P: Primitives> {
+    /// Total number of witness steps in this audit trail.
+    fn witness_count(&self) -> P::NonNegativeInteger;
 }

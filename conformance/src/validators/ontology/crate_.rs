@@ -112,6 +112,7 @@ fn validate_trait_completeness(
         "RewriteRule",
         "MeasurementUnit",
         "CoordinateKind",
+        "SessionBoundaryType",
     ];
 
     // Read all generated source files
@@ -175,6 +176,7 @@ fn validate_method_completeness(
         "RewriteRule",
         "MeasurementUnit",
         "CoordinateKind",
+        "SessionBoundaryType",
     ];
 
     let mut missing = Vec::new();
@@ -257,6 +259,7 @@ fn validate_individual_completeness(
         "RewriteRule",
         "MeasurementUnit",
         "CoordinateKind",
+        "SessionBoundaryType",
     ];
 
     let mut missing = Vec::new();

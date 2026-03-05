@@ -17,15 +17,15 @@ cargo run --bin uor-conformance
 |----------|----------|-----------|
 | `public/uor.foundation.json` | JSON-LD 1.1 | `validators/ontology/jsonld.rs` |
 | `public/uor.foundation.json` | OWL 2 DL | `validators/ontology/owl.rs` |
-| Inventory counts | 16/130/234/304 | `validators/ontology/inventory.rs` |
+| Inventory counts | 16/155/285/580 | `validators/ontology/inventory.rs` |
 | `public/uor.foundation.ttl` | RDF 1.1 / Turtle 1.1 | `validators/ontology/rdf.rs` |
-| 29 test instance graphs | SHACL | `validators/ontology/shacl.rs` |
+| 39 test instance graphs | SHACL | `validators/ontology/shacl.rs` |
 
 ### Documentation Conformance
 
 | Check | Validator |
 |-------|-----------|
-| All 130 classes documented | `validators/docs/completeness.rs` |
+| All 155 classes documented | `validators/docs/completeness.rs` |
 | Namespace pages accurate | `validators/docs/accuracy.rs` |
 | Diataxis structure present | `validators/docs/structure.rs` |
 | No broken internal links | `validators/docs/links.rs` |
@@ -39,6 +39,17 @@ cargo run --bin uor-conformance
 | Namespace page coverage | — | `validators/website/coverage.rs` |
 | CSS validity | CSS | `validators/website/css.rs` |
 | Internal links | — | `validators/website/links.rs` |
+
+### SHACL Tests 34–39 (v3.4.0)
+
+| Test | What It Validates |
+|------|-------------------|
+| test34 | CompletenessCandidate, CompletenessWitness, CompletenessResolver (Amendment 25) |
+| test35 | CompletenessCertificate, CompletenessAuditTrail, witnessCount (Amendment 25) |
+| test36 | Q1Ring, Q1bitWidth, Q1capacity, nextLevel chain (Amendment 26) |
+| test37 | QuantumLevelBinding, universallyValid, verifiedAtLevel (Amendment 26) |
+| test38 | Session, BindingAccumulator, SessionResolver, SessionQuery (Amendment 27) |
+| test39 | SessionBoundary, SessionBoundaryType vocabulary individuals (Amendment 27) |
 
 ## Adding a New SHACL Test
 

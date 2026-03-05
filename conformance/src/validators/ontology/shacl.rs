@@ -1,6 +1,6 @@
 //! SHACL validator.
 //!
-//! Validates the 31 OWL instance test graphs against the UOR SHACL shapes.
+//! Validates the 39 OWL instance test graphs against the UOR SHACL shapes.
 //! Each test graph is defined as a Turtle string in `tests/fixtures/`.
 //! Validation checks structural constraints without a full SHACL engine:
 //! - Required properties are present
@@ -10,7 +10,7 @@
 use crate::report::{ConformanceReport, TestResult};
 use crate::tests;
 
-/// Runs all 31 SHACL instance conformance tests.
+/// Runs all 39 SHACL instance conformance tests.
 pub fn validate() -> ConformanceReport {
     let mut report = ConformanceReport::new();
 
@@ -175,6 +175,36 @@ pub fn validate() -> ConformanceReport {
         tests::fixtures::TEST33_GRAPH_GAPS,
         &mut report,
     );
+    run_test(
+        "test34_completeness_candidate",
+        tests::fixtures::TEST34_COMPLETENESS_CANDIDATE,
+        &mut report,
+    );
+    run_test(
+        "test35_completeness_certificate",
+        tests::fixtures::TEST35_COMPLETENESS_CERTIFICATE,
+        &mut report,
+    );
+    run_test(
+        "test36_q1_ring",
+        tests::fixtures::TEST36_Q1_RING,
+        &mut report,
+    );
+    run_test(
+        "test37_quantum_level_binding",
+        tests::fixtures::TEST37_QUANTUM_LEVEL_BINDING,
+        &mut report,
+    );
+    run_test(
+        "test38_session_lifecycle",
+        tests::fixtures::TEST38_SESSION_LIFECYCLE,
+        &mut report,
+    );
+    run_test(
+        "test39_session_boundary",
+        tests::fixtures::TEST39_SESSION_BOUNDARY,
+        &mut report,
+    );
 
     report
 }
@@ -235,6 +265,12 @@ fn run_test(name: &str, turtle_src: &str, report: &mut ConformanceReport) {
         "test31_quantum_level" => validate_quantum_level_shacl(turtle_src),
         "test32_arc_grounding" => validate_arc_grounding_shacl(turtle_src),
         "test33_graph_gaps" => validate_graph_gaps_shacl(turtle_src),
+        "test34_completeness_candidate" => validate_completeness_candidate_shacl(turtle_src),
+        "test35_completeness_certificate" => validate_completeness_certificate_shacl(turtle_src),
+        "test36_q1_ring" => validate_q1_ring_shacl(turtle_src),
+        "test37_quantum_level_binding" => validate_quantum_level_binding_shacl(turtle_src),
+        "test38_session_lifecycle" => validate_session_lifecycle_shacl(turtle_src),
+        "test39_session_boundary" => validate_session_boundary_shacl(turtle_src),
         _ => Ok(()),
     };
 
@@ -873,6 +909,163 @@ fn validate_graph_gaps_shacl(src: &str) -> Result<(), String> {
         "morphism:groundingCertMap",
         "Missing groundingCertMap property",
     )?;
+    Ok(())
+}
+
+fn validate_completeness_candidate_shacl(src: &str) -> Result<(), String> {
+    check_contains(
+        src,
+        "type:CompletenessCandidate",
+        "Missing CompletenessCandidate type assertion",
+    )?;
+    check_contains(
+        src,
+        "type:completenessCandidate",
+        "Missing completenessCandidate property",
+    )?;
+    check_contains(
+        src,
+        "type:candidateNerve",
+        "Missing candidateNerve property",
+    )?;
+    check_contains(
+        src,
+        "resolver:CompletenessResolver",
+        "Missing CompletenessResolver type assertion",
+    )?;
+    check_contains(
+        src,
+        "resolver:completenessTarget",
+        "Missing completenessTarget property",
+    )?;
+    check_contains(
+        src,
+        "type:CompletenessWitness",
+        "Missing CompletenessWitness type assertion",
+    )?;
+    check_contains(
+        src,
+        "type:witnessConstraint",
+        "Missing witnessConstraint property",
+    )?;
+    check_contains(src, "type:fibersClosed", "Missing fibersClosed property")?;
+    Ok(())
+}
+
+fn validate_completeness_certificate_shacl(src: &str) -> Result<(), String> {
+    check_contains(
+        src,
+        "cert:CompletenessCertificate",
+        "Missing CompletenessCertificate type assertion",
+    )?;
+    check_contains(src, "cert:auditTrail", "Missing auditTrail property")?;
+    check_contains(
+        src,
+        "cert:CompletenessAuditTrail",
+        "Missing CompletenessAuditTrail type assertion",
+    )?;
+    check_contains(src, "cert:witnessCount", "Missing witnessCount property")?;
+    check_contains(
+        src,
+        "type:CompleteType",
+        "Missing CompleteType type assertion",
+    )?;
+    check_contains(src, "cert:certifiedType", "Missing certifiedType property")?;
+    Ok(())
+}
+
+fn validate_q1_ring_shacl(src: &str) -> Result<(), String> {
+    check_contains(src, "schema:Q1Ring", "Missing Q1Ring type assertion")?;
+    check_contains(src, "schema:Q1bitWidth", "Missing Q1bitWidth property")?;
+    check_contains(src, "schema:Q1capacity", "Missing Q1capacity property")?;
+    check_contains(src, "schema:nextLevel", "Missing nextLevel property")?;
+    Ok(())
+}
+
+fn validate_quantum_level_binding_shacl(src: &str) -> Result<(), String> {
+    check_contains(
+        src,
+        "op:QuantumLevelBinding",
+        "Missing QuantumLevelBinding type assertion",
+    )?;
+    check_contains(
+        src,
+        "op:universallyValid",
+        "Missing universallyValid property",
+    )?;
+    check_contains(
+        src,
+        "op:verifiedAtLevel",
+        "Missing verifiedAtLevel property",
+    )?;
+    check_contains(src, "op:bindingLevel", "Missing bindingLevel property")?;
+    Ok(())
+}
+
+fn validate_session_lifecycle_shacl(src: &str) -> Result<(), String> {
+    check_contains(src, "state:Session", "Missing Session type assertion")?;
+    check_contains(
+        src,
+        "state:sessionBindings",
+        "Missing sessionBindings property",
+    )?;
+    check_contains(
+        src,
+        "state:sessionQueries",
+        "Missing sessionQueries property",
+    )?;
+    check_contains(
+        src,
+        "state:BindingAccumulator",
+        "Missing BindingAccumulator type assertion",
+    )?;
+    check_contains(
+        src,
+        "state:accumulatedBindings",
+        "Missing accumulatedBindings property",
+    )?;
+    check_contains(
+        src,
+        "resolver:SessionResolver",
+        "Missing SessionResolver type assertion",
+    )?;
+    check_contains(
+        src,
+        "resolver:sessionAccumulator",
+        "Missing sessionAccumulator property",
+    )?;
+    check_contains(
+        src,
+        "query:SessionQuery",
+        "Missing SessionQuery type assertion",
+    )?;
+    check_contains(
+        src,
+        "query:sessionMembership",
+        "Missing sessionMembership property",
+    )?;
+    Ok(())
+}
+
+fn validate_session_boundary_shacl(src: &str) -> Result<(), String> {
+    check_contains(
+        src,
+        "state:SessionBoundary",
+        "Missing SessionBoundary type assertion",
+    )?;
+    check_contains(src, "state:boundaryType", "Missing boundaryType property")?;
+    check_contains(
+        src,
+        "state:ContradictionBoundary",
+        "Missing ContradictionBoundary individual",
+    )?;
+    check_contains(
+        src,
+        "state:boundaryReason",
+        "Missing boundaryReason property",
+    )?;
+    check_contains(src, "state:priorContext", "Missing priorContext property")?;
+    check_contains(src, "state:freshContext", "Missing freshContext property")?;
     Ok(())
 }
 

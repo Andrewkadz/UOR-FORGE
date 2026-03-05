@@ -106,6 +106,59 @@ fiber deficit, and {@prop https://uor.foundation/resolver/convergenceRate}. Each
 iteration produces a {@class https://uor.foundation/derivation/RefinementStep} recording
 the applied constraint and fibers closed.
 
+## Completeness Certification (Amendment 25)
+
+To certify that a type resolves in O(1), promote it to a
+{@class https://uor.foundation/type/CompletenessCandidate} and run the ψ
+pipeline via a {@class https://uor.foundation/resolver/CompletenessResolver}:
+
+1. **Promote** — associate the type with a ResolutionState and ConstraintNerve
+   via {@prop https://uor.foundation/type/candidateNerve}.
+2. **Accumulate witnesses** — each fiber-closing step produces a
+   {@class https://uor.foundation/type/CompletenessWitness} recording the
+   applied constraint and {@prop https://uor.foundation/type/fibersClosed}.
+3. **Check IT\_7d** — the resolver reads the cached
+   {@prop https://uor.foundation/resolver/nerveEulerCharacteristic}. If
+   χ(N(C)) = n and all β\_k = 0, the kernel issues a
+   {@class https://uor.foundation/cert/CompletenessCertificate}.
+4. **Audit** — the certificate's
+   {@prop https://uor.foundation/cert/auditTrail} links to a
+   {@class https://uor.foundation/cert/CompletenessAuditTrail} with the
+   full witness sequence and {@prop https://uor.foundation/cert/witnessCount}.
+
+## Q1 Resolver (Amendment 26)
+
+To run any resolver at quantum level Q1 instead of Q0, use a
+{@class https://uor.foundation/resolver/QuantumLevelResolver} with
+{@prop https://uor.foundation/resolver/quantumLevel} set to
+`schema:Q1`. The Q1 ring is {@class https://uor.foundation/schema/Q1Ring}:
+Z/(2^16)Z with {@prop https://uor.foundation/schema/Q1bitWidth} = 16 and
+65,536 elements.
+
+Identities marked `op:universallyValid true` (such as the critical identity
+and all QL\_ individuals) hold at Q1 and every higher level without
+re-verification.
+
+## Session Lifecycle (Amendment 27)
+
+Multi-turn Prism deployments use a
+{@class https://uor.foundation/resolver/SessionResolver} that maintains a
+{@class https://uor.foundation/state/BindingAccumulator} across queries:
+
+1. **Open session** — create a {@class https://uor.foundation/state/Session}
+   with an empty {@prop https://uor.foundation/state/sessionBindings} context.
+2. **Submit queries** — each {@class https://uor.foundation/query/SessionQuery}
+   declares {@prop https://uor.foundation/query/sessionMembership}; resolved
+   bindings are appended to the accumulator.
+3. **Monitor deficit** — the
+   {@prop https://uor.foundation/state/aggregateFiberDeficit} on the
+   accumulator decreases monotonically (SR\_1 invariant).
+4. **Handle boundaries** — when convergence stalls or a contradiction arises,
+   a {@class https://uor.foundation/state/SessionBoundary} resets the context.
+   The {@prop https://uor.foundation/state/boundaryType} is one of
+   `state:ExplicitReset`, `state:ConvergenceBoundary`, or
+   `state:ContradictionBoundary`.
+
 ## Composition (Amendment 12)
 
 Transforms compose categorically via {@class https://uor.foundation/morphism/Composition}.

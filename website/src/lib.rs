@@ -190,8 +190,8 @@ mod tests {
         let entries = extractor::build_search_index("");
         let class_count = entries.iter().filter(|e| e.kind == "class").count();
         assert_eq!(
-            class_count, 142,
-            "Expected 142 class entries in search index"
+            class_count, 155,
+            "Expected 155 class entries in search index"
         );
     }
 

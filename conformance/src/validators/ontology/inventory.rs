@@ -2,9 +2,9 @@
 //!
 //! Verifies that the built ontology artifact contains the correct counts:
 //! - 16 namespaces (3 Kernel / 10 Bridge / 3 User)
-//! - 142 classes
-//! - 261 namespace-level properties + 1 global annotation = 262 via property_count()
-//! - 560 named individuals (each with required property assertions)
+//! - 155 classes
+//! - 284 namespace-level properties + 1 global annotation = 285 via property_count()
+//! - 597 named individuals (each with required property assertions)
 
 use std::path::Path;
 
@@ -16,9 +16,9 @@ use crate::report::{ConformanceReport, TestResult};
 
 /// Expected inventory counts for the UOR Foundation ontology.
 const EXPECTED_NAMESPACES: usize = 16;
-const EXPECTED_CLASSES: usize = 142;
-const EXPECTED_PROPERTIES: usize = 262;
-const EXPECTED_INDIVIDUALS: usize = 560;
+const EXPECTED_CLASSES: usize = 155;
+const EXPECTED_PROPERTIES: usize = 285;
+const EXPECTED_INDIVIDUALS: usize = 597;
 
 /// Validates the ontology inventory counts in the built JSON-LD artifact.
 ///
@@ -359,6 +359,12 @@ fn validate_identity_completeness(report: &mut ConformanceReport) {
         "FL_", "FPM_", "FS_", "RE_", "IR_", "SF_", "RD_", "SE_", "OO_", "CB_", "OB_M", "OB_C",
         "OB_H", "OB_P", "CT_", "CF_", "HG_", "T_C", "T_I", "T_E", "T_A", "AU_", "EF_", "AD_",
         "AA_", "AM_", "TH_", "AR_", "PD_", "RC_", "DC_", "HA_", "IT_", "phi_", "psi_",
+        // Amendment 25: Completeness Certification
+        "CC_",
+        // Amendment 26: Quantum Level Scaling
+        "QL_",
+        // Amendment 27: Session-Scoped Resolution
+        "SR_",
     ];
     for prefix in &expected_prefixes {
         let has = identities.iter().any(|i| i.label.starts_with(prefix));

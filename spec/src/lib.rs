@@ -1,7 +1,7 @@
 //! UOR Foundation ontology encoded as typed Rust data.
 //!
 //! The `uor-ontology` crate provides the complete UOR Foundation ontology —
-//! 16 namespaces, 142 classes, 262 properties, and 560 named individuals —
+//! 16 namespaces, 155 classes, 285 properties, and 597 named individuals —
 //! as static Rust data structures, along with serializers that produce
 //! JSON-LD, Turtle, and N-Triples output.
 //!
@@ -53,7 +53,7 @@ pub use model::{
 
 impl Ontology {
     /// Returns the complete UOR Foundation ontology with all 16 namespaces
-    /// and all 22 amendments applied.
+    /// and all 27 amendments applied.
     ///
     /// Assembly order follows the dependency graph specified in the UOR Foundation
     /// completion plan:
@@ -63,7 +63,7 @@ impl Ontology {
     pub fn full() -> &'static Ontology {
         static ONTOLOGY: std::sync::OnceLock<Ontology> = std::sync::OnceLock::new();
         ONTOLOGY.get_or_init(|| Ontology {
-            version: "3.3.0",
+            version: "3.4.0",
             base_iri: "https://uor.foundation/",
             namespaces: vec![
                 namespaces::u::module(),
@@ -118,16 +118,17 @@ mod tests {
             .iter()
             .map(|m| m.classes.len())
             .sum();
-        // 142 classes: 132 v3.2.0 + 10 Amdt24+Gaps (GroundingMap, ProjectionMap, GroundingCertificate,
-        // RelationQuery, CompleteType, CompletenessCertificate, ThermoObservable, ResidualEntropy,
-        // LandauerCost, CascadeEntropy).
-        assert_eq!(total, 142);
+        // 155 classes: 142 v3.3.0 + 13 Amdt25-27 (CompletenessCandidate, CompletenessWitness,
+        // CompletenessAuditTrail, CompletenessResolver, QuantumLevelResolver, SessionResolver,
+        // Q1Ring, QuantumLevelBinding, SessionBoundaryType, Session, BindingAccumulator,
+        // SessionBoundary, SessionQuery).
+        assert_eq!(total, 155);
     }
 
     #[test]
     fn property_count() {
-        // 262 = 241 v3.2.0 + 21 Amdt24+Gaps (12 morphism + 6 query + 1 resolver + 1 cohomology + 1 cert).
-        assert_eq!(Ontology::full().property_count(), 262);
+        // 285 = 262 v3.3.0 + 23 Amdt25-27 (4 type + 2 cert + 3 resolver + 2 schema + 3 op + 8 state + 1 query).
+        assert_eq!(Ontology::full().property_count(), 285);
     }
 
     #[test]
@@ -137,8 +138,9 @@ mod tests {
             .iter()
             .map(|m| m.individuals.len())
             .sum();
-        // 560 individuals: 557 v3.2.0 + 3 Amdt24+Gaps (surfaceSymmetry, prf_surfaceSymmetry, Nats).
-        assert_eq!(total, 560);
+        // 597 individuals: 560 v3.3.0 + 20 Amdt25-27 (17 op identities + 3 state SessionBoundaryType)
+        //                + 17 proof individuals for CC_1–5, QL_1–7, SR_1–5.
+        assert_eq!(total, 597);
     }
 
     #[test]

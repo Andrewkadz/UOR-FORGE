@@ -96,3 +96,26 @@ pub trait CompositeConstraint<P: Primitives>: Constraint<P> {
 
 /// A TypeDefinition certified to satisfy the UOR completeness criterion (IT_7d): its constraint nerve N(C) has Euler characteristic χ = n and all Betti numbers β_k = 0. A CompleteType guarantees that resolution closes the fiber budget in O(1) — no iterative refinement is required. Completeness is attested by a cert:CompletenessCertificate linked via cert:certifiedType.
 pub trait CompleteType<P: Primitives>: TypeDefinition<P> {}
+
+/// A ConstrainedType actively undergoing the completeness certification pipeline. Links to the resolver:ResolutionState tracking the current iteration and to the resolver:ConstraintNerve being computed. Disjoint from CompleteType (which is already certified).
+/// Disjoint with: CompleteType.
+pub trait CompletenessCandidate<P: Primitives>: ConstrainedType<P> {
+    /// Associated type for `ConstrainedType`.
+    type ConstrainedType: ConstrainedType<P>;
+    /// The ConstrainedType being evaluated for completeness by this CompletenessCandidate.
+    fn completeness_candidate(&self) -> &[Self::ConstrainedType];
+    /// Associated type for `ConstraintNerve`.
+    type ConstraintNerve: crate::bridge::resolver::ConstraintNerve<P>;
+    /// The constraint nerve being computed for this candidate. The CompletenessResolver reads χ(N(C)) from this nerve at each iteration via resolver:nerveEulerCharacteristic.
+    fn candidate_nerve(&self) -> &Self::ConstraintNerve;
+}
+
+/// A record of a single fiber-closing event: one constraint application that reduced the FiberBudget deficit. Carries the applied constraint and the fibersClosed count. Forms the ordered audit trail between ConstrainedType and CompleteType.
+pub trait CompletenessWitness<P: Primitives> {
+    /// Associated type for `Constraint`.
+    type Constraint: Constraint<P>;
+    /// The constraint applied in this witness step.
+    fn witness_constraint(&self) -> &Self::Constraint;
+    /// Number of fibers closed by this witness step.
+    fn fibers_closed(&self) -> P::NonNegativeInteger;
+}

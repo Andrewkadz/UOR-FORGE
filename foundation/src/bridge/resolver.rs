@@ -6,6 +6,7 @@
 
 use crate::enums::ComplexityClass;
 use crate::enums::MetricAxis;
+use crate::enums::QuantumLevel;
 use crate::Primitives;
 
 /// A strategy for resolving a type declaration into a partition of the ring. The kernel dispatches to a specific resolver based on the type's structure.
@@ -80,6 +81,28 @@ pub trait RefinementSuggestion<P: Primitives> {
 
 /// The simplicial complex whose vertices are constraints and where a k-simplex exists iff the corresponding k+1 constraints have nonempty intersection. The nerve's topology governs resolution convergence: trivial homology ↔ smooth convergence, non-trivial homology ↔ potential stalls.
 pub trait ConstraintNerve<P: Primitives>: crate::bridge::homology::SimplicialComplex<P> {}
+
+/// A specialisation of Resolver driving the completeness certification loop. Accepts a CompletenessCandidate, runs the ψ-pipeline (reading nerveEulerCharacteristic from ResolutionState), and either issues a CompletenessCertificate or produces a RefinementSuggestion.
+pub trait CompletenessResolver<P: Primitives>: Resolver<P> {
+    /// Associated type for `CompletenessCandidate`.
+    type CompletenessCandidate: crate::user::type_::CompletenessCandidate<P>;
+    /// The CompletenessCandidate this resolver is certifying.
+    fn completeness_target(&self) -> &Self::CompletenessCandidate;
+}
+
+/// A Resolver parameterised by quantum level. The same resolver strategy runs at any quantum level n ≥ 1 by substituting the appropriate R_n ring.
+pub trait QuantumLevelResolver<P: Primitives>: Resolver<P> {
+    /// The quantum level this resolver instance is configured for.
+    fn quantum_level(&self) -> QuantumLevel;
+}
+
+/// A Resolver that maintains a BindingAccumulator across multiple RelationQuery evaluations. The top-level resolver for multi-turn Prism deployments.
+pub trait SessionResolver<P: Primitives>: Resolver<P> {
+    /// Associated type for `BindingAccumulator`.
+    type BindingAccumulator: crate::user::state::BindingAccumulator<P>;
+    /// The BindingAccumulator this session resolver maintains across multiple RelationQuery evaluations.
+    fn session_accumulator(&self) -> &Self::BindingAccumulator;
+}
 
 /// O(1) complexity — the resolver runs in constant time regardless of ring size.
 pub mod constant_time {}

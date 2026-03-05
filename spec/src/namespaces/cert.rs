@@ -4,6 +4,10 @@
 //! transforms and operations. They provide verifiable proofs that a specific
 //! computation or operation satisfies a particular structural constraint.
 //!
+//! Amendment 25 adds `CompletenessAuditTrail` (an ordered collection of
+//! `CompletenessWitness` records) with properties `auditTrail` and `witnessCount`
+//! that provide full provenance for the completeness certification pathway.
+//!
 //! **Space classification:** `bridge` — kernel-produced, user-consumed.
 
 use crate::model::iris::*;
@@ -73,6 +77,17 @@ fn classes() -> Vec<Class> {
                       Issued by the kernel after running the full ψ pipeline on the \
                       type's constraint set.",
             subclass_of: &["https://uor.foundation/cert/Certificate"],
+            disjoint_with: &[],
+        },
+        // Amendment 25: Completeness Certification Pathway
+        Class {
+            id: "https://uor.foundation/cert/CompletenessAuditTrail",
+            label: "CompletenessAuditTrail",
+            comment: "An ordered collection of CompletenessWitness records belonging to \
+                      a CompletenessCertificate. Provides full provenance of the \
+                      certification process: every constraint applied, every fiber \
+                      closed, in sequence.",
+            subclass_of: &[OWL_THING],
             disjoint_with: &[],
         },
     ]
@@ -157,6 +172,27 @@ fn properties() -> Vec<Property> {
             functional: true,
             domain: Some("https://uor.foundation/cert/CompletenessCertificate"),
             range: "https://uor.foundation/type/CompleteType",
+        },
+        // Amendment 25: Completeness Certification Pathway properties
+        Property {
+            id: "https://uor.foundation/cert/auditTrail",
+            label: "auditTrail",
+            comment: "The audit trail attesting the certification provenance. \
+                      Links a CompletenessCertificate to its ordered sequence of \
+                      CompletenessWitness records.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/cert/CompletenessCertificate"),
+            range: "https://uor.foundation/cert/CompletenessAuditTrail",
+        },
+        Property {
+            id: "https://uor.foundation/cert/witnessCount",
+            label: "witnessCount",
+            comment: "Total number of witness steps in this audit trail.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/cert/CompletenessAuditTrail"),
+            range: XSD_NON_NEGATIVE_INTEGER,
         },
     ]
 }

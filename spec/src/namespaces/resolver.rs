@@ -8,6 +8,16 @@
 //! refinement suggestions, and convergence metrics for the resolution-as-learning
 //! loop.
 //!
+//! Amendment 25 adds `CompletenessResolver` — a specialised resolver that drives
+//! the completeness certification loop for `CompletenessCandidate` instances.
+//!
+//! Amendment 26 adds `QuantumLevelResolver` — a resolver parameterised by quantum
+//! level, allowing the same strategy to run at Q0, Q1, or any future level.
+//!
+//! Amendment 27 adds `SessionResolver` — a resolver that maintains a
+//! `BindingAccumulator` across multiple `RelationQuery` evaluations for
+//! multi-turn Prism deployments.
+//!
 //! **Space classification:** `bridge` — user-requested, kernel-executed.
 
 use crate::model::iris::*;
@@ -122,6 +132,37 @@ fn classes() -> Vec<Class> {
                 OWL_THING,
                 "https://uor.foundation/homology/SimplicialComplex",
             ],
+            disjoint_with: &[],
+        },
+        // Amendment 25: Completeness Certification Pathway
+        Class {
+            id: "https://uor.foundation/resolver/CompletenessResolver",
+            label: "CompletenessResolver",
+            comment: "A specialisation of Resolver driving the completeness certification \
+                      loop. Accepts a CompletenessCandidate, runs the ψ-pipeline (reading \
+                      nerveEulerCharacteristic from ResolutionState), and either issues a \
+                      CompletenessCertificate or produces a RefinementSuggestion.",
+            subclass_of: &["https://uor.foundation/resolver/Resolver"],
+            disjoint_with: &[],
+        },
+        // Amendment 26: Quantum Level Scaling
+        Class {
+            id: "https://uor.foundation/resolver/QuantumLevelResolver",
+            label: "QuantumLevelResolver",
+            comment: "A Resolver parameterised by quantum level. The same resolver \
+                      strategy runs at any quantum level n ≥ 1 by substituting the \
+                      appropriate R_n ring.",
+            subclass_of: &["https://uor.foundation/resolver/Resolver"],
+            disjoint_with: &[],
+        },
+        // Amendment 27: Session-Scoped Resolution
+        Class {
+            id: "https://uor.foundation/resolver/SessionResolver",
+            label: "SessionResolver",
+            comment: "A Resolver that maintains a BindingAccumulator across multiple \
+                      RelationQuery evaluations. The top-level resolver for multi-turn \
+                      Prism deployments.",
+            subclass_of: &["https://uor.foundation/resolver/Resolver"],
             disjoint_with: &[],
         },
     ]
@@ -299,6 +340,37 @@ fn properties() -> Vec<Property> {
             functional: true,
             domain: Some("https://uor.foundation/resolver/ResolutionState"),
             range: XSD_INTEGER,
+        },
+        // Amendment 25: Completeness Certification Pathway property
+        Property {
+            id: "https://uor.foundation/resolver/completenessTarget",
+            label: "completenessTarget",
+            comment: "The CompletenessCandidate this resolver is certifying.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/resolver/CompletenessResolver"),
+            range: "https://uor.foundation/type/CompletenessCandidate",
+        },
+        // Amendment 26: Quantum Level Scaling property
+        Property {
+            id: "https://uor.foundation/resolver/quantumLevel",
+            label: "quantumLevel",
+            comment: "The quantum level this resolver instance is configured for.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/resolver/QuantumLevelResolver"),
+            range: "https://uor.foundation/schema/QuantumLevel",
+        },
+        // Amendment 27: Session-Scoped Resolution property
+        Property {
+            id: "https://uor.foundation/resolver/sessionAccumulator",
+            label: "sessionAccumulator",
+            comment: "The BindingAccumulator this session resolver maintains across \
+                      multiple RelationQuery evaluations.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/resolver/SessionResolver"),
+            range: "https://uor.foundation/state/BindingAccumulator",
         },
     ]
 }

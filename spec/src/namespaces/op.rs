@@ -4,6 +4,9 @@
 //! - **Amendments 1**: 10 named operation individuals
 //! - **Amendment 3**: `op:Identity` class and `op:criticalIdentity` individual
 //! - **Amendment 4**: `op:Group`, `op:DihedralGroup` classes and `op:D2n` individual
+//! - **Amendment 25**: 5 `CC_` identity individuals (completeness certification algebra)
+//! - **Amendment 26**: `QuantumLevelBinding` class, 3 universality properties, 7 `QL_` identity individuals
+//! - **Amendment 27**: 5 `SR_` identity individuals (session-scoped resolution algebra)
 //!
 //! **Critical identity:** `neg(bnot(x)) = succ(x)` for all x in R_n.
 //!
@@ -116,6 +119,16 @@ fn classes() -> Vec<Class> {
                       exactly one GeometricCharacter via op:hasGeometricCharacter. \
                       The nine canonical individuals correspond to the action types \
                       of the dihedral group D_{2^n}.",
+            subclass_of: &[OWL_THING],
+            disjoint_with: &[],
+        },
+        // Amendment 26: Quantum Level Scaling
+        Class {
+            id: "https://uor.foundation/op/QuantumLevelBinding",
+            label: "QuantumLevelBinding",
+            comment: "A record linking an op:Identity individual to a specific quantum \
+                      level at which it has been verified. Non-functional: one \
+                      QuantumLevelBinding per (Identity, QuantumLevel) pair verified.",
             subclass_of: &[OWL_THING],
             disjoint_with: &[],
         },
@@ -292,6 +305,39 @@ fn properties() -> Vec<Property> {
             functional: true,
             domain: Some("https://uor.foundation/op/Identity"),
             range: XSD_STRING,
+        },
+        // Amendment 26: Quantum Level Scaling properties
+        Property {
+            id: "https://uor.foundation/op/verifiedAtLevel",
+            label: "verifiedAtLevel",
+            comment: "Links an Identity individual to a QuantumLevelBinding attesting \
+                      verification at a specific quantum level. Non-functional: one \
+                      binding per (Identity, QuantumLevel) pair.",
+            kind: PropertyKind::Object,
+            functional: false,
+            domain: Some("https://uor.foundation/op/Identity"),
+            range: "https://uor.foundation/op/QuantumLevelBinding",
+        },
+        Property {
+            id: "https://uor.foundation/op/bindingLevel",
+            label: "bindingLevel",
+            comment: "The quantum level at which this QuantumLevelBinding was verified.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/op/QuantumLevelBinding"),
+            range: "https://uor.foundation/schema/QuantumLevel",
+        },
+        Property {
+            id: "https://uor.foundation/op/universallyValid",
+            label: "universallyValid",
+            comment: "True iff this identity holds for all n ≥ 1 (proved symbolically \
+                      by induction on the ring axioms, not just exhaustively at Q0). \
+                      Identities that reference 8-bit-specific constants receive \
+                      universallyValid = false.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/op/Identity"),
+            range: XSD_BOOLEAN,
         },
     ]
 }
@@ -697,6 +743,8 @@ fn individuals() -> Vec<Individual> {
                 ),
                 ("https://uor.foundation/op/verificationDomain", IndividualValue::IriRef("https://uor.foundation/op/Enumerative")),
                 ("https://uor.foundation/op/verificationPathNote", IndividualValue::Str("exhaustive_enumeration(R_n)")),
+                // Amendment 26: universally valid across all quantum levels
+                ("https://uor.foundation/op/universallyValid", IndividualValue::Bool(true)),
             ],
         },
         // Amendment 13: Address Resolution identities
@@ -3994,6 +4042,325 @@ fn individuals() -> Vec<Individual> {
                          condition guarantees type-equivalent neighbourhood",
                     ),
                 ),
+            ],
+        },
+        // Amendment 25: Completeness Certification algebra (CC_1–CC_5)
+        Individual {
+            id: "https://uor.foundation/op/CC_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CC_1",
+            comment: "Completeness implies O(1) resolution: a CompleteType T satisfies \
+                      ∀ x ∈ R_n, resolution(x, T) terminates in O(1).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("resolution(x, T)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("O(1) for CompleteType T")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, T: CompleteType")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Pipeline"),
+                ),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("CompleteType → CompletenessResolver → O(1) partition")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CC_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CC_2",
+            comment: "Completeness is monotone: if T ⊆ T' (T' has more constraints), \
+                      then completeness(T) implies completeness(T').",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("completeness(T)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("implies completeness(T')")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("T, T': ConstrainedType, T ⊆ T'")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Algebraic"),
+                ),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("ConstraintNerve → monotone under constraint addition")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CC_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CC_3",
+            comment: "Witness composition: concat(W₁, W₂) is a valid audit trail iff \
+                      W₁.fibersClosed + W₂.fibersClosed = n.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("fibersClosed(W₁) + fibersClosed(W₂)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("= n for valid concat(W₁, W₂)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("W₁, W₂: CompletenessWitness")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Algebraic"),
+                ),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("CompletenessWitness → FiberBudget → audit trail")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CC_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CC_4",
+            comment: "The CompletenessResolver is the unique fixed point of the \
+                      ψ-pipeline applied to a CompletenessCandidate.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("CompletenessResolver")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("fix(ψ-pipeline, CompletenessCandidate)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("CompletenessCandidate")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Pipeline"),
+                ),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("ψ-pipeline fixed point → CompletenessResolver uniqueness")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/CC_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "CC_5",
+            comment: "CompletenessCertificate soundness: cert.verified = true implies \
+                      χ(N(C)) = n and for all k: β_k = 0.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("cert.verified = true")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("implies χ(N(C)) = n ∧ ∀k: β_k = 0")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("cert: CompletenessCertificate")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Topological"),
+                ),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("CompletenessCertificate → ConstraintNerve → Euler characteristic")),
+            ],
+        },
+        // Amendment 26: Quantum Level Scaling identities (QL_1–QL_7)
+        Individual {
+            id: "https://uor.foundation/op/QL_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "QL_1",
+            comment: "neg(bnot(x)) = succ(x) holds in Z/(2ⁿ)Z for all n ≥ 1. \
+                      Universal form of the Critical Identity across all quantum levels.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("neg(bnot(x))")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("succ(x) in Z/(2ⁿ)Z")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, n ≥ 1")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Algebraic"),
+                ),
+                ("https://uor.foundation/op/universallyValid", IndividualValue::Bool(true)),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("Ring axioms → induction on n → universality")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/QL_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "QL_2",
+            comment: "The dihedral group D_{2ⁿ} generated by neg and bnot has order \
+                      2ⁿ⁺¹ for all n ≥ 1.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("|D_{2ⁿ}|")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("2ⁿ⁺¹ for all n ≥ 1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("n ≥ 1")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Algebraic"),
+                ),
+                ("https://uor.foundation/op/universallyValid", IndividualValue::Bool(true)),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("DihedralGroup → group order formula → universality")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/QL_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "QL_3",
+            comment: "The cascade distribution P(j) = 2^{-j} is the Boltzmann \
+                      distribution at β* = ln 2 for all n ≥ 1.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("P(j) = 2^{-j}")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Boltzmann distribution at β* = ln 2, all n ≥ 1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("j ∈ R_n, n ≥ 1")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Thermodynamic"),
+                ),
+                ("https://uor.foundation/op/universallyValid", IndividualValue::Bool(true)),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("CascadeEntropy → Boltzmann distribution → universality")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/QL_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "QL_4",
+            comment: "The fiber budget of a PrimitiveType at quantum level n is \
+                      exactly n (one fiber per bit).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("fiberBudget(PrimitiveType, n)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("= n (one fiber per bit)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("PrimitiveType, n ≥ 1")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Algebraic"),
+                ),
+                ("https://uor.foundation/op/universallyValid", IndividualValue::Bool(true)),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("FiberBudget → PrimitiveType → bit-fiber bijection")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/QL_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "QL_5",
+            comment: "Resolution complexity for a CompleteType is O(1) for all n ≥ 1.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("resolution(CompleteType, n)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("O(1) for all n ≥ 1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("CompleteType, n ≥ 1")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Pipeline"),
+                ),
+                ("https://uor.foundation/op/universallyValid", IndividualValue::Bool(true)),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("CompleteType → O(1) resolution → quantum-level-agnostic")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/QL_6",
+            type_: "https://uor.foundation/op/Identity",
+            label: "QL_6",
+            comment: "Content addressing is a bijection for all n ≥ 1 \
+                      (AD_1/AD_2 universality).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("contentAddress(x, n)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("bijection for all n ≥ 1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("x ∈ R_n, n ≥ 1")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Algebraic"),
+                ),
+                ("https://uor.foundation/op/universallyValid", IndividualValue::Bool(true)),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("AD_1/AD_2 → bijection → all quantum levels")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/QL_7",
+            type_: "https://uor.foundation/op/Identity",
+            label: "QL_7",
+            comment: "The ψ-pipeline produces a valid ChainComplex for any \
+                      ConstrainedType at any quantum level n ≥ 1.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("ψ-pipeline(ConstrainedType, n)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("valid ChainComplex for all n ≥ 1")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("ConstrainedType, n ≥ 1")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Topological"),
+                ),
+                ("https://uor.foundation/op/universallyValid", IndividualValue::Bool(true)),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("ψ-pipeline → ChainComplex → quantum-level-agnostic")),
+            ],
+        },
+        // Amendment 27: Session-Scoped Resolution algebra (SR_1–SR_5)
+        Individual {
+            id: "https://uor.foundation/op/SR_1",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SR_1",
+            comment: "Binding monotonicity: freeCount(B_{i+1}) ≤ freeCount(B_i) \
+                      for all i in a Session.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("freeCount(B_{i+1})")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("≤ freeCount(B_i)")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("i in Session S")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Algebraic"),
+                ),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("BindingAccumulator → monotone freeCount → Session invariant")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/SR_2",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SR_2",
+            comment: "Binding soundness: a Binding b is sound iff b.datum resolves \
+                      under b.constraint in O(1).",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("b.datum resolves under b.constraint")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("in O(1) iff Binding b is sound")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("b: Binding")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Pipeline"),
+                ),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("Binding → constraint resolution → O(1) soundness")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/SR_3",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SR_3",
+            comment: "Session convergence: a Session S converges iff there exists i \
+                      such that freeCount(B_i) = 0.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("∃ i: freeCount(B_i) = 0")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("Session S converges")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("Session S")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Algebraic"),
+                ),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("BindingAccumulator → zero freeCount → convergence")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/SR_4",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SR_4",
+            comment: "Context reset isolation: bindings in C_fresh are independent of \
+                      bindings in C_prior after a SessionBoundary.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("bindings(C_fresh) ∩ bindings(C_prior)")),
+                ("https://uor.foundation/op/rhs", IndividualValue::Str("= ∅ after SessionBoundary")),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("C_prior, C_fresh: Context, SessionBoundary event")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Algebraic"),
+                ),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("SessionBoundary → priorContext/freshContext isolation")),
+            ],
+        },
+        Individual {
+            id: "https://uor.foundation/op/SR_5",
+            type_: "https://uor.foundation/op/Identity",
+            label: "SR_5",
+            comment: "Contradiction detection: ContradictionBoundary fires iff there \
+                      exist bindings b, b' with the same address, different datum, \
+                      under the same constraint.",
+            properties: &[
+                ("https://uor.foundation/op/lhs", IndividualValue::Str("ContradictionBoundary")),
+                (
+                    "https://uor.foundation/op/rhs",
+                    IndividualValue::Str("iff ∃ b, b': same address, different datum, same constraint"),
+                ),
+                ("https://uor.foundation/op/forAll", IndividualValue::Str("b, b': Binding in same Context")),
+                (
+                    "https://uor.foundation/op/verificationDomain",
+                    IndividualValue::IriRef("https://uor.foundation/op/Algebraic"),
+                ),
+                ("https://uor.foundation/op/verificationPathNote",
+                 IndividualValue::Str("Binding contradiction → SessionBoundary → ContradictionBoundary")),
             ],
         },
     ]

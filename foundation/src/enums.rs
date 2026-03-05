@@ -305,6 +305,27 @@ impl fmt::Display for QuantumLevel {
     }
 }
 
+/// The reason type for a session context-reset boundary.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum SessionBoundaryType {
+    /// The caller explicitly requested a context reset. All accumulated bindings are discarded.
+    ExplicitReset,
+    /// The session resolver determined that no further queries can reduce the aggregate fiber deficit.
+    ConvergenceBoundary,
+    /// A new query produced a type contradiction with an accumulated binding. Context must reset before resolution can continue.
+    ContradictionBoundary,
+}
+
+impl fmt::Display for SessionBoundaryType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::ExplicitReset => f.write_str("explicit_reset"),
+            Self::ConvergenceBoundary => f.write_str("convergence_boundary"),
+            Self::ContradictionBoundary => f.write_str("contradiction_boundary"),
+        }
+    }
+}
+
 /// The modality of a proof: computation (exhaustive verification at a specific quantum level) or axiomatic (derivation from ring axioms).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ProofModality {

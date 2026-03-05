@@ -9,6 +9,10 @@
 //! canonical form for all relational inference across NLP, ARC-AGI grids, music,
 //! images, sensor streams, and logical formulae.
 //!
+//! Amendment 27 adds `SessionQuery`: a RelationQuery that explicitly declares its
+//! session membership, enabling the conformance suite to validate session-scoped
+//! fiber reduction across multi-turn Prism deployments.
+//!
 //! **Space classification:** `bridge` — user-initiated, kernel-executed.
 
 use crate::model::iris::*;
@@ -96,6 +100,17 @@ fn classes() -> Vec<Class> {
                       coordinate system (stratum, spectrum, address) replacing the \
                       string-valued query:coordinate property.",
             subclass_of: &[OWL_THING],
+            disjoint_with: &[],
+        },
+        // Amendment 27: Session-Scoped Resolution
+        Class {
+            id: "https://uor.foundation/query/SessionQuery",
+            label: "SessionQuery",
+            comment: "A RelationQuery that explicitly declares its session \
+                      membership, allowing the conformance suite to validate \
+                      session-scoped fiber reduction across multi-turn Prism \
+                      deployments.",
+            subclass_of: &["https://uor.foundation/query/RelationQuery"],
             disjoint_with: &[],
         },
     ]
@@ -196,6 +211,16 @@ fn properties() -> Vec<Property> {
             functional: true,
             domain: Some("https://uor.foundation/query/RelationQuery"),
             range: "https://uor.foundation/state/Context",
+        },
+        // Amendment 27: Session-Scoped Resolution property
+        Property {
+            id: "https://uor.foundation/query/sessionMembership",
+            label: "sessionMembership",
+            comment: "The session this query belongs to.",
+            kind: PropertyKind::Object,
+            functional: true,
+            domain: Some("https://uor.foundation/query/SessionQuery"),
+            range: "https://uor.foundation/state/Session",
         },
     ]
 }

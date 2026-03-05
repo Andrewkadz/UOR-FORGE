@@ -8,6 +8,9 @@
 //! semantics are strictly separated. A `Literal` *denotes* a `Datum` via
 //! `schema:denotes` without *being* one.
 //!
+//! Amendment 26 adds `Q1Ring` — the concrete ring Z/(2^16)Z at quantum level 16 —
+//! with properties `Q1bitWidth` (= 16) and `Q1capacity` (= 65,536).
+//!
 //! **Space classification:** `kernel` — compiled into ROM.
 
 use crate::model::iris::*;
@@ -90,6 +93,17 @@ fn classes() -> Vec<Class> {
                       Its two generators (negation and complement) produce the \
                       dihedral group D_{2^n} that governs the invariance frame.",
             subclass_of: &[OWL_THING],
+            disjoint_with: &[],
+        },
+        // Amendment 26: Q1Ring — the concrete ring at quantum level 16
+        Class {
+            id: "https://uor.foundation/schema/Q1Ring",
+            label: "Q1Ring",
+            comment: "The concrete ring Z/(2^16)Z at quantum level 16. Subclass of \
+                      schema:Ring. Carries 65,536 elements. Q1Ring is the first \
+                      extension of the default Q0 ring and is the target of Amendment \
+                      26's universality proofs.",
+            subclass_of: &["https://uor.foundation/schema/Ring"],
             disjoint_with: &[],
         },
         // v3.2: QuantumLevel class for Q-n generalization
@@ -292,6 +306,25 @@ fn properties() -> Vec<Property> {
             functional: true,
             domain: Some("https://uor.foundation/schema/Ring"),
             range: "https://uor.foundation/schema/QuantumLevel",
+        },
+        // Amendment 26: Q1Ring properties
+        Property {
+            id: "https://uor.foundation/schema/Q1bitWidth",
+            label: "Q1bitWidth",
+            comment: "Bit width of the Q1 ring: 16.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/schema/Q1Ring"),
+            range: XSD_POSITIVE_INTEGER,
+        },
+        Property {
+            id: "https://uor.foundation/schema/Q1capacity",
+            label: "Q1capacity",
+            comment: "Carrier set size of the Q1 ring: 65,536 elements.",
+            kind: PropertyKind::Datatype,
+            functional: true,
+            domain: Some("https://uor.foundation/schema/Q1Ring"),
+            range: XSD_POSITIVE_INTEGER,
         },
     ]
 }

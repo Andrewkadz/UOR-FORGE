@@ -286,6 +286,9 @@ fn build_docs_sidebar_html(base_path: &str) -> String {
 <li><a href="{base_path}/docs/concepts/homology.html">Homology</a></li>
 <li><a href="{base_path}/docs/concepts/cohomology.html">Cohomology</a></li>
 <li><a href="{base_path}/docs/concepts/sheaf-semantics.html">Sheaf Semantics</a></li>
+<li><a href="{base_path}/docs/concepts/type-completeness.html">Type Completeness</a></li>
+<li><a href="{base_path}/docs/concepts/quantum-universality.html">Quantum Universality</a></li>
+<li><a href="{base_path}/docs/concepts/session-resolution.html">Session Resolution</a></li>
 </ul>
 </li>
 <li class="nav-group"><span>Guides</span>
@@ -646,9 +649,9 @@ mod tests {
     fn index_has_all_terms() {
         let index = OntologyIndex::from_spec();
         assert_eq!(index.modules.len(), 16);
-        assert_eq!(index.classes.len(), 142);
-        assert_eq!(index.properties.len(), 261);
-        assert_eq!(index.individuals.len(), 560);
+        assert_eq!(index.classes.len(), 155);
+        assert_eq!(index.properties.len(), 284);
+        assert_eq!(index.individuals.len(), 597);
     }
 
     #[test]
