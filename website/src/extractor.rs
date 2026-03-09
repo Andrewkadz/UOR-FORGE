@@ -33,10 +33,12 @@ fn namespace_summary_from_module(module: &NamespaceModule, base_path: &str) -> N
 /// Builds the full search index from all ontology terms.
 pub fn build_search_index(base_path: &str) -> Vec<SearchEntry> {
     let ontology = Ontology::full();
+    let enum_names = Ontology::enum_class_names();
     let mut entries = Vec::new();
 
     for module in &ontology.namespaces {
         let prefix = module.namespace.prefix;
+        let space_str = format!("{:?}", module.namespace.space).to_lowercase();
 
         // Namespace itself
         entries.push(SearchEntry {
@@ -44,10 +46,18 @@ pub fn build_search_index(base_path: &str) -> Vec<SearchEntry> {
             description: module.namespace.comment.to_string(),
             url: format!("{}/namespaces/{}/", base_path, prefix),
             kind: "namespace".to_string(),
+            space: space_str.clone(),
+            namespace: String::new(),
+            subkind: String::new(),
         });
 
         // Classes
         for class in &module.classes {
+            let subkind = if enum_names.contains(&class.label) {
+                "enum".to_string()
+            } else {
+                String::new()
+            };
             entries.push(SearchEntry {
                 label: class.label.to_string(),
                 description: class.comment.to_string(),
@@ -58,6 +68,9 @@ pub fn build_search_index(base_path: &str) -> Vec<SearchEntry> {
                     local_name(class.id)
                 ),
                 kind: "class".to_string(),
+                space: space_str.clone(),
+                namespace: prefix.to_string(),
+                subkind,
             });
         }
 
@@ -73,11 +86,19 @@ pub fn build_search_index(base_path: &str) -> Vec<SearchEntry> {
                     local_name(prop.id)
                 ),
                 kind: "property".to_string(),
+                space: space_str.clone(),
+                namespace: prefix.to_string(),
+                subkind: String::new(),
             });
         }
 
         // Individuals
         for ind in &module.individuals {
+            let subkind = if ind.type_.ends_with("Identity") {
+                "identity".to_string()
+            } else {
+                String::new()
+            };
             entries.push(SearchEntry {
                 label: ind.label.to_string(),
                 description: ind.comment.to_string(),
@@ -88,11 +109,24 @@ pub fn build_search_index(base_path: &str) -> Vec<SearchEntry> {
                     local_name(ind.id)
                 ),
                 kind: "individual".to_string(),
+                space: space_str.clone(),
+                namespace: prefix.to_string(),
+                subkind,
             });
         }
     }
 
     entries
+}
+
+/// Serializes namespace summaries into a JavaScript `const exploreData = {...}` block.
+///
+/// Embedded as an inline `<script>` in `explore/index.html`.
+pub fn generate_explore_data(summaries: &[NamespaceSummary]) -> String {
+    match serde_json::to_string(summaries) {
+        Ok(json) => format!("const exploreData = {json};"),
+        Err(_) => "const exploreData = [];".to_string(),
+    }
 }
 
 /// Extracts the local name from an IRI.
@@ -135,6 +169,38 @@ pub fn namespaces_index_breadcrumbs(base_path: &str) -> Vec<BreadcrumbItem> {
         },
         BreadcrumbItem {
             label: "Namespaces".to_string(),
+            url: String::new(),
+        },
+    ]
+}
+
+/// Builds standard breadcrumbs for a simple top-level page.
+pub fn simple_breadcrumbs(label: &str, base_path: &str) -> Vec<BreadcrumbItem> {
+    vec![
+        BreadcrumbItem {
+            label: "Home".to_string(),
+            url: format!("{}/", base_path),
+        },
+        BreadcrumbItem {
+            label: label.to_string(),
+            url: String::new(),
+        },
+    ]
+}
+
+/// Builds breadcrumbs for a concept detail page.
+pub fn concept_breadcrumbs(title: &str, base_path: &str) -> Vec<BreadcrumbItem> {
+    vec![
+        BreadcrumbItem {
+            label: "Home".to_string(),
+            url: format!("{}/", base_path),
+        },
+        BreadcrumbItem {
+            label: "Concepts".to_string(),
+            url: format!("{}/concepts/", base_path),
+        },
+        BreadcrumbItem {
+            label: title.to_string(),
             url: String::new(),
         },
     ]

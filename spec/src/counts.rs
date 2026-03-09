@@ -23,7 +23,7 @@ pub const INDIVIDUALS: usize = 846;
 pub const SHACL_TESTS: usize = 167;
 
 /// Total conformance checks in the full suite.
-pub const CONFORMANCE_CHECKS: usize = 265;
+pub const CONFORMANCE_CHECKS: usize = 280;
 
 /// Number of amendments applied to the base ontology.
 pub const AMENDMENTS: usize = 49;
@@ -49,3 +49,12 @@ pub const METHODS: usize = 420;
 
 /// Number of individual constant modules generated.
 pub const CONSTANT_MODULES: usize = 817;
+
+/// Number of concept pages on the website (one per content/concepts/*.md file).
+pub const CONCEPT_PAGES: usize = 4;
+
+/// Number of PRISM pipeline stages (Define / Resolve / Certify).
+pub const PIPELINE_STAGES: usize = 3;
+
+/// Minimum number of classes in a namespace to generate a class hierarchy SVG.
+pub const MIN_HIERARCHY_CLASSES: usize = 3;

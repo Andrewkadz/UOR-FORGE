@@ -45,7 +45,10 @@ fn check_namespace_pages(artifacts: &Path, report: &mut ConformanceReport) {
     if missing.is_empty() {
         report.push(TestResult::pass(
             "website/coverage",
-            "All 16 namespace pages present in website",
+            format!(
+                "All {} namespace pages present in website",
+                uor_ontology::counts::NAMESPACES
+            ),
         ));
     } else {
         report.push(TestResult::fail_with_details(

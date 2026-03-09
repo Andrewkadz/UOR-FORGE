@@ -2,9 +2,9 @@
 //!
 //! All HTML is generated directly in Rust for determinism and zero dependencies.
 
-use uor_ontology::{IndividualValue, NamespaceModule, PropertyKind};
+use uor_ontology::{IndividualValue, NamespaceModule, Ontology, PropertyKind};
 
-use crate::model::{BreadcrumbItem, NamespaceSummary};
+use crate::model::{BreadcrumbItem, ConceptPage, NamespaceSummary};
 
 /// Renders a complete HTML page using the site layout.
 pub fn render_page(
@@ -237,6 +237,19 @@ pub fn render_namespace_page(module: &NamespaceModule, base_path: Option<&str>) 
         prefix = escape_html(ns.prefix),
     ));
 
+    // Class hierarchy SVG (after meta block)
+    let hierarchy_svg = crate::svg::render_class_hierarchy_svg(module);
+    if !hierarchy_svg.is_empty() {
+        body.push_str(&format!(
+            "<figure class=\"diagram-container\" \
+             aria-label=\"Class hierarchy for {} namespace\">\n\
+             <figcaption>Class hierarchy</figcaption>\n\
+             {hierarchy_svg}\n\
+             </figure>\n",
+            escape_html(ns.label),
+        ));
+    }
+
     // Imports
     if !ns.imports.is_empty() {
         body.push_str("<h2>Imports</h2><ul>\n");
@@ -343,16 +356,40 @@ fn render_individual_value(value: &IndividualValue) -> String {
     }
 }
 
-/// Renders the search page body.
+/// Renders the search page body with facet filters and kind badge documentation.
 pub fn render_search_page(base_path: &str) -> String {
     let action = format!("{}/search.html", base_path);
     format!(
-        r#"<h1>Search</h1>
-<form role="search" action="{action}" method="get">
-<label for="search-input">Search ontology terms</label>
-<input type="search" id="search-input" name="q" placeholder="e.g. Ring, criticalIdentity, partition…" autocomplete="off">
-</form>
-<ul id="search-results" aria-live="polite"></ul>"#,
+        "<h1>Search</h1>\n\
+         <form role=\"search\" action=\"{action}\" method=\"get\">\n\
+         <label for=\"search-input\">Search ontology terms</label>\n\
+         <input type=\"search\" id=\"search-input\" name=\"q\" \
+         placeholder=\"e.g. Ring, criticalIdentity, partition\u{2026}\" autocomplete=\"off\">\n\
+         </form>\n\
+         <details class=\"search-facets\">\n\
+         <summary>Filter results</summary>\n\
+         <fieldset>\n\
+         <legend>Space</legend>\n\
+         <label><input type=\"checkbox\" class=\"facet-space\" value=\"kernel\"> \
+         <span class=\"badge badge-kernel\">kernel</span></label>\n\
+         <label><input type=\"checkbox\" class=\"facet-space\" value=\"bridge\"> \
+         <span class=\"badge badge-bridge\">bridge</span></label>\n\
+         <label><input type=\"checkbox\" class=\"facet-space\" value=\"user\"> \
+         <span class=\"badge badge-user\">user</span></label>\n\
+         </fieldset>\n\
+         <fieldset>\n\
+         <legend>Kind</legend>\n\
+         <label><input type=\"checkbox\" class=\"facet-kind\" value=\"class\"> \
+         <span class=\"badge badge-class\">class</span></label>\n\
+         <label><input type=\"checkbox\" class=\"facet-kind\" value=\"property\"> \
+         <span class=\"badge badge-property\">property</span></label>\n\
+         <label><input type=\"checkbox\" class=\"facet-kind\" value=\"individual\"> \
+         <span class=\"badge badge-individual\">individual</span></label>\n\
+         <label><input type=\"checkbox\" class=\"facet-kind\" value=\"namespace\"> \
+         <span class=\"badge badge-namespace\">namespace</span></label>\n\
+         </fieldset>\n\
+         </details>\n\
+         <ul id=\"search-results\" aria-live=\"polite\"></ul>",
         action = escape_html(&action),
     )
 }
@@ -368,6 +405,373 @@ pub fn render_sitemap(base_url: &str, paths: &[String]) -> String {
     }
     xml.push_str("</urlset>\n");
     xml
+}
+
+/// Renders the download page body.
+pub fn render_download_page(base_path: &str) -> String {
+    let json_url = format!("{base_path}/uor.foundation.json");
+    let ttl_url = format!("{base_path}/uor.foundation.ttl");
+    let nt_url = format!("{base_path}/uor.foundation.nt");
+    format!(
+        "<h1>Download</h1>\n\
+         <p>The complete UOR Foundation ontology is available in three serialization formats. \
+         All files are generated from the same authoritative source in \
+         <code>spec/</code>.</p>\n\
+         <table class=\"download-table\">\n\
+         <thead><tr><th>Format</th><th>Description</th><th>Download</th></tr></thead>\n\
+         <tbody>\n\
+         <tr>\n\
+         <td><span class=\"format-badge\">.json</span></td>\n\
+         <td>JSON-LD 1.1 — linked data with <code>@context</code> and <code>@graph</code></td>\n\
+         <td><a href=\"{json_url}\">uor.foundation.json</a></td>\n\
+         </tr>\n\
+         <tr>\n\
+         <td><span class=\"format-badge\">.ttl</span></td>\n\
+         <td>Turtle 1.1 — human-readable RDF serialization</td>\n\
+         <td><a href=\"{ttl_url}\">uor.foundation.ttl</a></td>\n\
+         </tr>\n\
+         <tr>\n\
+         <td><span class=\"format-badge\">.nt</span></td>\n\
+         <td>N-Triples — line-oriented RDF for streaming and tooling</td>\n\
+         <td><a href=\"{nt_url}\">uor.foundation.nt</a></td>\n\
+         </tr>\n\
+         </tbody>\n\
+         </table>\n\
+         <h2>Rust Crate</h2>\n\
+         <p>The <code>uor-foundation</code> crate provides the ontology as typed Rust \
+         traits and constants, suitable for <code>#![no_std]</code> environments.</p>\n\
+         <p><a href=\"https://crates.io/crates/uor-foundation\" class=\"btn-primary\">View on crates.io</a></p>"
+    )
+}
+
+/// Renders the pipeline page body with stage sections and inline SVG.
+pub fn render_pipeline_page(summaries: &[NamespaceSummary], base_path: &str) -> String {
+    use crate::pipeline::PRISM_STAGES;
+
+    let pipeline_svg = crate::svg::render_prism_pipeline_svg(summaries);
+
+    let mut body = format!(
+        "<h1>The PRISM Pipeline</h1>\n\
+         <p>The UOR Foundation resolution pipeline transforms a content-addressed reference \
+         through three stages: <strong>Define</strong> (kernel-space declarations), \
+         <strong>Resolve</strong> (bridge-space factorization), and \
+         <strong>Certify</strong> (attestation). Each namespace belongs to exactly one stage.</p>\n\
+         <figure class=\"diagram-container\" aria-label=\"PRISM pipeline diagram\">\n\
+         <figcaption>PRISM pipeline — {n} stages across {ns} namespaces</figcaption>\n\
+         {pipeline_svg}\n\
+         </figure>\n",
+        n = PRISM_STAGES.len(),
+        ns = summaries.len(),
+    );
+
+    for (name, section_id, match_key, is_prefix) in PRISM_STAGES {
+        let ns_in_stage: Vec<&NamespaceSummary> = summaries
+            .iter()
+            .filter(|s| {
+                if *is_prefix {
+                    s.prefix == *match_key
+                } else {
+                    s.space == *match_key
+                }
+            })
+            .collect();
+
+        let space_key = if *is_prefix { "cert" } else { *match_key };
+
+        body.push_str(&format!(
+            "<section class=\"stage-block stage-{name_lower}\" id=\"{section_id}\" \
+             data-space=\"{space_key}\">\n\
+             <span class=\"stage-label\">{name}</span>\n\
+             <h2>{name}</h2>\n",
+            name_lower = name.to_lowercase(),
+        ));
+
+        match *section_id {
+            "stage-define" => body.push_str(
+                "<p>The Define stage comprises kernel-space namespaces — the immutable \
+                 algebraic substrate compiled into ROM. These namespaces declare the \
+                 ring structure, schema vocabulary, and operation algebra that underpin \
+                 all content addressing.</p>\n",
+            ),
+            "stage-resolve" => body.push_str(
+                "<p>The Resolve stage comprises bridge-space namespaces — kernel-computed, \
+                 user-consumed transformations. These namespaces apply queries, partitions, \
+                 observables, homological analysis, derivation rules, and trace recording \
+                 to produce certified results from kernel inputs.</p>\n",
+            ),
+            "stage-certify" => body.push_str(
+                "<p>The Certify stage attests resolution results with verification hashes \
+                 and replayable computation traces. The <code>cert</code> namespace issues \
+                 certificates that bind identity proofs to specific quantum-level \
+                 computations.</p>\n",
+            ),
+            _ => {}
+        }
+
+        if !ns_in_stage.is_empty() {
+            body.push_str("<ul>\n");
+            for ns in &ns_in_stage {
+                let ns_url = format!("{base_path}/namespaces/{}/", ns.prefix);
+                body.push_str(&format!(
+                    "<li><a href=\"{ns_url}\"><code>{prefix}</code></a> — {label}: {comment}</li>\n",
+                    prefix = escape_html(&ns.prefix),
+                    label = escape_html(&ns.label),
+                    comment = escape_html(&ns.comment),
+                ));
+            }
+            body.push_str("</ul>\n");
+        }
+
+        body.push_str("</section>\n");
+    }
+
+    body
+}
+
+/// Renders the identities browser page body.
+pub fn render_identities_page(ontology: &Ontology, base_path: &str) -> String {
+    let identity_count = uor_ontology::counts::IDENTITY_COUNT;
+
+    let dist_svg = crate::svg::render_identity_distribution_svg(ontology);
+
+    let mut body = format!(
+        "<h1>Algebraic Identities</h1>\n\
+         <p>{identity_count} named algebraic identities spanning all verification domains. \
+         Each identity is an <code>op:Identity</code> individual with an associated \
+         <code>proof:AxiomaticDerivation</code> or <code>proof:ComputationCertificate</code>.</p>\n\
+         <figure class=\"diagram-container identity-distribution\" \
+         aria-label=\"Identity distribution by verification domain\">\n\
+         <figcaption>Identity count by verification domain</figcaption>\n\
+         {dist_svg}\n\
+         </figure>\n\
+         <table id=\"identity-table\">\n\
+         <thead>\n\
+         <tr>\n\
+         <th>ID</th><th>Label</th><th>Domain</th><th>Comment</th>\n\
+         </tr>\n\
+         </thead>\n\
+         <tbody>\n"
+    );
+
+    // Find verification domain IRIs → labels for lookup
+    let domain_map: std::collections::HashMap<&str, &str> = ontology
+        .namespaces
+        .iter()
+        .flat_map(|m| m.individuals.iter())
+        .filter(|i| i.type_.ends_with("VerificationDomain"))
+        .map(|i| (i.id, i.label))
+        .collect();
+
+    for ind in ontology
+        .namespaces
+        .iter()
+        .flat_map(|m| m.individuals.iter())
+        .filter(|i| i.type_.ends_with("Identity"))
+    {
+        let local_id = ind.id.rsplit('/').next().unwrap_or(ind.id);
+        let ns_prefix = ind
+            .id
+            .trim_start_matches("https://uor.foundation/")
+            .split('/')
+            .next()
+            .unwrap_or("");
+        let ns_url = format!("{base_path}/namespaces/{ns_prefix}/");
+
+        let domains: Vec<&str> = ind
+            .properties
+            .iter()
+            .filter(|(k, _)| k.ends_with("verificationDomain"))
+            .filter_map(|(_, v)| {
+                if let IndividualValue::IriRef(iri) = v {
+                    domain_map.get(*iri).copied()
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        let domain_str = if domains.is_empty() {
+            "—".to_string()
+        } else {
+            domains
+                .iter()
+                .map(|d| escape_html(d))
+                .collect::<Vec<_>>()
+                .join(", ")
+        };
+
+        body.push_str(&format!(
+            "<tr class=\"identity-row\" id=\"id-{local}\">\n\
+             <td><a href=\"{ns_url}#ind-{local}\"><code>{local}</code></a></td>\n\
+             <td>{label}</td>\n\
+             <td>{domain_str}</td>\n\
+             <td>{comment}</td>\n\
+             </tr>\n",
+            local = escape_html(local_id),
+            label = escape_html(ind.label),
+            comment = escape_html(ind.comment),
+        ));
+    }
+
+    body.push_str(
+        "</tbody>\n</table>\n\
+         <script>\n\
+         (function(){\n\
+           var table=document.getElementById('identity-table');\n\
+           if(!table)return;\n\
+           var headers=table.querySelectorAll('thead th');\n\
+           headers.forEach(function(th,col){\n\
+             th.style.cursor='pointer';\n\
+             th.addEventListener('click',function(){\n\
+               var tbody=table.querySelector('tbody');\n\
+               var rows=Array.from(tbody.querySelectorAll('tr'));\n\
+               var asc=th.dataset.sort!=='asc';\n\
+               rows.sort(function(a,b){\n\
+                 var x=a.cells[col]?a.cells[col].textContent:'';\n\
+                 var y=b.cells[col]?b.cells[col].textContent:'';\n\
+                 return asc?x.localeCompare(y):y.localeCompare(x);\n\
+               });\n\
+               rows.forEach(function(r){tbody.appendChild(r);});\n\
+               headers.forEach(function(h){delete h.dataset.sort;});\n\
+               th.dataset.sort=asc?'asc':'desc';\n\
+             });\n\
+           });\n\
+         })();\n\
+         </script>",
+    );
+
+    body
+}
+
+/// Renders the explore page body with namespace dependency graph and interactive explorer.
+pub fn render_explore(
+    ontology: &Ontology,
+    summaries: &[NamespaceSummary],
+    base_path: &str,
+) -> String {
+    use crate::svg::space_display_name;
+    use uor_ontology::model::Space;
+
+    let dep_svg = crate::svg::render_namespace_dependency_graph_svg(ontology, base_path);
+    let explore_data = crate::extractor::generate_explore_data(summaries);
+
+    let mut body = format!(
+        "<h1>Explore the Ontology</h1>\n\
+         <p>The UOR Foundation ontology comprises {ns} namespaces organized into three \
+         space classifications: Kernel (immutable substrate), Bridge (computed transforms), \
+         and User (runtime parameterization). The diagram below shows import dependencies.</p>\n\
+         <figure class=\"diagram-container\" aria-label=\"Namespace dependency graph\">\n\
+         <figcaption>Namespace import dependencies (assembly order, left to right)</figcaption>\n\
+         {dep_svg}\n\
+         </figure>\n\
+         <div id=\"ontology-explorer\">\n",
+        ns = summaries.len(),
+    );
+
+    for space in &[Space::Kernel, Space::Bridge, Space::User] {
+        let space_str = format!("{:?}", space).to_lowercase();
+        let space_name = space_display_name(space);
+        let ns_in_space: Vec<&NamespaceSummary> =
+            summaries.iter().filter(|s| s.space == space_str).collect();
+
+        body.push_str(&format!(
+            "<section class=\"space-section\">\n\
+             <h2 data-space=\"{space_str}\">{space_name} Space</h2>\n"
+        ));
+
+        for ns in &ns_in_space {
+            let ns_url = format!("{base_path}/namespaces/{}/", ns.prefix);
+            body.push_str(&format!(
+                "<details class=\"ns-detail\">\n\
+                 <summary><code>{prefix}</code> — {label}</summary>\n\
+                 <div class=\"ns-detail-body\">\n\
+                 <p>{comment}</p>\n\
+                 <dl>\n\
+                 <dt>Classes</dt><dd>{classes}</dd>\n\
+                 <dt>Properties</dt><dd>{props}</dd>\n\
+                 <dt>Individuals</dt><dd>{inds}</dd>\n\
+                 </dl>\n\
+                 <p><a href=\"{ns_url}\">View full namespace documentation</a></p>\n\
+                 </div>\n\
+                 </details>\n",
+                prefix = escape_html(&ns.prefix),
+                label = escape_html(&ns.label),
+                comment = escape_html(&ns.comment),
+                classes = ns.class_count,
+                props = ns.property_count,
+                inds = ns.individual_count,
+            ));
+        }
+
+        body.push_str("</section>\n");
+    }
+
+    body.push_str("</div>\n");
+
+    // Inline JS with explore data for progressive enhancement
+    body.push_str(&format!("<script>\n{explore_data}\n</script>\n"));
+
+    body
+}
+
+/// Renders the concepts index page.
+pub fn render_concepts_index(concepts: &[ConceptPage], base_path: &str) -> String {
+    let concept_count = concepts.len();
+    let pipeline_url = format!("{base_path}/pipeline/");
+
+    let mut cards = String::new();
+    for concept in concepts {
+        cards.push_str(&format!(
+            "<article class=\"concept-card\">\n\
+             <h3><a href=\"{url}\">{title}</a></h3>\n\
+             <p>{desc}</p>\n\
+             </article>\n",
+            url = escape_html(&concept.url),
+            title = escape_html(&concept.title),
+            desc = escape_html(&concept.description),
+        ));
+    }
+
+    format!(
+        "<h1>Concepts</h1>\n\
+         <p>Deep-dive explanations of the core mathematical and architectural concepts \
+         in the UOR Foundation. Each page connects the formal ontology definitions to \
+         the intuitions behind the <a href=\"{pipeline_url}\">PRISM pipeline</a>.</p>\n\
+         <div class=\"concept-grid\">\n\
+         {cards}\n\
+         </div>\n\
+         <p>Found {concept_count} concept page{pl}.</p>",
+        pl = if concept_count == 1 { "" } else { "s" },
+    )
+}
+
+/// Renders a concept page body wrapping rendered markdown content.
+///
+/// If `extra_svg` is provided, it is injected after the first `<h1>` heading.
+pub fn render_concept_page_body(
+    title: &str,
+    content_html: &str,
+    extra_svg: Option<&str>,
+) -> String {
+    let svg_block = extra_svg
+        .map(|svg| {
+            format!(
+                "<figure class=\"diagram-container\" aria-label=\"{title} diagram\">\n\
+                 {svg}\n\
+                 </figure>\n",
+                title = escape_html(title),
+            )
+        })
+        .unwrap_or_default();
+
+    // Inject SVG after the first <h1> if present, otherwise prepend
+    if content_html.contains("</h1>") {
+        let split_pos = content_html.find("</h1>").map(|p| p + 5).unwrap_or(0);
+        let (before, after) = content_html.split_at(split_pos);
+        format!("{before}\n{svg_block}{after}")
+    } else {
+        format!("{svg_block}{content_html}")
+    }
 }
 
 /// Escapes HTML special characters.

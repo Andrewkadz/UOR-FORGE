@@ -12,6 +12,7 @@ uor-docs = { path = "../docs" }
 serde = { workspace = true }
 serde_json = { workspace = true }
 anyhow = { workspace = true }
+pulldown-cmark = { workspace = true }
 thiserror = { workspace = true }
 tera = { workspace = true }
 walkdir = { workspace = true }

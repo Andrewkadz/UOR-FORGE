@@ -1046,6 +1046,7 @@ name = "uor-website"
 version = "6.0.0"
 dependencies = [
  "anyhow",
+ "pulldown-cmark",
  "serde",
  "serde_json",
  "tera",

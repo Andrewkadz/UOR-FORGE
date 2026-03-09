@@ -119,6 +119,15 @@ pub fn run_all(paths: &WorkspacePaths) -> anyhow::Result<ConformanceReport> {
     report.extend(validators::website::css::validate(&paths.artifacts)?);
     report.extend(validators::website::links::validate(&paths.artifacts)?);
 
+    // 8b. Website nav structure
+    report.extend(validators::website::nav::validate(&paths.artifacts)?);
+    // 8c. Website design system
+    report.extend(validators::website::design::validate(&paths.artifacts)?);
+    // 8d. New page existence
+    report.extend(validators::website::pages::validate(&paths.artifacts)?);
+    // 8e. Visual elements (SVG)
+    report.extend(validators::website::visual::validate(&paths.artifacts)?);
+
     Ok(report)
 }
 

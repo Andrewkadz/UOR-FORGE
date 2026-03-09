@@ -22,8 +22,14 @@
 //!   search.html
 //!   search-index.json
 //!   sitemap.xml
+//!   pipeline/index.html
+//!   explore/index.html
+//!   identities/index.html
+//!   download/index.html
+//!   concepts/index.html
+//!   concepts/<slug>.html   (one per content/concepts/*.md file)
 //!   namespaces/
-//!     <prefix>/index.html   (16 pages, 100% auto-generated)
+//!     <prefix>/index.html  (one per namespace, 100% auto-generated)
 //!   css/style.css
 //!   js/search.js
 //! ```
@@ -42,11 +48,14 @@
     clippy::missing_errors_doc
 )]
 
+pub mod concepts;
 pub mod extractor;
 pub mod model;
 pub mod nav;
+pub mod pipeline;
 pub mod renderer;
 pub mod search;
+pub mod svg;
 pub mod writer;
 
 use std::path::Path;
@@ -55,12 +64,14 @@ use anyhow::Result;
 use uor_ontology::Ontology;
 
 use extractor::{
-    home_breadcrumbs, namespace_breadcrumbs, namespace_summaries, namespaces_index_breadcrumbs,
+    concept_breadcrumbs, home_breadcrumbs, namespace_breadcrumbs, namespace_summaries,
+    namespaces_index_breadcrumbs, simple_breadcrumbs,
 };
 use nav::{build_nav, render_nav};
 use renderer::{
-    render_homepage, render_namespace_page, render_namespaces_index, render_page,
-    render_search_page, render_sitemap,
+    render_concept_page_body, render_concepts_index, render_download_page, render_explore,
+    render_homepage, render_identities_page, render_namespace_page, render_namespaces_index,
+    render_page, render_pipeline_page, render_search_page, render_sitemap,
 };
 
 const BASE_URL: &str = "https://uor.foundation";
@@ -79,6 +90,7 @@ pub fn generate(out_dir: &Path) -> Result<()> {
 
     let nav = build_nav(base_path);
     let summaries = namespace_summaries(base_path);
+    let ontology = Ontology::full();
 
     // Track all pages for sitemap
     let mut sitemap_paths: Vec<String> = Vec::new();
@@ -99,16 +111,7 @@ pub fn generate(out_dir: &Path) -> Result<()> {
     // Search page
     let search_body = render_search_page(base_path);
     let search_nav = render_nav(&nav, &format!("{}/search.html", base_path));
-    let search_crumbs = vec![
-        model::BreadcrumbItem {
-            label: "Home".to_string(),
-            url: format!("{}/", base_path),
-        },
-        model::BreadcrumbItem {
-            label: "Search".to_string(),
-            url: String::new(),
-        },
-    ];
+    let search_crumbs = simple_breadcrumbs("Search", base_path);
     let search_html = render_page(
         "Search",
         &search_body,
@@ -136,10 +139,9 @@ pub fn generate(out_dir: &Path) -> Result<()> {
     sitemap_paths.push("/namespaces/".to_string());
 
     // Namespace pages (100% auto-generated from spec)
-    let ontology = Ontology::full();
     for module in &ontology.namespaces {
         let prefix = module.namespace.prefix;
-        let page_path = format!("/namespaces/{}/", prefix);
+        let page_path = format!("/namespaces/{prefix}/");
         let page_nav = render_nav(&nav, &format!("{}{}", base_path, page_path));
         let ns_breadcrumbs = namespace_breadcrumbs(module.namespace.label, base_path);
         let body = render_namespace_page(module, Some(base_path));
@@ -154,6 +156,102 @@ pub fn generate(out_dir: &Path) -> Result<()> {
         let out_path = out_dir.join("namespaces").join(prefix).join("index.html");
         writer::write(&out_path, &html)?;
         sitemap_paths.push(page_path);
+    }
+
+    // Pipeline page
+    let pipeline_body = render_pipeline_page(&summaries, base_path);
+    let pipeline_nav = render_nav(&nav, &format!("{}/pipeline/", base_path));
+    let pipeline_html = render_page(
+        "Pipeline",
+        &pipeline_body,
+        &pipeline_nav,
+        &simple_breadcrumbs("Pipeline", base_path),
+        base_path,
+    );
+    writer::write(&out_dir.join("pipeline").join("index.html"), &pipeline_html)?;
+    sitemap_paths.push("/pipeline/".to_string());
+
+    // Explore page
+    let explore_body = render_explore(ontology, &summaries, base_path);
+    let explore_nav = render_nav(&nav, &format!("{}/explore/", base_path));
+    let explore_html = render_page(
+        "Explore",
+        &explore_body,
+        &explore_nav,
+        &simple_breadcrumbs("Explore", base_path),
+        base_path,
+    );
+    writer::write(&out_dir.join("explore").join("index.html"), &explore_html)?;
+    sitemap_paths.push("/explore/".to_string());
+
+    // Identities page
+    let identities_body = render_identities_page(ontology, base_path);
+    let identities_nav = render_nav(&nav, &format!("{}/identities/", base_path));
+    let identities_html = render_page(
+        "Identities",
+        &identities_body,
+        &identities_nav,
+        &simple_breadcrumbs("Identities", base_path),
+        base_path,
+    );
+    writer::write(
+        &out_dir.join("identities").join("index.html"),
+        &identities_html,
+    )?;
+    sitemap_paths.push("/identities/".to_string());
+
+    // Download page
+    let download_body = render_download_page(base_path);
+    let download_nav = render_nav(&nav, &format!("{}/download/", base_path));
+    let download_html = render_page(
+        "Download",
+        &download_body,
+        &download_nav,
+        &simple_breadcrumbs("Download", base_path),
+        base_path,
+    );
+    writer::write(&out_dir.join("download").join("index.html"), &download_html)?;
+    sitemap_paths.push("/download/".to_string());
+
+    // Concepts index + dynamically discovered concept pages
+    let content_dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("content");
+    let concept_list = concepts::concept_page_list(&content_dir, base_path)?;
+    let concepts_body = render_concepts_index(&concept_list, base_path);
+    let concepts_nav = render_nav(&nav, &format!("{}/concepts/", base_path));
+    let concepts_html = render_page(
+        "Concepts",
+        &concepts_body,
+        &concepts_nav,
+        &simple_breadcrumbs("Concepts", base_path),
+        base_path,
+    );
+    writer::write(&out_dir.join("concepts").join("index.html"), &concepts_html)?;
+    sitemap_paths.push("/concepts/".to_string());
+
+    for concept in &concept_list {
+        let content_path = content_dir
+            .join("concepts")
+            .join(format!("{}.md", concept.slug));
+        let content_html = concepts::render_concept_from_file(&content_path)?;
+        let extra_svg = pipeline::CONCEPT_SVG_HOOKS
+            .iter()
+            .find(|(slug, _)| *slug == concept.slug.as_str())
+            .map(|(_, f)| f(ontology));
+        let body = render_concept_page_body(&concept.title, &content_html, extra_svg.as_deref());
+        let concept_nav = render_nav(&nav, &concept.url);
+        let concept_crumbs = concept_breadcrumbs(&concept.title, base_path);
+        let concept_html = render_page(
+            &concept.title,
+            &body,
+            &concept_nav,
+            &concept_crumbs,
+            base_path,
+        );
+        let out_path = out_dir
+            .join("concepts")
+            .join(format!("{}.html", concept.slug));
+        writer::write(&out_path, &concept_html)?;
+        sitemap_paths.push(format!("/concepts/{}.html", concept.slug));
     }
 
     // Search index
