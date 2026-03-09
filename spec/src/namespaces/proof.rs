@@ -330,11 +330,12 @@ fn properties() -> Vec<Property> {
             id: "https://uor.foundation/proof/forbidsSignature",
             label: "forbidsSignature",
             comment: "The topological signature (χ, β_k) that this \
-                      ImpossibilityWitness formally forbids.",
-            kind: PropertyKind::Object,
+                      ImpossibilityWitness formally forbids, expressed as a \
+                      symbolic notation string (e.g., 'β₀ = 0').",
+            kind: PropertyKind::Annotation,
             functional: true,
             domain: Some("https://uor.foundation/proof/ImpossibilityWitness"),
-            range: "https://uor.foundation/observable/SynthesisSignature",
+            range: XSD_STRING,
         },
         Property {
             id: "https://uor.foundation/proof/impossibilityReason",

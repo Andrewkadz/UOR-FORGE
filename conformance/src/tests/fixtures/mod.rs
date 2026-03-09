@@ -73,6 +73,10 @@ mod test160_shared_context;
 mod test161_execution_policy;
 mod test162_session_composition;
 mod test163_distributed_saturation;
+mod test164_embedding;
+mod test165_action;
+mod test166_session_boundary_type;
+mod test167_metric_axis;
 mod test16_algebraic_identities;
 mod test17_inter_algebra_maps;
 mod test18_analytical_completeness;
@@ -237,6 +241,10 @@ pub use test160_shared_context::TEST160_SHARED_CONTEXT;
 pub use test161_execution_policy::TEST161_EXECUTION_POLICY;
 pub use test162_session_composition::TEST162_SESSION_COMPOSITION;
 pub use test163_distributed_saturation::TEST163_DISTRIBUTED_SATURATION;
+pub use test164_embedding::TEST164_EMBEDDING;
+pub use test165_action::TEST165_ACTION;
+pub use test166_session_boundary_type::TEST166_SESSION_BOUNDARY_TYPE;
+pub use test167_metric_axis::TEST167_METRIC_AXIS;
 pub use test16_algebraic_identities::TEST16_ALGEBRAIC_IDENTITIES;
 pub use test17_inter_algebra_maps::TEST17_INTER_ALGEBRA_MAPS;
 pub use test18_analytical_completeness::TEST18_ANALYTICAL_COMPLETENESS;
@@ -498,5 +506,9 @@ pub fn all_fixture_sources() -> Vec<&'static str> {
         TEST161_EXECUTION_POLICY,
         TEST162_SESSION_COMPOSITION,
         TEST163_DISTRIBUTED_SATURATION,
+        TEST164_EMBEDDING,
+        TEST165_ACTION,
+        TEST166_SESSION_BOUNDARY_TYPE,
+        TEST167_METRIC_AXIS,
     ]
 }

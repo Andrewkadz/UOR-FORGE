@@ -260,20 +260,22 @@ fn properties() -> Vec<Property> {
         Property {
             id: "https://uor.foundation/op/lhs",
             label: "lhs",
-            comment: "The left-hand side operation of an algebraic identity.",
-            kind: PropertyKind::Object,
+            comment: "The left-hand side of an algebraic identity, expressed as \
+                      a symbolic mathematical notation string (e.g., 'add(x, y)').",
+            kind: PropertyKind::Annotation,
             functional: true,
             domain: Some("https://uor.foundation/op/Identity"),
-            range: "https://uor.foundation/op/Operation",
+            range: XSD_STRING,
         },
         Property {
             id: "https://uor.foundation/op/rhs",
             label: "rhs",
-            comment: "The right-hand side operation of an algebraic identity.",
-            kind: PropertyKind::Object,
+            comment: "The right-hand side of an algebraic identity, expressed as \
+                      a symbolic mathematical notation string (e.g., 'x').",
+            kind: PropertyKind::Annotation,
             functional: true,
             domain: Some("https://uor.foundation/op/Identity"),
-            range: "https://uor.foundation/op/Operation",
+            range: XSD_STRING,
         },
         Property {
             id: "https://uor.foundation/op/forAll",

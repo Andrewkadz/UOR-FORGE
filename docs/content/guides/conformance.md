@@ -221,6 +221,15 @@ cargo run --bin uor-conformance
 | test162 | state:SessionComposition with composedFrom, compositionCompatible, compositionResult, towerConsistencyVerified (Amendment 48) |
 | test163 | Distributed saturation: SharedContext → two ContextLeases → SessionComposition → SaturatedContext (Amendment 48) |
 
+### SHACL Tests 164–167 (v6.0.0)
+
+| Test | What It Validates |
+|------|-------------------|
+| test164 | `morphism:Embedding` with `sourceQuantum` and `targetQuantum` (Amendment 49) |
+| test165 | `morphism:Action` with `morphism:group=op:DihedralGroup` and `actionIsometry` (Amendment 49) |
+| test166 | `state:SessionBoundaryType` vocabulary — `ExplicitReset` named individual (Amendment 49) |
+| test167 | `type:MetricAxis` vocabulary — `verticalAxis` named individual (Amendment 49) |
+
 ## Adding a New SHACL Test
 
 1. Create `conformance/src/tests/fixtures/test<n>_<name>.rs`

@@ -77,10 +77,6 @@ pub trait EmpiricalVerification<P: Primitives>: Proof<P> {
 
 /// A formal witness that a topological signature (χ, β_k) is impossible to achieve for any ConstrainedType. Carries the algebraic reason and the verification domain grounding the impossibility.
 pub trait ImpossibilityWitness<P: Primitives>: Proof<P> {
-    /// Associated type for `SynthesisSignature`.
-    type SynthesisSignature: crate::bridge::observable::SynthesisSignature<P>;
-    /// The topological signature (χ, β_k) that this ImpossibilityWitness formally forbids.
-    fn forbids_signature(&self) -> &Self::SynthesisSignature;
     /// Human-readable statement of the algebraic reason the signature is impossible (e.g., 'β₀ = 0 violates MS_1').
     fn impossibility_reason(&self) -> &P::String;
     /// The verification domain grounding the impossibility (e.g., Pipeline for β₀ = 0, Algebraic for χ > n).

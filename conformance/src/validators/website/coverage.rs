@@ -2,7 +2,7 @@
 //!
 //! Verifies that the website covers all ontology terms:
 //! - Every namespace has a landing page under `public/namespaces/<prefix>/index.html`
-//! - `search-index.json` contains all 142 class labels
+//! - `search-index.json` contains all class labels
 //! - `sitemap.xml` is present
 
 use std::path::Path;
@@ -90,9 +90,14 @@ fn check_search_index(artifacts: &Path, report: &mut ConformanceReport) -> Resul
     }
 
     if missing.is_empty() {
+        let class_count = ontology
+            .namespaces
+            .iter()
+            .map(|m| m.classes.len())
+            .sum::<usize>();
         report.push(TestResult::pass(
             "website/coverage",
-            "All 142 classes present in search-index.json",
+            format!("All {} classes present in search-index.json", class_count),
         ));
     } else {
         report.push(TestResult::fail_with_details(

@@ -20,13 +20,13 @@ pub const NAMESPACE_PROPERTIES: usize = 445;
 pub const INDIVIDUALS: usize = 846;
 
 /// Number of SHACL test instance graphs.
-pub const SHACL_TESTS: usize = 163;
+pub const SHACL_TESTS: usize = 167;
 
 /// Total conformance checks in the full suite.
-pub const CONFORMANCE_CHECKS: usize = 260;
+pub const CONFORMANCE_CHECKS: usize = 265;
 
 /// Number of amendments applied to the base ontology.
-pub const AMENDMENTS: usize = 48;
+pub const AMENDMENTS: usize = 49;
 
 /// Number of classes that become Rust enums/structs (not traits).
 pub const ENUM_CLASSES: usize = 14;
@@ -45,7 +45,7 @@ pub const USER_NAMESPACES: usize = 3;
 
 /// Number of trait methods generated (properties with domains,
 /// excluding enum-class-domain and cross-namespace-domain properties).
-pub const METHODS: usize = 423;
+pub const METHODS: usize = 420;
 
 /// Number of individual constant modules generated.
 pub const CONSTANT_MODULES: usize = 817;

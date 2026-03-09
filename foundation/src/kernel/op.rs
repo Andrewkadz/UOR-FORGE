@@ -42,12 +42,6 @@ pub trait Involution<P: Primitives>: UnaryOp<P> {}
 
 /// An algebraic identity: a statement that two expressions are equal for all inputs. The critical identity is neg(bnot(x)) = succ(x) for all x in R_n.
 pub trait Identity<P: Primitives> {
-    /// Associated type for `Operation`.
-    type Operation: Operation<P>;
-    /// The left-hand side operation of an algebraic identity.
-    fn lhs(&self) -> &Self::Operation;
-    /// The right-hand side operation of an algebraic identity.
-    fn rhs(&self) -> &Self::Operation;
     /// The quantifier scope: the variable(s) over which this algebraic identity holds (e.g., 'x ∈ R_n').
     fn for_all(&self) -> &P::String;
     /// The mathematical discipline(s) through which this identity is established. Range is op:VerificationDomain. Non-functional: composite identities (e.g. IT_7a–IT_7d) reference multiple domain individuals.

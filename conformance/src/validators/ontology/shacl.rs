@@ -832,6 +832,27 @@ pub fn validate() -> ConformanceReport {
         tests::fixtures::TEST163_DISTRIBUTED_SATURATION,
         &mut report,
     );
+    // Amendment 49: User-space class coverage fixtures
+    run_test(
+        "test164_embedding",
+        tests::fixtures::TEST164_EMBEDDING,
+        &mut report,
+    );
+    run_test(
+        "test165_action",
+        tests::fixtures::TEST165_ACTION,
+        &mut report,
+    );
+    run_test(
+        "test166_session_boundary_type",
+        tests::fixtures::TEST166_SESSION_BOUNDARY_TYPE,
+        &mut report,
+    );
+    run_test(
+        "test167_metric_axis",
+        tests::fixtures::TEST167_METRIC_AXIS,
+        &mut report,
+    );
 
     // Verify test fixture count matches expected
     let test_count = report.results.len() - before_tests;

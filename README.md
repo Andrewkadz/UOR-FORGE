@@ -7,7 +7,7 @@ structure based on Z/(2^n)Z.
 
 ## Ontology
 
-Version 5.6.0: 16 namespaces · 218 classes · 446 properties · 846 named individuals
+Version 6.0.0: 16 namespaces · 218 classes · 446 properties · 846 named individuals
 
 All terms are encoded as typed Rust data in `spec/` (`uor-ontology`) and exported as:
 - `foundation/` (`uor-foundation`) — typed Rust traits (published to crates.io)

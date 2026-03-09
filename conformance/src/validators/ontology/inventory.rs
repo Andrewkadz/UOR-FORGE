@@ -94,6 +94,9 @@ pub fn validate(artifacts: &Path) -> Result<ConformanceReport> {
     validate_iri_ref_targets(&mut report);
     validate_datatype_range_conformance(&mut report);
 
+    // Amendment 49: Scope binding cross-checks
+    validate_forall_scope_alignment(&mut report);
+
     // Validate the built JSON-LD artifact
     let json_path = artifacts.join("uor.foundation.json");
     if !json_path.exists() {
@@ -429,7 +432,8 @@ fn validate_identity_completeness(report: &mut ConformanceReport) {
         "QT_",  // Amendment 44: Structural Gap Closures
         "jsat_", "EXP_", "GO_", "COEFF_",
         // Amendment 46: Certificate Issuance Coverage
-        "CIC_", "GC_",
+        "CIC_", "GC_", // Amendment 48: Multi-Session Coordination
+        "MC_",
     ];
     for prefix in &expected_prefixes {
         let has = identities.iter().any(|i| i.label.starts_with(prefix));
@@ -2291,6 +2295,47 @@ fn validate_shacl_fixture_coverage(report: &mut ConformanceReport) {
             ),
         ));
     }
+
+    // Amendment 49, Rule 3 extended: user-space class SHACL fixture mandate.
+    // type/, state/, and morphism/ classes are Prism-implementer territory, but
+    // their presence in the fixture suite must be enforced to prevent silent regression.
+    let validator_user = "meta/shacl_fixture_coverage/user";
+    let user_classes: Vec<_> = ontology
+        .namespaces
+        .iter()
+        .filter(|m| matches!(m.namespace.space, Space::User))
+        .flat_map(|m| {
+            let prefix = m.namespace.prefix;
+            m.classes.iter().map(move |c| (prefix, c))
+        })
+        .collect();
+    let mut user_covered = true;
+    for (prefix, class) in &user_classes {
+        let local_name = class.id.rsplit('/').next().unwrap_or("");
+        let prefixed_form = format!("{}:{}", prefix, local_name);
+        let covered = all_fixtures.iter().any(|src| {
+            src.contains(&prefixed_form) || src.contains(class.id) || src.contains(class.label)
+        });
+        if !covered {
+            report.push_meta(TestResult::fail(
+                validator_user,
+                format!(
+                    "User-space class {} has no SHACL fixture coverage",
+                    class.label
+                ),
+            ));
+            user_covered = false;
+        }
+    }
+    if user_covered {
+        report.push_meta(TestResult::pass(
+            validator_user,
+            format!(
+                "All {} user-space classes have SHACL fixture coverage",
+                user_classes.len()
+            ),
+        ));
+    }
 }
 
 // ── Amendment 47: Model-Derived Meta-Validators (Rules 4-8) ─────────────
@@ -2344,15 +2389,6 @@ fn validate_property_kind_conformance(report: &mut ConformanceReport) {
         .map(|p| (p.id, p))
         .collect();
 
-    // ObjectProperties that intentionally use Str values for symbolic
-    // mathematical expressions (e.g. "add(x, y)", "β₀ = 0").
-    let exempt_obj_str: HashSet<&str> = [
-        "https://uor.foundation/op/lhs",
-        "https://uor.foundation/op/rhs",
-        "https://uor.foundation/proof/forbidsSignature",
-    ]
-    .into();
-
     let mut violations = Vec::new();
     for ns in &ontology.namespaces {
         for ind in &ns.individuals {
@@ -2360,9 +2396,7 @@ fn validate_property_kind_conformance(report: &mut ConformanceReport) {
                 if let Some(prop) = prop_map.get(k) {
                     match prop.kind {
                         PropertyKind::Object => {
-                            if !matches!(v, IndividualValue::IriRef(_) | IndividualValue::List(_))
-                                && !exempt_obj_str.contains(k)
-                            {
+                            if !matches!(v, IndividualValue::IriRef(_) | IndividualValue::List(_)) {
                                 violations.push(format!(
                                     "{}: ObjectProperty {} has non-IriRef value {}",
                                     ind.label, prop.label, v
@@ -2551,6 +2585,101 @@ fn validate_datatype_range_conformance(report: &mut ConformanceReport) {
     } else {
         for v in &violations {
             report.push_meta(TestResult::fail(validator, v.clone()));
+        }
+    }
+}
+
+/// Amendment 49: Validates structural consistency between formal `validityKind`
+/// scope bindings and the presence of `validKMin`/`validKMax` properties on
+/// `op:Identity` individuals.
+///
+/// Enforced invariants:
+/// - `ParametricLower` requires `validKMin`
+/// - `ParametricRange` requires both `validKMin` and `validKMax`
+/// - `LevelSpecific` must not carry `validKMin` or `validKMax`
+/// - `universallyValid = true` must not be combined with a non-Universal `validityKind`
+fn validate_forall_scope_alignment(report: &mut ConformanceReport) {
+    let ontology = uor_ontology::Ontology::full();
+    let validator = "ontology/inventory/forall_scope_alignment";
+
+    let identity_iri = "https://uor.foundation/op/Identity";
+    let kind_prop = "https://uor.foundation/op/validityKind";
+    let k_min_prop = "https://uor.foundation/op/validKMin";
+    let k_max_prop = "https://uor.foundation/op/validKMax";
+    let univ_prop = "https://uor.foundation/op/universallyValid";
+
+    let parametric_lower = "https://uor.foundation/op/ParametricLower";
+    let parametric_range = "https://uor.foundation/op/ParametricRange";
+    let level_specific = "https://uor.foundation/op/LevelSpecific";
+    let universal = "https://uor.foundation/op/Universal";
+
+    let mut violations: Vec<String> = Vec::new();
+
+    let identities: Vec<_> = ontology
+        .namespaces
+        .iter()
+        .flat_map(|m| m.individuals.iter())
+        .filter(|ind| ind.type_ == identity_iri)
+        .collect();
+
+    for ind in &identities {
+        let kind_iri: Option<&str> = ind.properties.iter().find_map(|(k, v)| {
+            if *k == kind_prop {
+                if let uor_ontology::IndividualValue::IriRef(iri) = v {
+                    return Some(*iri);
+                }
+            }
+            None
+        });
+        let has_k_min = ind.properties.iter().any(|(k, _)| *k == k_min_prop);
+        let has_k_max = ind.properties.iter().any(|(k, _)| *k == k_max_prop);
+        let univ_true = ind.properties.iter().any(|(k, v)| {
+            *k == univ_prop && matches!(v, uor_ontology::IndividualValue::Bool(true))
+        });
+
+        if let Some(kind) = kind_iri {
+            // Check A: ParametricLower requires validKMin
+            if kind == parametric_lower && !has_k_min {
+                violations.push(format!(
+                    "{}: validityKind=ParametricLower but validKMin is absent",
+                    ind.label
+                ));
+            }
+            // Check B: ParametricRange requires both validKMin and validKMax
+            if kind == parametric_range && (!has_k_min || !has_k_max) {
+                violations.push(format!(
+                    "{}: validityKind=ParametricRange but validKMin/validKMax incomplete",
+                    ind.label
+                ));
+            }
+            // Check C: LevelSpecific must not carry range bounds
+            if kind == level_specific && (has_k_min || has_k_max) {
+                violations.push(format!(
+                    "{}: validityKind=LevelSpecific must not carry validKMin/validKMax",
+                    ind.label
+                ));
+            }
+            // Check D: universallyValid=true contradicts a non-Universal validityKind
+            if univ_true && kind != universal {
+                violations.push(format!(
+                    "{}: universallyValid=true contradicts validityKind <{}>",
+                    ind.label, kind
+                ));
+            }
+        }
+    }
+
+    if violations.is_empty() {
+        report.push(TestResult::pass(
+            validator,
+            format!(
+                "All {} op:Identity scope bindings are structurally consistent",
+                identities.len()
+            ),
+        ));
+    } else {
+        for v in violations {
+            report.push(TestResult::fail(validator, v));
         }
     }
 }
