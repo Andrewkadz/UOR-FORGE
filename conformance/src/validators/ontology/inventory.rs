@@ -3,13 +3,13 @@
 //! Verifies that the built ontology artifact contains the correct counts
 //! as defined in [`uor_ontology::counts`].
 
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::path::Path;
 
 use anyhow::{Context, Result};
 use serde_json::Value;
 use uor_ontology::counts;
-use uor_ontology::model::{IndividualValue, Space};
+use uor_ontology::model::{IndividualValue, PropertyKind, Space};
 
 use crate::report::{ConformanceReport, TestResult};
 
@@ -86,6 +86,13 @@ pub fn validate(artifacts: &Path) -> Result<ConformanceReport> {
     validate_certificate_issuance_coverage(&mut report);
     validate_identity_proof_bijection(&mut report);
     validate_shacl_fixture_coverage(&mut report);
+
+    // Amendment 47: Model-derived meta-validators (Rules 4-8)
+    validate_property_assertion_iris(&mut report);
+    validate_property_kind_conformance(&mut report);
+    validate_functional_cardinality(&mut report);
+    validate_iri_ref_targets(&mut report);
+    validate_datatype_range_conformance(&mut report);
 
     // Validate the built JSON-LD artifact
     let json_path = artifacts.join("uor.foundation.json");
@@ -832,13 +839,18 @@ fn validate_quantum_scope(report: &mut ConformanceReport) {
     let crit_type = "https://uor.foundation/proof/CriticalIdentityProof";
     let axiomatic_type = "https://uor.foundation/proof/AxiomaticDerivation";
     let inductive_type = "https://uor.foundation/proof/InductiveProof";
+    let empirical_type = "https://uor.foundation/proof/EmpiricalVerification";
     let at_ql_prop = "https://uor.foundation/proof/atQuantumLevel";
     let univ_prop = "https://uor.foundation/proof/universalScope";
+    let qlr_prop = "https://uor.foundation/proof/quantumLevelRange";
+    let vm_prop = "https://uor.foundation/proof/verificationMethod";
+    let verified_prop = "https://uor.foundation/proof/verified";
 
     let mut all_valid = true;
     let mut cert_count = 0usize;
     let mut axiomatic_count = 0usize;
     let mut inductive_count = 0usize;
+    let mut empirical_count = 0usize;
 
     if let Some(proof_module) = ontology.find_namespace("proof") {
         for ind in &proof_module.individuals {
@@ -911,16 +923,95 @@ fn validate_quantum_scope(report: &mut ConformanceReport) {
                     all_valid = false;
                 }
             }
+
+            // Amendment 47: EmpiricalVerification branch
+            let is_empirical = ind.type_ == empirical_type;
+
+            if is_empirical {
+                empirical_count += 1;
+                let has_verified = ind.properties.iter().any(|(k, _)| *k == verified_prop);
+                let has_qlr = ind.properties.iter().any(|(k, _)| *k == qlr_prop);
+                let has_vm = ind.properties.iter().any(|(k, _)| *k == vm_prop);
+                let has_univ = ind.properties.iter().any(|(k, _)| *k == univ_prop);
+                let has_ql = ind.properties.iter().any(|(k, _)| *k == at_ql_prop);
+                if !has_verified {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!("EmpiricalVerification {} missing verified", ind.id),
+                    ));
+                    all_valid = false;
+                }
+                if !has_qlr {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!("EmpiricalVerification {} missing quantumLevelRange", ind.id),
+                    ));
+                    all_valid = false;
+                }
+                if !has_vm {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!(
+                            "EmpiricalVerification {} missing verificationMethod",
+                            ind.id
+                        ),
+                    ));
+                    all_valid = false;
+                }
+                if has_univ {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!(
+                            "EmpiricalVerification {} should not have universalScope",
+                            ind.id
+                        ),
+                    ));
+                    all_valid = false;
+                }
+                if has_ql {
+                    report.push(TestResult::fail(
+                        validator,
+                        format!(
+                            "EmpiricalVerification {} should not have atQuantumLevel",
+                            ind.id
+                        ),
+                    ));
+                    all_valid = false;
+                }
+            }
+
+            // Amendment 47: Exhaustive type guard — flag unrecognized proof types
+            let known_exempt = [
+                "https://uor.foundation/proof/ImpossibilityWitness",
+                "https://uor.foundation/proof/MorphospaceRecord",
+            ];
+            if !is_cert
+                && !is_axiomatic
+                && !is_inductive
+                && !is_empirical
+                && !known_exempt.contains(&ind.type_)
+            {
+                report.push(TestResult::fail(
+                    validator,
+                    format!(
+                        "Proof individual {} has unrecognized type {} \
+                         — add validation branch or exemption",
+                        ind.id, ind.type_
+                    ),
+                ));
+                all_valid = false;
+            }
         }
     }
 
-    if all_valid && (cert_count + axiomatic_count + inductive_count) > 0 {
+    if all_valid && (cert_count + axiomatic_count + inductive_count + empirical_count) > 0 {
         report.push(TestResult::pass(
             validator,
             format!(
                 "Quantum scope valid: {} computation certificates, \
-                 {} axiomatic derivations, {} inductive proofs",
-                cert_count, axiomatic_count, inductive_count
+                 {} axiomatic derivations, {} inductive proofs, \
+                 {} empirical verifications",
+                cert_count, axiomatic_count, inductive_count, empirical_count
             ),
         ));
     }
@@ -1990,14 +2081,23 @@ fn validate_certificate_issuance_coverage(report: &mut ConformanceReport) {
     let mut all_governed = true;
     for cert_class in &cert_subclasses {
         let governed = identities.iter().any(|id| {
-            id.properties.iter().any(|(_, v)| match v {
-                IndividualValue::Str(s) => {
-                    s.contains(cert_class.label) || s.contains(cert_class.id)
-                }
-                IndividualValue::IriRef(iri) => iri.contains(cert_class.id),
-                IndividualValue::List(iris) => iris.iter().any(|iri| iri.contains(cert_class.id)),
-                _ => false,
-            })
+            id.properties
+                .iter()
+                .filter(|(k, _)| {
+                    *k == "https://uor.foundation/op/lhs"
+                        || *k == "https://uor.foundation/op/rhs"
+                        || *k == "https://uor.foundation/op/forAll"
+                })
+                .any(|(_, v)| match v {
+                    IndividualValue::Str(s) => {
+                        s.contains(cert_class.label) || s.contains(cert_class.id)
+                    }
+                    IndividualValue::IriRef(iri) => iri.contains(cert_class.id),
+                    IndividualValue::List(iris) => {
+                        iris.iter().any(|iri| iri.contains(cert_class.id))
+                    }
+                    _ => false,
+                })
         });
 
         if !governed {
@@ -2081,6 +2181,21 @@ fn validate_identity_proof_bijection(report: &mut ConformanceReport) {
         }
     }
 
+    // Amendment 47: Encoding guard — all provesIdentity values must be IriRef
+    for ns in &ontology.namespaces {
+        for ind in ns.individuals.iter() {
+            for (k, v) in ind.properties.iter() {
+                if *k == proves_prop && !matches!(v, IndividualValue::IriRef(_)) {
+                    report.push_meta(TestResult::fail(
+                        validator,
+                        format!("{} has non-IriRef provesIdentity value", ind.label),
+                    ));
+                    all_ok = false;
+                }
+            }
+        }
+    }
+
     if all_ok {
         report.push_meta(TestResult::pass(
             validator,
@@ -2134,13 +2249,308 @@ fn validate_shacl_fixture_coverage(report: &mut ConformanceReport) {
         }
     }
 
+    // Amendment 47: Second pass — cert:Certificate subclasses across ALL spaces
+    let cert_root = "https://uor.foundation/cert/Certificate";
+    let cert_subclasses: Vec<_> = ontology
+        .namespaces
+        .iter()
+        .flat_map(|m| {
+            let prefix = m.namespace.prefix;
+            m.classes.iter().map(move |c| (prefix, c))
+        })
+        .filter(|(_, c)| c.subclass_of.contains(&cert_root))
+        .collect();
+    for (prefix, cert_class) in &cert_subclasses {
+        let local_name = cert_class.id.rsplit('/').next().unwrap_or("");
+        let prefixed_form = format!("{}:{}", prefix, local_name);
+        let has_fixture = all_fixtures.iter().any(|src| {
+            src.contains(&prefixed_form)
+                || src.contains(cert_class.id)
+                || src.contains(cert_class.label)
+        });
+        if !has_fixture {
+            all_covered = false;
+            report.push_meta(TestResult::fail(
+                validator,
+                format!(
+                    "cert:Certificate subclass {} has no SHACL fixture",
+                    cert_class.label
+                ),
+            ));
+        }
+    }
+
     if all_covered {
         report.push_meta(TestResult::pass(
             validator,
             format!(
-                "All {} kernel/bridge classes have SHACL fixture coverage",
-                required_classes.len()
+                "All {} kernel/bridge classes and {} Certificate subclasses \
+                 have SHACL fixture coverage",
+                required_classes.len(),
+                cert_subclasses.len()
             ),
         ));
+    }
+}
+
+// ── Amendment 47: Model-Derived Meta-Validators (Rules 4-8) ─────────────
+
+/// Rule 4: Every property key in individual assertions must be a known
+/// property IRI in the ontology.
+fn validate_property_assertion_iris(report: &mut ConformanceReport) {
+    let ontology = uor_ontology::Ontology::full();
+    let validator = "meta/property_assertion_iris";
+
+    let known_props: HashSet<&str> = ontology
+        .namespaces
+        .iter()
+        .flat_map(|m| m.properties.iter())
+        .map(|p| p.id)
+        .collect();
+
+    let mut violations = Vec::new();
+    for ns in &ontology.namespaces {
+        for ind in &ns.individuals {
+            for (k, _) in ind.properties.iter() {
+                if !known_props.contains(k) {
+                    violations.push(format!("{}: unknown property IRI {}", ind.label, k));
+                }
+            }
+        }
+    }
+
+    if violations.is_empty() {
+        report.push_meta(TestResult::pass(
+            validator,
+            "All individual property assertions use known property IRIs",
+        ));
+    } else {
+        for v in &violations {
+            report.push_meta(TestResult::fail(validator, v.clone()));
+        }
+    }
+}
+
+/// Rule 5: ObjectProperty assertions should use IriRef/List values;
+/// DatatypeProperty assertions should use Str/Int/Bool values.
+fn validate_property_kind_conformance(report: &mut ConformanceReport) {
+    let ontology = uor_ontology::Ontology::full();
+    let validator = "meta/property_kind_conformance";
+
+    let prop_map: HashMap<&str, &uor_ontology::model::Property> = ontology
+        .namespaces
+        .iter()
+        .flat_map(|m| m.properties.iter())
+        .map(|p| (p.id, p))
+        .collect();
+
+    // ObjectProperties that intentionally use Str values for symbolic
+    // mathematical expressions (e.g. "add(x, y)", "β₀ = 0").
+    let exempt_obj_str: HashSet<&str> = [
+        "https://uor.foundation/op/lhs",
+        "https://uor.foundation/op/rhs",
+        "https://uor.foundation/proof/forbidsSignature",
+    ]
+    .into();
+
+    let mut violations = Vec::new();
+    for ns in &ontology.namespaces {
+        for ind in &ns.individuals {
+            for (k, v) in ind.properties.iter() {
+                if let Some(prop) = prop_map.get(k) {
+                    match prop.kind {
+                        PropertyKind::Object => {
+                            if !matches!(v, IndividualValue::IriRef(_) | IndividualValue::List(_))
+                                && !exempt_obj_str.contains(k)
+                            {
+                                violations.push(format!(
+                                    "{}: ObjectProperty {} has non-IriRef value {}",
+                                    ind.label, prop.label, v
+                                ));
+                            }
+                        }
+                        PropertyKind::Datatype => {
+                            if matches!(v, IndividualValue::IriRef(_) | IndividualValue::List(_)) {
+                                violations.push(format!(
+                                    "{}: DatatypeProperty {} has IriRef value {}",
+                                    ind.label, prop.label, v
+                                ));
+                            }
+                        }
+                        PropertyKind::Annotation => {}
+                    }
+                }
+            }
+        }
+    }
+
+    if violations.is_empty() {
+        report.push_meta(TestResult::pass(
+            validator,
+            "All individual property values match their declared property kind",
+        ));
+    } else {
+        for v in &violations {
+            report.push_meta(TestResult::fail(validator, v.clone()));
+        }
+    }
+}
+
+/// Rule 6: Functional properties must appear at most once per individual.
+fn validate_functional_cardinality(report: &mut ConformanceReport) {
+    let ontology = uor_ontology::Ontology::full();
+    let validator = "meta/functional_cardinality";
+
+    let functional_props: HashSet<&str> = ontology
+        .namespaces
+        .iter()
+        .flat_map(|m| m.properties.iter())
+        .filter(|p| p.functional)
+        .map(|p| p.id)
+        .collect();
+
+    let mut violations = Vec::new();
+    for ns in &ontology.namespaces {
+        for ind in &ns.individuals {
+            let mut prop_counts: HashMap<&str, usize> = HashMap::new();
+            for (k, _) in ind.properties.iter() {
+                if functional_props.contains(k) {
+                    *prop_counts.entry(k).or_insert(0) += 1;
+                }
+            }
+            for (k, count) in &prop_counts {
+                if *count > 1 {
+                    violations.push(format!(
+                        "{}: functional property {} appears {} times",
+                        ind.label, k, count
+                    ));
+                }
+            }
+        }
+    }
+
+    if violations.is_empty() {
+        report.push_meta(TestResult::pass(
+            validator,
+            "All functional properties have at most one assertion per individual",
+        ));
+    } else {
+        for v in &violations {
+            report.push_meta(TestResult::fail(validator, v.clone()));
+        }
+    }
+}
+
+/// Rule 7: Every IriRef value must resolve to a known individual or class.
+fn validate_iri_ref_targets(report: &mut ConformanceReport) {
+    let ontology = uor_ontology::Ontology::full();
+    let validator = "meta/iri_ref_targets";
+
+    let known_individuals: HashSet<&str> = ontology
+        .namespaces
+        .iter()
+        .flat_map(|m| m.individuals.iter())
+        .map(|i| i.id)
+        .collect();
+    let known_classes: HashSet<&str> = ontology
+        .namespaces
+        .iter()
+        .flat_map(|m| m.classes.iter())
+        .map(|c| c.id)
+        .collect();
+
+    let mut violations = Vec::new();
+    for ns in &ontology.namespaces {
+        for ind in &ns.individuals {
+            for (k, v) in ind.properties.iter() {
+                let iris: Vec<&str> = match v {
+                    IndividualValue::IriRef(iri) => vec![iri],
+                    IndividualValue::List(iris) => iris.to_vec(),
+                    _ => vec![],
+                };
+                for iri in iris {
+                    if !known_individuals.contains(iri) && !known_classes.contains(iri) {
+                        violations.push(format!(
+                            "{}: property {} references unknown IRI {}",
+                            ind.label, k, iri
+                        ));
+                    }
+                }
+            }
+        }
+    }
+
+    if violations.is_empty() {
+        report.push_meta(TestResult::pass(
+            validator,
+            "All IriRef values resolve to known individuals or classes",
+        ));
+    } else {
+        for v in &violations {
+            report.push_meta(TestResult::fail(validator, v.clone()));
+        }
+    }
+}
+
+/// Rule 8: Datatype property values must match their declared XSD range type.
+fn validate_datatype_range_conformance(report: &mut ConformanceReport) {
+    let ontology = uor_ontology::Ontology::full();
+    let validator = "meta/datatype_range_conformance";
+
+    let prop_map: HashMap<&str, &uor_ontology::model::Property> = ontology
+        .namespaces
+        .iter()
+        .flat_map(|m| m.properties.iter())
+        .map(|p| (p.id, p))
+        .collect();
+
+    let bool_ranges: HashSet<&str> =
+        ["xsd:boolean", "http://www.w3.org/2001/XMLSchema#boolean"].into();
+    let int_ranges: HashSet<&str> = [
+        "xsd:integer",
+        "xsd:nonNegativeInteger",
+        "xsd:positiveInteger",
+        "http://www.w3.org/2001/XMLSchema#integer",
+        "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "http://www.w3.org/2001/XMLSchema#positiveInteger",
+    ]
+    .into();
+
+    let mut violations = Vec::new();
+    for ns in &ontology.namespaces {
+        for ind in &ns.individuals {
+            for (k, v) in ind.properties.iter() {
+                if let Some(prop) = prop_map.get(k) {
+                    if prop.kind != PropertyKind::Datatype {
+                        continue;
+                    }
+                    if bool_ranges.contains(prop.range) && !matches!(v, IndividualValue::Bool(_)) {
+                        violations.push(format!(
+                            "{}: {} (range {}) expects Bool, got {}",
+                            ind.label, prop.label, prop.range, v
+                        ));
+                    } else if int_ranges.contains(prop.range)
+                        && !matches!(v, IndividualValue::Int(_))
+                    {
+                        violations.push(format!(
+                            "{}: {} (range {}) expects Int, got {}",
+                            ind.label, prop.label, prop.range, v
+                        ));
+                    }
+                    // String-like ranges (xsd:string, xsd:anyURI, etc.) accept Str
+                }
+            }
+        }
+    }
+
+    if violations.is_empty() {
+        report.push_meta(TestResult::pass(
+            validator,
+            "All datatype property values match their declared XSD range",
+        ));
+    } else {
+        for v in &violations {
+            report.push_meta(TestResult::fail(validator, v.clone()));
+        }
     }
 }

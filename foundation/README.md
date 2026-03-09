@@ -14,7 +14,7 @@ typed Rust traits. Import and implement.
 
 ```toml
 [dependencies]
-uor-foundation = "5.4.0"
+uor-foundation = "5.5.0"
 ```
 
 ```rust

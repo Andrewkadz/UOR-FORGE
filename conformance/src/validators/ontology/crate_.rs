@@ -204,6 +204,17 @@ fn validate_method_completeness(
             VALIDATOR,
             format!("All {found} property methods present in generated source"),
         ));
+        // Amendment 47: cross-check total against centralized count
+        if found != uor_ontology::counts::METHODS {
+            report.push_meta(TestResult::fail(
+                VALIDATOR,
+                format!(
+                    "Method count drift: found {} methods but counts::METHODS = {}",
+                    found,
+                    uor_ontology::counts::METHODS
+                ),
+            ));
+        }
     } else {
         report.push(TestResult::fail_with_details(
             VALIDATOR,
@@ -287,6 +298,17 @@ fn validate_individual_completeness(
             VALIDATOR,
             format!("All {found} individuals present in generated source"),
         ));
+        // Amendment 47: cross-check total against centralized count
+        if found != uor_ontology::counts::INDIVIDUALS {
+            report.push_meta(TestResult::fail(
+                VALIDATOR,
+                format!(
+                    "Individual count drift: found {} but counts::INDIVIDUALS = {}",
+                    found,
+                    uor_ontology::counts::INDIVIDUALS
+                ),
+            ));
+        }
     } else {
         report.push(TestResult::fail_with_details(
             VALIDATOR,

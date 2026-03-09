@@ -3885,12 +3885,14 @@ pub mod prf_cic_6 {
     pub const VERIFIED: bool = true;
 }
 
-/// Proof of CIC_7: BornRuleVerification issuance coverage.
+/// Empirical verification of CIC_7: BornRuleVerification issuance coverage.
 pub mod prf_cic_7 {
     /// `provesIdentity` -> `CIC_7`
     pub const PROVES_IDENTITY: &str = "https://uor.foundation/op/CIC_7";
-    /// `universalScope`
-    pub const UNIVERSAL_SCOPE: bool = true;
+    /// `quantumLevelRange`
+    pub const QUANTUM_LEVEL_RANGE: &str = "Q0-Q3";
+    /// `verificationMethod`
+    pub const VERIFICATION_METHOD: &str = "Born rule amplitude sum verification over fiber lattice";
     /// `verified`
     pub const VERIFIED: bool = true;
 }

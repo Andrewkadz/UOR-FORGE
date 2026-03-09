@@ -8425,21 +8425,25 @@ fn individuals() -> Vec<Individual> {
         },
         Individual {
             id: "https://uor.foundation/proof/prf_CIC_7",
-            type_: "https://uor.foundation/proof/AxiomaticDerivation",
+            type_: "https://uor.foundation/proof/EmpiricalVerification",
             label: "prf_CIC_7",
-            comment: "Proof of CIC_7: BornRuleVerification issuance coverage.",
+            comment: "Empirical verification of CIC_7: BornRuleVerification issuance coverage.",
             properties: &[
                 (
                     "https://uor.foundation/proof/provesIdentity",
                     IndividualValue::IriRef("https://uor.foundation/op/CIC_7"),
                 ),
                 (
-                    "https://uor.foundation/proof/universalScope",
+                    "https://uor.foundation/proof/verified",
                     IndividualValue::Bool(true),
                 ),
                 (
-                    "https://uor.foundation/proof/verified",
-                    IndividualValue::Bool(true),
+                    "https://uor.foundation/proof/quantumLevelRange",
+                    IndividualValue::Str("Q0-Q3"),
+                ),
+                (
+                    "https://uor.foundation/proof/verificationMethod",
+                    IndividualValue::Str("Born rule amplitude sum verification over fiber lattice"),
                 ),
             ],
         },

@@ -150,6 +150,68 @@ cargo run --bin uor-conformance
 | test111 | Address with digestAlgorithm, canonicalBytes, blake3-prefixed digest (Amendment 43) |
 | test112 | Address at Q1 with 6-byte canonical form and sha256 algorithm (Amendment 43) |
 
+### SHACL Tests 113–123 (v5.3.0)
+
+| Test | What It Validates |
+|------|-------------------|
+| test113 | CC\_PINS and CC\_COST\_FIBER identity grounding (Amendment 44) |
+| test114 | jsat\_RR, jsat\_CR, jsat\_CC identity grounding (Amendment 44) |
+| test115 | D\_8 and D\_9 identity grounding (Amendment 44) |
+| test116 | EXP\_1, EXP\_2, EXP\_3 identity grounding (Amendment 44) |
+| test117 | ST\_3, ST\_4, ST\_5 identity grounding (Amendment 44) |
+| test118 | TS\_8, TS\_9, TS\_10 identity grounding (Amendment 44) |
+| test119 | QT\_8 and QT\_9 identity grounding (Amendment 44) |
+| test120 | COEFF\_1 identity grounding (Amendment 44) |
+| test121 | GO\_1 identity grounding (Amendment 44) |
+| test122 | SR\_6 and SR\_7 identity grounding (Amendment 44) |
+| test123 | QM\_6 identity grounding (Amendment 44) |
+
+### SHACL Tests 124–157 (v5.4.0)
+
+| Test | What It Validates |
+|------|-------------------|
+| test124 | u:Glyph class (Amendment 45) |
+| test125 | op:DihedralGroup class (Amendment 45) |
+| test126 | op:ValidityScopeKind enum class (Amendment 45) |
+| test127 | resolver:QuantumLevelResolver class (Amendment 45) |
+| test128 | observable:StratumObservable class (Amendment 45) |
+| test129 | observable:MetricObservable class (Amendment 45) |
+| test130 | observable:PathObservable class (Amendment 45) |
+| test131 | observable:CascadeObservable class (Amendment 45) |
+| test132 | observable:HolonomyObservable class (Amendment 45) |
+| test133 | observable:IncompatibilityMetric class (Amendment 45) |
+| test134 | observable:StratumValue class (Amendment 45) |
+| test135 | observable:StratumDelta class (Amendment 45) |
+| test136 | observable:StratumTrajectory class (Amendment 45) |
+| test137 | observable:PathLength class (Amendment 45) |
+| test138 | observable:TotalVariation class (Amendment 45) |
+| test139 | observable:WindingNumber class (Amendment 45) |
+| test140 | observable:CascadeLength class (Amendment 45) |
+| test141 | observable:CascadeCount class (Amendment 45) |
+| test142 | observable:CatastropheThreshold class (Amendment 45) |
+| test143 | observable:CatastropheCount class (Amendment 45) |
+| test144 | observable:Commutator class (Amendment 45) |
+| test145 | observable:CurvatureFlux class (Amendment 45) |
+| test146 | observable:ParallelTransport class (Amendment 45) |
+| test147 | observable:CascadeEntropy class (Amendment 45) |
+| test148 | observable:PhaseBoundaryType enum class (Amendment 45) |
+| test149 | homology:FaceMap class (Amendment 45) |
+| test150 | homology:NerveFunctor class (Amendment 45) |
+| test151 | homology:ChainFunctor class (Amendment 45) |
+| test152 | cohomology:RestrictionMap class (Amendment 45) |
+| test153 | proof:CoherenceProof class (Amendment 45) |
+| test154 | derivation:DerivationStep class (Amendment 45) |
+| test155 | trace:ComputationStep class (Amendment 45) |
+| test156 | trace:TraceMetrics class (Amendment 45) |
+| test157 | cert:IsometryCertificate class (Amendment 45) |
+
+### SHACL Tests 158–159 (v5.4.0)
+
+| Test | What It Validates |
+|------|-------------------|
+| test158 | cert:LiftChainCertificate with verified + chainStepCount (Amendment 46) |
+| test159 | cert:ChainAuditTrail class (Amendment 46) |
+
 ## Adding a New SHACL Test
 
 1. Create `conformance/src/tests/fixtures/test<n>_<name>.rs`
