@@ -412,9 +412,13 @@ pub fn render_download_page(base_path: &str) -> String {
     let json_url = format!("{base_path}/uor.foundation.json");
     let ttl_url = format!("{base_path}/uor.foundation.ttl");
     let nt_url = format!("{base_path}/uor.foundation.nt");
+    let owl_url = format!("{base_path}/uor.foundation.owl");
+    let schema_url = format!("{base_path}/uor.foundation.schema.json");
+    let shapes_url = format!("{base_path}/uor.shapes.ttl");
+    let ebnf_url = format!("{base_path}/uor.term.ebnf");
     format!(
         "<h1>Download</h1>\n\
-         <p>The complete UOR Foundation ontology is available in three serialization formats. \
+         <p>The complete UOR Foundation ontology is available in seven serialization formats. \
          All files are generated from the same authoritative source in \
          <code>spec/</code>.</p>\n\
          <table class=\"download-table\">\n\
@@ -434,6 +438,26 @@ pub fn render_download_page(base_path: &str) -> String {
          <td><span class=\"format-badge\">.nt</span></td>\n\
          <td>N-Triples — line-oriented RDF for streaming and tooling</td>\n\
          <td><a href=\"{nt_url}\">uor.foundation.nt</a></td>\n\
+         </tr>\n\
+         <tr>\n\
+         <td><span class=\"format-badge\">.owl</span></td>\n\
+         <td>OWL 2 RDF/XML — ontology interchange for Protege and OWL reasoners</td>\n\
+         <td><a href=\"{owl_url}\">uor.foundation.owl</a></td>\n\
+         </tr>\n\
+         <tr>\n\
+         <td><span class=\"format-badge\">.schema.json</span></td>\n\
+         <td>JSON Schema (Draft 2020-12) — typed code generation in 30+ languages</td>\n\
+         <td><a href=\"{schema_url}\">uor.foundation.schema.json</a></td>\n\
+         </tr>\n\
+         <tr>\n\
+         <td><span class=\"format-badge\">.shapes.ttl</span></td>\n\
+         <td>SHACL Shapes — W3C validation constraints for RDF data</td>\n\
+         <td><a href=\"{shapes_url}\">uor.shapes.ttl</a></td>\n\
+         </tr>\n\
+         <tr>\n\
+         <td><span class=\"format-badge\">.ebnf</span></td>\n\
+         <td>EBNF Grammar (ISO/IEC 14977) — UOR Term Language formal grammar</td>\n\
+         <td><a href=\"{ebnf_url}\">uor.term.ebnf</a></td>\n\
          </tr>\n\
          </tbody>\n\
          </table>\n\

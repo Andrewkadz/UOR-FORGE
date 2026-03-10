@@ -90,6 +90,9 @@ jobs:
             public/uor.foundation.json
             public/uor.foundation.ttl
             public/uor.foundation.nt
+            public/uor.foundation.owl
+            public/uor.foundation.schema.json
+            public/uor.shapes.ttl
             public/uor.term.ebnf
           body: |
             UOR Foundation ontology release ${{ github.ref_name }}.
@@ -98,6 +101,9 @@ jobs:
             - `uor.foundation.json` — JSON-LD 1.1
             - `uor.foundation.ttl` — Turtle 1.1
             - `uor.foundation.nt` — N-Triples
+            - `uor.foundation.owl` — OWL 2 RDF/XML
+            - `uor.foundation.schema.json` — JSON Schema (Draft 2020-12)
+            - `uor.shapes.ttl` — SHACL validation shapes
             - `uor.term.ebnf` — ISO/IEC 14977 EBNF grammar
 
             **Rust crate:** [`uor-foundation` on crates.io](https://crates.io/crates/uor-foundation)

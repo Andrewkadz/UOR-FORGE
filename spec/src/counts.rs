@@ -23,7 +23,7 @@ pub const INDIVIDUALS: usize = 846;
 pub const SHACL_TESTS: usize = 167;
 
 /// Total conformance checks in the full suite.
-pub const CONFORMANCE_CHECKS: usize = 280;
+pub const CONFORMANCE_CHECKS: usize = 283;
 
 /// Number of amendments applied to the base ontology.
 pub const AMENDMENTS: usize = 49;

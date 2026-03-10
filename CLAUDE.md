@@ -2,7 +2,7 @@
 
 ## Project overview
 
-Rust workspace encoding the UOR Foundation ontology as typed data structures, a generated `#![no_std]` trait crate (`uor-foundation`), and validated serializations (JSON-LD 1.1, Turtle 1.1, N-Triples). All source code, documentation, and web artifacts are machine-generated from the authoritative ontology defined in `spec/`.
+Rust workspace encoding the UOR Foundation ontology as typed data structures, a generated `#![no_std]` trait crate (`uor-foundation`), and validated serializations (JSON-LD, Turtle, N-Triples, OWL RDF/XML, JSON Schema, SHACL Shapes, EBNF). All source code, documentation, and web artifacts are machine-generated from the authoritative ontology defined in `spec/`.
 
 ## Workspace layout
 

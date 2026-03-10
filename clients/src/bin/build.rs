@@ -5,6 +5,9 @@
 //! - `<out>/uor.foundation.json` — JSON-LD 1.1
 //! - `<out>/uor.foundation.ttl` — Turtle 1.1
 //! - `<out>/uor.foundation.nt` — N-Triples
+//! - `<out>/uor.foundation.owl` — OWL 2 RDF/XML
+//! - `<out>/uor.foundation.schema.json` — JSON Schema (Draft 2020-12)
+//! - `<out>/uor.shapes.ttl` — SHACL validation shapes
 //! - `<out>/uor.term.ebnf` — EBNF grammar (Amendment 42)
 //!
 //! **Usage:**
@@ -25,7 +28,7 @@ use std::path::PathBuf;
 
 use anyhow::{Context, Result};
 use clap::Parser;
-use uor_ontology::serializer::{ebnf, jsonld, ntriples, turtle};
+use uor_ontology::serializer::{ebnf, json_schema, jsonld, ntriples, owl_xml, shacl, turtle};
 use uor_ontology::Ontology;
 
 /// Build the UOR Foundation ontology artifacts.
@@ -85,6 +88,29 @@ fn main() -> Result<()> {
     fs::write(&ebnf_path, &ebnf_str)
         .with_context(|| format!("Failed to write {}", ebnf_path.display()))?;
     println!("  Written: {}", ebnf_path.display());
+
+    // OWL RDF/XML
+    let owl_path = out.join("uor.foundation.owl");
+    let owl_str = owl_xml::to_owl_xml(ontology);
+    fs::write(&owl_path, &owl_str)
+        .with_context(|| format!("Failed to write {}", owl_path.display()))?;
+    println!("  Written: {}", owl_path.display());
+
+    // JSON Schema
+    let schema_path = out.join("uor.foundation.schema.json");
+    let schema_value = json_schema::to_json_schema(ontology);
+    let schema_str = serde_json::to_string_pretty(&schema_value)
+        .context("Failed to serialize ontology to JSON Schema")?;
+    fs::write(&schema_path, &schema_str)
+        .with_context(|| format!("Failed to write {}", schema_path.display()))?;
+    println!("  Written: {}", schema_path.display());
+
+    // SHACL Shapes
+    let shacl_path = out.join("uor.shapes.ttl");
+    let shacl_str = shacl::to_shacl(ontology);
+    fs::write(&shacl_path, &shacl_str)
+        .with_context(|| format!("Failed to write {}", shacl_path.display()))?;
+    println!("  Written: {}", shacl_path.display());
 
     println!("Build complete.");
     Ok(())

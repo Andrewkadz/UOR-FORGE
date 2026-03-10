@@ -181,7 +181,7 @@ fn check_download_page(artifacts: &Path, report: &mut ConformanceReport) -> Resu
     }
 
     let html = std::fs::read_to_string(&page)?;
-    let required = [".json", ".ttl", ".nt"];
+    let required = [".json", ".ttl", ".nt", ".owl", ".schema.json", ".ebnf"];
     let missing: Vec<String> = required
         .iter()
         .filter(|&&ext| !html.contains(ext))
@@ -191,7 +191,8 @@ fn check_download_page(artifacts: &Path, report: &mut ConformanceReport) -> Resu
     if missing.is_empty() {
         report.push(TestResult::pass(
             "website/pages/download",
-            "download/index.html references all artifact formats (.json, .ttl, .nt)",
+            "download/index.html references all artifact formats \
+             (.json, .ttl, .nt, .owl, .schema.json, .ebnf)",
         ));
     } else {
         report.push(TestResult::fail_with_details(

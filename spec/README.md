@@ -2,7 +2,7 @@
 
 Internal crate encoding the complete [UOR Foundation](https://uor.foundation/)
 ontology as typed Rust data structures, with serializers for JSON-LD, Turtle,
-and N-Triples.
+N-Triples, OWL RDF/XML, JSON Schema, SHACL, and EBNF.
 
 **This crate is not published to crates.io** (`publish = false`). For the
 published Rust trait library, see
@@ -14,7 +14,7 @@ published Rust trait library, see
 - 218 OWL classes
 - 446 OWL properties (445 namespace-level + 1 global annotation)
 - 846 named individuals
-- Three serialization formats: JSON-LD 1.1, Turtle 1.1, N-Triples
+- Seven serialization formats: JSON-LD 1.1, Turtle 1.1, N-Triples, OWL 2 RDF/XML, JSON Schema (Draft 2020-12), SHACL Shapes, EBNF
 
 ## Usage
 
@@ -41,7 +41,7 @@ let turtle = uor_ontology::serializer::turtle::to_turtle(ontology);
 | Feature | Default | Description |
 |---------|---------|-------------|
 | `serde` | yes | Adds `Serialize` derive to all model types |
-| `serializers` | yes | JSON-LD, Turtle, and N-Triples serializers (pulls in `serde_json`) |
+| `serializers` | yes | All seven serializers (pulls in `serde_json`) |
 
 ## License
 

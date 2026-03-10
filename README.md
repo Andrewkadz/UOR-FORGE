@@ -7,13 +7,17 @@ structure based on Z/(2^n)Z.
 
 ## Ontology
 
-Version 6.0.0: 16 namespaces · 218 classes · 446 properties · 846 named individuals
+Version 6.3.0: 16 namespaces · 218 classes · 446 properties · 846 named individuals
 
 All terms are encoded as typed Rust data in `spec/` (`uor-ontology`) and exported as:
 - `foundation/` (`uor-foundation`) — typed Rust traits (published to crates.io)
 - `public/uor.foundation.json` — JSON-LD 1.1
 - `public/uor.foundation.ttl` — Turtle 1.1
 - `public/uor.foundation.nt` — N-Triples
+- `public/uor.foundation.owl` — OWL 2 RDF/XML
+- `public/uor.foundation.schema.json` — JSON Schema (Draft 2020-12)
+- `public/uor.shapes.ttl` — SHACL validation shapes
+- `public/uor.term.ebnf` — EBNF grammar
 
 ## Repository Structure
 

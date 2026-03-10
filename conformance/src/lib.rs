@@ -12,6 +12,9 @@
 //! | Ontology (JSON-LD) | JSON-LD 1.1, OWL 2 DL |
 //! | Ontology (Turtle/N-Triples) | RDF 1.1, Turtle 1.1 |
 //! | Ontology (EBNF) | ISO/IEC 14977 EBNF |
+//! | Ontology (OWL RDF/XML) | OWL 2 RDF/XML |
+//! | Ontology (JSON Schema) | JSON Schema Draft 2020-12 |
+//! | Ontology (SHACL shapes) | SHACL W3C shapes |
 //! | Instance graphs | SHACL W3C spec |
 //! | Documentation | Diataxis framework, completeness, accuracy |
 //! | Website | HTML5, WCAG 2.1 AA, CSS |
@@ -94,6 +97,19 @@ pub fn run_all(paths: &WorkspacePaths) -> anyhow::Result<ConformanceReport> {
 
     // 5b. EBNF grammar (Amendment 42)
     report.extend(validators::ontology::ebnf::validate(&paths.artifacts)?);
+
+    // 5c. OWL RDF/XML artifact
+    report.extend(validators::ontology::owl_xml::validate(&paths.artifacts)?);
+
+    // 5d. JSON Schema artifact
+    report.extend(validators::ontology::json_schema::validate(
+        &paths.artifacts,
+    )?);
+
+    // 5e. SHACL shapes artifact
+    report.extend(validators::ontology::shacl_shapes::validate(
+        &paths.artifacts,
+    )?);
 
     // 6. SHACL instance conformance
     report.extend(validators::ontology::shacl::validate());
