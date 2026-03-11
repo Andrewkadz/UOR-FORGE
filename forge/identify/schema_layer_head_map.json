@@ -1,0 +1,162 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Andrewkadz/UOR-FORGE/forge/identify/schema_layer_head_map.json",
+  "title": "LayerHeadMap",
+  "description": "Output artefact from Stage 1 activation patching. Maps attention heads and MLP layers to their System 1/2 mode-switching patch-effect scores.",
+  "type": "object",
+  "required": [
+    "model_id",
+    "num_layers",
+    "num_heads",
+    "think_token",
+    "think_token_id",
+    "num_prompt_pairs",
+    "patching_mode",
+    "device",
+    "dtype",
+    "timestamp",
+    "runtime_seconds",
+    "top_attention_heads",
+    "top_mlp_layers",
+    "all_components",
+    "methodology",
+    "uor_stage",
+    "uor_donor"
+  ],
+  "properties": {
+    "model_id": {
+      "type": "string",
+      "description": "HuggingFace model id or local path used for the experiment.",
+      "example": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+    },
+    "num_layers": {
+      "type": "integer",
+      "description": "Number of transformer layers covered by the patching run.",
+      "minimum": 1
+    },
+    "num_heads": {
+      "type": "integer",
+      "description": "Number of attention heads per layer.",
+      "minimum": 1
+    },
+    "think_token": {
+      "type": "string",
+      "description": "The string token used as the System-2 mode trigger.",
+      "example": "<think>"
+    },
+    "think_token_id": {
+      "type": "integer",
+      "description": "Vocabulary index of the think token.",
+      "minimum": 0
+    },
+    "num_prompt_pairs": {
+      "type": "integer",
+      "description": "Number of (System-2, System-1) prompt pairs used.",
+      "minimum": 1
+    },
+    "patching_mode": {
+      "type": "string",
+      "enum": ["activation_patching", "dry_run"],
+      "description": "Whether the run used real model activations or synthetic dry-run data."
+    },
+    "device": {
+      "type": "string",
+      "description": "Compute device used.",
+      "example": "cuda"
+    },
+    "dtype": {
+      "type": "string",
+      "description": "Model floating-point precision.",
+      "example": "bfloat16"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of when the run completed."
+    },
+    "runtime_seconds": {
+      "type": "number",
+      "description": "Wall-clock time in seconds for the full patching run.",
+      "minimum": 0
+    },
+    "top_attention_heads": {
+      "type": "array",
+      "description": "Top 20 attention heads ranked by mean patch effect (descending).",
+      "items": { "$ref": "#/definitions/ComponentScore" }
+    },
+    "top_mlp_layers": {
+      "type": "array",
+      "description": "Top 10 MLP layers ranked by mean patch effect (descending).",
+      "items": { "$ref": "#/definitions/ComponentScore" }
+    },
+    "all_components": {
+      "type": "array",
+      "description": "All components (attention heads + MLP layers) ranked by mean patch effect.",
+      "items": { "$ref": "#/definitions/ComponentScore" }
+    },
+    "methodology": {
+      "type": "string",
+      "description": "Human-readable description of the patching methodology."
+    },
+    "uor_stage": {
+      "type": "string",
+      "description": "UOR-FORGE pipeline stage that produced this artefact.",
+      "example": "forge/identify"
+    },
+    "uor_donor": {
+      "type": "string",
+      "description": "The teacher model donor this artefact characterises.",
+      "example": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+    }
+  },
+  "definitions": {
+    "ComponentScore": {
+      "type": "object",
+      "required": [
+        "layer",
+        "component_type",
+        "head",
+        "patch_effect_mean",
+        "patch_effect_std",
+        "patch_effects",
+        "rank"
+      ],
+      "properties": {
+        "layer": {
+          "type": "integer",
+          "description": "Zero-indexed transformer layer.",
+          "minimum": 0
+        },
+        "component_type": {
+          "type": "string",
+          "enum": ["attn_head", "mlp"],
+          "description": "Whether this component is an attention head or an MLP layer."
+        },
+        "head": {
+          "type": ["integer", "null"],
+          "description": "Zero-indexed attention head index. Null for MLP components.",
+          "minimum": 0
+        },
+        "patch_effect_mean": {
+          "type": "number",
+          "description": "Mean patch effect across all prompt pairs. Positive = promotes System-2 mode."
+        },
+        "patch_effect_std": {
+          "type": "number",
+          "description": "Standard deviation of patch effect across prompt pairs.",
+          "minimum": 0
+        },
+        "patch_effects": {
+          "type": "array",
+          "description": "Per-prompt-pair patch effect values.",
+          "items": { "type": "number" }
+        },
+        "rank": {
+          "type": "integer",
+          "description": "Global rank by mean patch effect (1 = highest).",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

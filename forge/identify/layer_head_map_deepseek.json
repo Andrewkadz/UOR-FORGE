@@ -1,0 +1,203 @@
+{
+  "model_id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+  "num_layers": 32,
+  "num_heads": 32,
+  "think_token": "<think>",
+  "think_token_id": 9999,
+  "num_prompt_pairs": 8,
+  "patching_mode": "dry_run",
+  "device": "cpu",
+  "dtype": "float32",
+  "timestamp": "2026-03-11T00:00:00Z",
+  "runtime_seconds": 0.12,
+  "methodology": "Causal activation patching. For each component, the clean activation (System-2 prompt) is patched into the corrupted run (System-1 prompt). Patch effect = change in log-prob of the <think> token at position 0 of the model output. Higher = stronger mode-switching role.",
+  "uor_stage": "forge/identify",
+  "uor_donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+  "_note": "This is a dry-run placeholder generated without a live model. Replace by running: python identify_deepseek.py --device cuda --dtype bfloat16",
+  "_status": "PENDING_LIVE_RUN",
+  "top_attention_heads": [
+    {
+      "layer": 12, "component_type": "attn_head", "head": 15,
+      "patch_effect_mean": 0.621, "patch_effect_std": 0.031,
+      "patch_effects": [0.598, 0.641, 0.612, 0.635, 0.609, 0.628, 0.617, 0.631],
+      "rank": 1
+    },
+    {
+      "layer": 13, "component_type": "attn_head", "head": 22,
+      "patch_effect_mean": 0.589, "patch_effect_std": 0.028,
+      "patch_effects": [0.562, 0.601, 0.578, 0.612, 0.591, 0.584, 0.597, 0.588],
+      "rank": 2
+    },
+    {
+      "layer": 10, "component_type": "attn_head", "head": 7,
+      "patch_effect_mean": 0.574, "patch_effect_std": 0.034,
+      "patch_effects": [0.541, 0.598, 0.563, 0.601, 0.572, 0.581, 0.569, 0.574],
+      "rank": 3
+    },
+    {
+      "layer": 11, "component_type": "attn_head", "head": 3,
+      "patch_effect_mean": 0.561, "patch_effect_std": 0.029,
+      "patch_effects": [0.534, 0.578, 0.552, 0.589, 0.558, 0.567, 0.554, 0.561],
+      "rank": 4
+    },
+    {
+      "layer": 14, "component_type": "attn_head", "head": 8,
+      "patch_effect_mean": 0.548, "patch_effect_std": 0.027,
+      "patch_effects": [0.521, 0.564, 0.539, 0.576, 0.545, 0.554, 0.541, 0.548],
+      "rank": 5
+    },
+    {
+      "layer": 15, "component_type": "attn_head", "head": 1,
+      "patch_effect_mean": 0.532, "patch_effect_std": 0.025,
+      "patch_effects": [0.508, 0.547, 0.524, 0.559, 0.529, 0.538, 0.525, 0.532],
+      "rank": 6
+    },
+    {
+      "layer": 16, "component_type": "attn_head", "head": 19,
+      "patch_effect_mean": 0.519, "patch_effect_std": 0.023,
+      "patch_effects": [0.497, 0.534, 0.511, 0.546, 0.516, 0.525, 0.512, 0.519],
+      "rank": 7
+    },
+    {
+      "layer": 9, "component_type": "attn_head", "head": 11,
+      "patch_effect_mean": 0.507, "patch_effect_std": 0.026,
+      "patch_effects": [0.482, 0.522, 0.499, 0.534, 0.504, 0.513, 0.500, 0.507],
+      "rank": 8
+    },
+    {
+      "layer": 17, "component_type": "attn_head", "head": 4,
+      "patch_effect_mean": 0.493, "patch_effect_std": 0.024,
+      "patch_effects": [0.469, 0.508, 0.485, 0.520, 0.490, 0.499, 0.486, 0.493],
+      "rank": 9
+    },
+    {
+      "layer": 10, "component_type": "attn_head", "head": 21,
+      "patch_effect_mean": 0.478, "patch_effect_std": 0.022,
+      "patch_effects": [0.456, 0.493, 0.470, 0.505, 0.475, 0.484, 0.471, 0.478],
+      "rank": 10
+    },
+    {
+      "layer": 12, "component_type": "attn_head", "head": 0,
+      "patch_effect_mean": 0.312, "patch_effect_std": 0.019,
+      "patch_effects": [0.294, 0.327, 0.304, 0.339, 0.309, 0.318, 0.305, 0.312],
+      "rank": 11
+    },
+    {
+      "layer": 13, "component_type": "attn_head", "head": 5,
+      "patch_effect_mean": 0.298, "patch_effect_std": 0.018,
+      "patch_effects": [0.281, 0.313, 0.290, 0.325, 0.295, 0.304, 0.291, 0.298],
+      "rank": 12
+    },
+    {
+      "layer": 11, "component_type": "attn_head", "head": 17,
+      "patch_effect_mean": 0.284, "patch_effect_std": 0.017,
+      "patch_effects": [0.268, 0.299, 0.276, 0.311, 0.281, 0.290, 0.277, 0.284],
+      "rank": 13
+    },
+    {
+      "layer": 14, "component_type": "attn_head", "head": 26,
+      "patch_effect_mean": 0.271, "patch_effect_std": 0.016,
+      "patch_effects": [0.256, 0.286, 0.263, 0.298, 0.268, 0.277, 0.264, 0.271],
+      "rank": 14
+    },
+    {
+      "layer": 15, "component_type": "attn_head", "head": 9,
+      "patch_effect_mean": 0.258, "patch_effect_std": 0.015,
+      "patch_effects": [0.244, 0.273, 0.250, 0.285, 0.255, 0.264, 0.251, 0.258],
+      "rank": 15
+    },
+    {
+      "layer": 16, "component_type": "attn_head", "head": 28,
+      "patch_effect_mean": 0.246, "patch_effect_std": 0.014,
+      "patch_effects": [0.233, 0.261, 0.238, 0.273, 0.243, 0.252, 0.239, 0.246],
+      "rank": 16
+    },
+    {
+      "layer": 9, "component_type": "attn_head", "head": 30,
+      "patch_effect_mean": 0.234, "patch_effect_std": 0.013,
+      "patch_effects": [0.222, 0.249, 0.226, 0.261, 0.231, 0.240, 0.227, 0.234],
+      "rank": 17
+    },
+    {
+      "layer": 17, "component_type": "attn_head", "head": 14,
+      "patch_effect_mean": 0.223, "patch_effect_std": 0.012,
+      "patch_effects": [0.212, 0.238, 0.215, 0.250, 0.220, 0.229, 0.216, 0.223],
+      "rank": 18
+    },
+    {
+      "layer": 8, "component_type": "attn_head", "head": 6,
+      "patch_effect_mean": 0.212, "patch_effect_std": 0.011,
+      "patch_effects": [0.202, 0.227, 0.204, 0.239, 0.209, 0.218, 0.205, 0.212],
+      "rank": 19
+    },
+    {
+      "layer": 18, "component_type": "attn_head", "head": 23,
+      "patch_effect_mean": 0.201, "patch_effect_std": 0.010,
+      "patch_effects": [0.192, 0.216, 0.193, 0.228, 0.198, 0.207, 0.194, 0.201],
+      "rank": 20
+    }
+  ],
+  "top_mlp_layers": [
+    {
+      "layer": 12, "component_type": "mlp", "head": null,
+      "patch_effect_mean": 0.412, "patch_effect_std": 0.021,
+      "patch_effects": [0.392, 0.427, 0.404, 0.439, 0.409, 0.418, 0.405, 0.412],
+      "rank": 21
+    },
+    {
+      "layer": 13, "component_type": "mlp", "head": null,
+      "patch_effect_mean": 0.394, "patch_effect_std": 0.020,
+      "patch_effects": [0.375, 0.409, 0.386, 0.421, 0.391, 0.400, 0.387, 0.394],
+      "rank": 22
+    },
+    {
+      "layer": 11, "component_type": "mlp", "head": null,
+      "patch_effect_mean": 0.376, "patch_effect_std": 0.019,
+      "patch_effects": [0.358, 0.391, 0.368, 0.403, 0.373, 0.382, 0.369, 0.376],
+      "rank": 23
+    },
+    {
+      "layer": 14, "component_type": "mlp", "head": null,
+      "patch_effect_mean": 0.358, "patch_effect_std": 0.018,
+      "patch_effects": [0.341, 0.373, 0.350, 0.385, 0.355, 0.364, 0.351, 0.358],
+      "rank": 24
+    },
+    {
+      "layer": 10, "component_type": "mlp", "head": null,
+      "patch_effect_mean": 0.341, "patch_effect_std": 0.017,
+      "patch_effects": [0.325, 0.356, 0.333, 0.368, 0.338, 0.347, 0.334, 0.341],
+      "rank": 25
+    },
+    {
+      "layer": 15, "component_type": "mlp", "head": null,
+      "patch_effect_mean": 0.324, "patch_effect_std": 0.016,
+      "patch_effects": [0.309, 0.339, 0.316, 0.351, 0.321, 0.330, 0.317, 0.324],
+      "rank": 26
+    },
+    {
+      "layer": 16, "component_type": "mlp", "head": null,
+      "patch_effect_mean": 0.187, "patch_effect_std": 0.012,
+      "patch_effects": [0.176, 0.202, 0.179, 0.214, 0.184, 0.193, 0.180, 0.187],
+      "rank": 27
+    },
+    {
+      "layer": 9, "component_type": "mlp", "head": null,
+      "patch_effect_mean": 0.172, "patch_effect_std": 0.011,
+      "patch_effects": [0.162, 0.187, 0.164, 0.199, 0.169, 0.178, 0.165, 0.172],
+      "rank": 28
+    },
+    {
+      "layer": 17, "component_type": "mlp", "head": null,
+      "patch_effect_mean": 0.158, "patch_effect_std": 0.010,
+      "patch_effects": [0.149, 0.173, 0.150, 0.185, 0.155, 0.164, 0.151, 0.158],
+      "rank": 29
+    },
+    {
+      "layer": 8, "component_type": "mlp", "head": null,
+      "patch_effect_mean": 0.143, "patch_effect_std": 0.009,
+      "patch_effects": [0.135, 0.158, 0.135, 0.170, 0.140, 0.149, 0.136, 0.143],
+      "rank": 30
+    }
+  ],
+  "all_components": []
+}
