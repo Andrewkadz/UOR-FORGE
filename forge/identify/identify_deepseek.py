@@ -31,12 +31,32 @@ Architecture (DeepSeek-R1-Distill-Llama-8B)
 --------------------------------------------
   model_type        : llama (LlamaForCausalLM)
   num_hidden_layers : 32
-  num_attention_heads: 32
-  num_key_value_heads: 8  (GQA)
+  num_attention_heads: 32  (Q heads)
+  num_key_value_heads: 8   (KV heads — GQA with repeat_kv=4)
   hidden_size       : 4096
   intermediate_size : 14336
   vocab_size        : 128256
   max_pos_embeddings: 131072
+
+GQA and hook_z
+--------------
+DeepSeek-R1-Distill-Llama-8B uses Grouped Query Attention (GQA) with 32 query
+heads and 8 KV heads (repeat factor = 4).  TransformerLens loads this model
+using GroupedQueryAttention (triggered when cfg.n_key_value_heads is not None
+and differs from cfg.n_heads).  In GroupedQueryAttention.calculate_z_scores,
+the V tensor is expanded from [batch, pos, 8, d_head] to [batch, pos, 32,
+d_head] via torch.repeat_interleave BEFORE hook_z is fired.  Consequently:
+
+  hook_z shape: [batch, pos, 32, d_head]   — full Q-head dimension
+
+Per-head patching with value[:, :, head_idx, :] is therefore correct for all
+head indices 0..31.  The 8 KV-head structure is internal to the attention
+computation and is already resolved by the time hook_z is reached.
+
+This is only true when cfg.ungroup_grouped_query_attention=False (the default).
+If that flag were True, hook_z would have only 8 heads and the patching loop
+would need to iterate over range(n_kv_heads) instead.  The validate_gqa_config()
+function below asserts this invariant at runtime.
 
 Output
 ------
@@ -97,9 +117,10 @@ MODEL_ID = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
 THINK_TOKEN = "<think>"
 THINK_TOKEN_ALT = "think"   # fallback if tokeniser doesn't have the full tag
 
-# Architecture constants (from config.json)
+# Architecture constants (from config.json — used only for dry-run and CLI defaults)
+# The live patching path derives these from the loaded model's cfg at runtime.
 NUM_LAYERS = 32
-NUM_HEADS  = 32
+NUM_HEADS  = 32   # Q heads; KV heads = 8 under GQA (resolved to 32 in hook_z)
 
 # Output file
 OUTPUT_FILE = Path(__file__).parent / "layer_head_map_deepseek.json"
@@ -210,12 +231,68 @@ class LayerHeadMap:
 # Model loading
 # ---------------------------------------------------------------------------
 
+def validate_gqa_config(model) -> int:
+    """
+    Assert that the loaded model's GQA configuration is compatible with the
+    per-head patching strategy used in this script, and return the number of
+    heads that hook_z exposes.
+
+    Under TransformerLens GroupedQueryAttention with
+    ungroup_grouped_query_attention=False (the default), V is expanded from
+    n_kv_heads to n_heads via repeat_interleave *before* hook_z is fired.
+    Therefore hook_z always has shape [batch, pos, n_heads, d_head] where
+    n_heads is the full query-head count (32 for DeepSeek-R1-Distill-8B).
+
+    If ungroup_grouped_query_attention=True were set, hook_z would have only
+    n_kv_heads (8) heads and the patching loop would need to be adjusted.
+    This function raises an error in that case to prevent silent mis-patching.
+    """
+    cfg = model.cfg
+    n_heads    = cfg.n_heads
+    n_kv_heads = cfg.n_key_value_heads  # None means standard MHA (n_kv == n_q)
+    ungroup    = getattr(cfg, "ungroup_grouped_query_attention", False)
+
+    log.info(
+        "GQA config: n_heads=%d, n_key_value_heads=%s, "
+        "ungroup_grouped_query_attention=%s",
+        n_heads, n_kv_heads, ungroup,
+    )
+
+    if n_kv_heads is not None and n_kv_heads != n_heads:
+        # Model uses GQA
+        if ungroup:
+            raise RuntimeError(
+                f"ungroup_grouped_query_attention=True is set on this model. "
+                f"hook_z will have {n_kv_heads} heads (KV dimension), not "
+                f"{n_heads} (Q dimension). The per-head patching loop must "
+                f"iterate over range({n_kv_heads}) in this mode. "
+                f"Either set ungroup_grouped_query_attention=False (default) "
+                f"or update the patching loop accordingly."
+            )
+        repeat_kv = n_heads // n_kv_heads
+        log.info(
+            "GQA: %d KV heads expanded to %d Q heads in hook_z "
+            "(repeat_kv=%d). Per-head patching iterates over range(%d). "
+            "This is correct.",
+            n_kv_heads, n_heads, repeat_kv, n_heads,
+        )
+    else:
+        log.info("Standard MHA (no GQA): hook_z has %d heads.", n_heads)
+
+    return n_heads
+
+
 def load_model(
     model_path: str,
     device: str,
     dtype_str: str,
-) -> Tuple["HookedTransformer", int]:
-    """Load DeepSeek-R1-Distill-Llama-8B into TransformerLens."""
+) -> Tuple["HookedTransformer", int, int]:
+    """Load DeepSeek-R1-Distill-Llama-8B into TransformerLens.
+
+    Returns (model, think_token_id, n_heads_for_patching).
+    n_heads_for_patching is the head dimension of hook_z — always the full
+    Q-head count (32) under GQA with ungroup_grouped_query_attention=False.
+    """
     from transformer_lens import HookedTransformer
 
     dtype_map = {
@@ -238,12 +315,15 @@ def load_model(
     )
     model.eval()
 
+    # Validate GQA config and determine hook_z head dimension
+    n_heads_for_patching = validate_gqa_config(model)
+
     # Resolve the <think> token id
     tokeniser = model.tokenizer
     think_id = _resolve_think_token_id(tokeniser)
     log.info("Think token id: %d", think_id)
 
-    return model, think_id
+    return model, think_id, n_heads_for_patching
 
 
 def _resolve_think_token_id(tokeniser) -> int:
@@ -329,10 +409,15 @@ def run_activation_patching(
     think_token_id: int,
     layer_range: range,
     prompt_pairs: List[Tuple[str, str]],
+    n_heads: int,
 ) -> List[ComponentScore]:
     """
     Run the full activation patching experiment across all components
     in `layer_range` for all prompt pairs.
+
+    n_heads is the head dimension of hook_z as returned by validate_gqa_config().
+    For DeepSeek-R1-Distill-8B under GQA with ungroup=False this is 32 (the full
+    Q-head count), not 8 (the KV-head count).
 
     Returns a list of ComponentScore objects.
     """
@@ -355,8 +440,11 @@ def run_activation_patching(
 
         for layer in layer_range:
             # --- Attention heads ---
-            attn_hook = f"blocks.{layer}.attn.hook_z"   # [batch, seq, heads, d_head]
-            for head in range(NUM_HEADS):
+            # hook_z shape: [batch, seq, n_heads, d_head]
+            # Under GQA (ungroup=False), n_heads = Q-head count (32), NOT KV-head
+            # count (8). V is expanded inside calculate_z_scores before hook_z fires.
+            attn_hook = f"blocks.{layer}.attn.hook_z"
+            for head in range(n_heads):
                 key = (layer, "attn_head", head)
                 effect = patch_effect_for_component(
                     model, clean_tokens, corrupted_tokens,
@@ -589,9 +677,10 @@ def main() -> None:
     log.info("=" * 60)
     log.info("UOR-FORGE Stage 1 — Identify: DeepSeek-R1-Distill-8B")
     log.info("Target behaviour: System 1 / System 2 mode-switching")
-    log.info("Layers: %d-%d | Heads: %d | Pairs: %d",
+    n_heads_display = NUM_HEADS if args.dry_run else "(from model cfg)"
+    log.info("Layers: %d-%d | Heads: %s | Pairs: %d",
              layer_range.start, layer_range.stop - 1,
-             NUM_HEADS, len(PROMPT_PAIRS))
+             n_heads_display, len(PROMPT_PAIRS))
     log.info("=" * 60)
 
     t0 = time.time()
@@ -604,11 +693,12 @@ def main() -> None:
         device = "cpu"
         dtype = "float32"
     else:
-        model, think_token_id = load_model(
+        model, think_token_id, n_heads_live = load_model(
             args.model_path, args.device, args.dtype
         )
         components = run_activation_patching(
-            model, think_token_id, layer_range, PROMPT_PAIRS
+            model, think_token_id, layer_range, PROMPT_PAIRS,
+            n_heads=n_heads_live,
         )
         patching_mode = "activation_patching"
         device = args.device
