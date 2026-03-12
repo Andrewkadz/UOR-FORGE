@@ -1,0 +1,32 @@
+# UOR-FORGE Stage 2 — forge/extract/
+# DARE extraction dependencies for extract_deepseek.py
+#
+# Install with:
+#   pip install -r requirements.txt
+#
+# For GPU acceleration (recommended for full runs):
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
+#   pip install -r requirements.txt
+
+# Core mechanistic interpretability library (also required by Stage 1)
+transformer-lens>=2.0.0
+
+# Deep learning framework
+torch>=2.1.0
+
+# HuggingFace model loading
+transformers>=4.43.0
+huggingface-hub>=0.23.0
+safetensors>=0.4.0
+
+# Tensor operations
+einops>=0.7.0
+
+# Type annotations for tensor shapes
+jaxtyping>=0.2.28
+
+# Numerical utilities
+numpy>=1.24.0
+
+# Progress bars
+tqdm>=4.65.0

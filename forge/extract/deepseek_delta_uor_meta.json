@@ -1,0 +1,506 @@
+{
+  "schema_version": "0.1.0",
+  "uor_stage": "forge/extract",
+  "uor_donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+  "base_model": "meta-llama/Llama-3.1-8B",
+  "vector_target": "system1_system2_mode_switch",
+  "patching_mode": "dry_run",
+  "device": "cpu",
+  "dtype": "float32",
+  "dare_p": 0.9,
+  "dare_rescale": 10.0,
+  "top_n_components": 20,
+  "signal_rank_threshold": 20,
+  "num_tensors": 20,
+  "total_parameters": 20971520,
+  "total_nonzero_parameters": 2096708,
+  "overall_sparsity": 0.900021,
+  "layer_head_map_path": "/home/ubuntu/UOR-FORGE/forge/identify/layer_head_map_deepseek.json",
+  "layer_head_map_status": "PENDING_LIVE_RUN",
+  "safetensors_path": "/home/ubuntu/UOR-FORGE/forge/extract/deepseek_delta_uor.safetensors",
+  "extraction_timestamp": "2026-03-12T00:00:56.595964Z",
+  "runtime_seconds": 0.68,
+  "tensors": [
+    {
+      "tensor_key": "L12_H15_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 12,
+      "component_type": "attn_head",
+      "head": 15,
+      "source_layers": [
+        12
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L12/attn/H15",
+      "patch_effect_mean": 0.621,
+      "rank": 1,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.900446,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "35e508a00dda0e9db403971501c0ffcc65089ed4b6cf9ffb67fbf5d983fd1cf0",
+      "extraction_timestamp": "2026-03-12T00:00:55.952659Z"
+    },
+    {
+      "tensor_key": "L13_H22_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 13,
+      "component_type": "attn_head",
+      "head": 22,
+      "source_layers": [
+        13
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L13/attn/H22",
+      "patch_effect_mean": 0.589,
+      "rank": 2,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.900409,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "fc695c3248c3618e59c8aecd3c8035f0b102273a2a2053c81d0337c5162622df",
+      "extraction_timestamp": "2026-03-12T00:00:55.987800Z"
+    },
+    {
+      "tensor_key": "L10_H07_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 10,
+      "component_type": "attn_head",
+      "head": 7,
+      "source_layers": [
+        10
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L10/attn/H07",
+      "patch_effect_mean": 0.574,
+      "rank": 3,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.900258,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "a9e0519ce1dedce871109c21930bfad5c3a0b4f8fb5d3284819f470a5199f8d0",
+      "extraction_timestamp": "2026-03-12T00:00:56.022222Z"
+    },
+    {
+      "tensor_key": "L11_H03_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 11,
+      "component_type": "attn_head",
+      "head": 3,
+      "source_layers": [
+        11
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L11/attn/H03",
+      "patch_effect_mean": 0.561,
+      "rank": 4,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.900217,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "935e02bb40ec8992d8b051968dbe13cde7fdbfad28108a7be480528dfd37a277",
+      "extraction_timestamp": "2026-03-12T00:00:56.057250Z"
+    },
+    {
+      "tensor_key": "L14_H08_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 14,
+      "component_type": "attn_head",
+      "head": 8,
+      "source_layers": [
+        14
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L14/attn/H08",
+      "patch_effect_mean": 0.548,
+      "rank": 5,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.89997,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "256ea98983baa257636deae94d419b4eb11c43f915487d5ed3da533a93637740",
+      "extraction_timestamp": "2026-03-12T00:00:56.093019Z"
+    },
+    {
+      "tensor_key": "L15_H01_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 15,
+      "component_type": "attn_head",
+      "head": 1,
+      "source_layers": [
+        15
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L15/attn/H01",
+      "patch_effect_mean": 0.532,
+      "rank": 6,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.899947,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "e37e36a9eb3b6f4933118a4b64ccb6f421d53805d0108f01fa4b00485e3ab6e1",
+      "extraction_timestamp": "2026-03-12T00:00:56.125447Z"
+    },
+    {
+      "tensor_key": "L16_H19_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 16,
+      "component_type": "attn_head",
+      "head": 19,
+      "source_layers": [
+        16
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L16/attn/H19",
+      "patch_effect_mean": 0.519,
+      "rank": 7,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.899382,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "3dec551d1dca5acc1a83bf9126ccd14e7f7c22d4cb269fe0c9a13ff0d3cc27af",
+      "extraction_timestamp": "2026-03-12T00:00:56.158772Z"
+    },
+    {
+      "tensor_key": "L09_H11_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 9,
+      "component_type": "attn_head",
+      "head": 11,
+      "source_layers": [
+        9
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L09/attn/H11",
+      "patch_effect_mean": 0.507,
+      "rank": 8,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.900356,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "26330eda0fed37d4e62569c73cddd11f135191dfac628f69827c6f47a363e6ae",
+      "extraction_timestamp": "2026-03-12T00:00:56.190710Z"
+    },
+    {
+      "tensor_key": "L17_H04_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 17,
+      "component_type": "attn_head",
+      "head": 4,
+      "source_layers": [
+        17
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L17/attn/H04",
+      "patch_effect_mean": 0.493,
+      "rank": 9,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.89937,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "877cf3873bedcb40f4e0967c355c22824f5b6b5bce6b61edb36f732d4b0cdab1",
+      "extraction_timestamp": "2026-03-12T00:00:56.225216Z"
+    },
+    {
+      "tensor_key": "L10_H21_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 10,
+      "component_type": "attn_head",
+      "head": 21,
+      "source_layers": [
+        10
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L10/attn/H21",
+      "patch_effect_mean": 0.478,
+      "rank": 10,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.899732,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "ec683c86f34c5e91d4a3399345eddf18ed429435bdbcdb5ba79ecc5eda175bc4",
+      "extraction_timestamp": "2026-03-12T00:00:56.257165Z"
+    },
+    {
+      "tensor_key": "L12_H00_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 12,
+      "component_type": "attn_head",
+      "head": 0,
+      "source_layers": [
+        12
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L12/attn/H00",
+      "patch_effect_mean": 0.312,
+      "rank": 11,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.900238,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "f1b2a0aa91cbe6d1d140ad7eb112f9a2c37d1ebdd36a2eef864a8074c0c3f356",
+      "extraction_timestamp": "2026-03-12T00:00:56.289241Z"
+    },
+    {
+      "tensor_key": "L13_H05_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 13,
+      "component_type": "attn_head",
+      "head": 5,
+      "source_layers": [
+        13
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L13/attn/H05",
+      "patch_effect_mean": 0.298,
+      "rank": 12,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.900792,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "0313d16762d1be4da57cf533b4452a269d3e4cb04d3303c4f21b937b503b535e",
+      "extraction_timestamp": "2026-03-12T00:00:56.320405Z"
+    },
+    {
+      "tensor_key": "L11_H17_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 11,
+      "component_type": "attn_head",
+      "head": 17,
+      "source_layers": [
+        11
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L11/attn/H17",
+      "patch_effect_mean": 0.284,
+      "rank": 13,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.90029,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "8ac1bc2c56254fd57c7cf43a17d0bac277f7d91b0459e2c2f172b0c8a16f234e",
+      "extraction_timestamp": "2026-03-12T00:00:56.351732Z"
+    },
+    {
+      "tensor_key": "L14_H26_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 14,
+      "component_type": "attn_head",
+      "head": 26,
+      "source_layers": [
+        14
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L14/attn/H26",
+      "patch_effect_mean": 0.271,
+      "rank": 14,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.899624,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "0a75e9ddded1bdee6f493335313626a86035dd29c204bdeb64a32c96ab5f57d2",
+      "extraction_timestamp": "2026-03-12T00:00:56.382915Z"
+    },
+    {
+      "tensor_key": "L15_H09_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 15,
+      "component_type": "attn_head",
+      "head": 9,
+      "source_layers": [
+        15
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L15/attn/H09",
+      "patch_effect_mean": 0.258,
+      "rank": 15,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.899632,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "538eec32d6a7454b77d6e13d07dc1dc1816b838fedf32e2d5a89414673c19f35",
+      "extraction_timestamp": "2026-03-12T00:00:56.413840Z"
+    },
+    {
+      "tensor_key": "L16_H28_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 16,
+      "component_type": "attn_head",
+      "head": 28,
+      "source_layers": [
+        16
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L16/attn/H28",
+      "patch_effect_mean": 0.246,
+      "rank": 16,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.899555,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "79222f61b7cfd5b496d1c55da528c15fa32d0f2018785e12562ce00329e3b876",
+      "extraction_timestamp": "2026-03-12T00:00:56.446981Z"
+    },
+    {
+      "tensor_key": "L09_H30_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 9,
+      "component_type": "attn_head",
+      "head": 30,
+      "source_layers": [
+        9
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L09/attn/H30",
+      "patch_effect_mean": 0.234,
+      "rank": 17,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.900232,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "8eefb06c9666734bca330e2d3e63b019eb554a1aded649021f5255840849f925",
+      "extraction_timestamp": "2026-03-12T00:00:56.478740Z"
+    },
+    {
+      "tensor_key": "L17_H14_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 17,
+      "component_type": "attn_head",
+      "head": 14,
+      "source_layers": [
+        17
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L17/attn/H14",
+      "patch_effect_mean": 0.223,
+      "rank": 18,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.899796,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "3dfe3eea7944b86b3158b09e35e4b6203601871e9473b370f5815363c82fe0ef",
+      "extraction_timestamp": "2026-03-12T00:00:56.509689Z"
+    },
+    {
+      "tensor_key": "L08_H06_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 8,
+      "component_type": "attn_head",
+      "head": 6,
+      "source_layers": [
+        8
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L08/attn/H06",
+      "patch_effect_mean": 0.212,
+      "rank": 19,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.900249,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "38014aec1a388383f6ca181b64199eb139b2fa08bd77d0cb81df7301eab2f473",
+      "extraction_timestamp": "2026-03-12T00:00:56.540603Z"
+    },
+    {
+      "tensor_key": "L18_H23_delta",
+      "donor": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "vector_target": "system1_system2_mode_switch",
+      "layer": 18,
+      "component_type": "attn_head",
+      "head": 23,
+      "source_layers": [
+        18
+      ],
+      "uor_address": "uor://forge.identify/deepseek-r1-distill-8b/L18/attn/H23",
+      "patch_effect_mean": 0.201,
+      "rank": 20,
+      "dare_p": 0.9,
+      "dare_rescale": 10.0,
+      "sparsity_achieved": 0.899929,
+      "tensor_shape": [
+        256,
+        4096
+      ],
+      "tensor_dtype": "float32",
+      "content_hash": "8eb6b9051e547e3464e3ddfa4c7b12367179a1fe90af6ed0951f04d7da0fdc37",
+      "extraction_timestamp": "2026-03-12T00:00:56.573455Z"
+    }
+  ],
+  "uor_address_note": "uor_address fields are placeholder coordinates. Full resolution against the cat9 topology will be implemented in forge/merge/ once the UOR coordinate schema is finalised."
+}
