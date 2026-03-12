@@ -15,3 +15,24 @@
 # OS files
 .DS_Store
 Thumbs.db
+
+# ML artefacts — route through external storage (Git LFS or S3), not git
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.gguf
+*.ggml
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Experiment outputs
+*.log
+*.jsonl
