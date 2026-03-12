@@ -1,0 +1,258 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Andrewkadz/UOR-FORGE/forge/extract/schema_uor_meta.json",
+  "title": "ExtractionManifest",
+  "description": "UOR metadata sidecar for deepseek_delta_uor.safetensors. Records the provenance, DARE parameters, and UOR address for every extracted delta tensor.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "uor_stage",
+    "uor_donor",
+    "base_model",
+    "vector_target",
+    "patching_mode",
+    "dare_p",
+    "dare_rescale",
+    "top_n_components",
+    "signal_rank_threshold",
+    "num_tensors",
+    "total_parameters",
+    "total_nonzero_parameters",
+    "overall_sparsity",
+    "layer_head_map_path",
+    "layer_head_map_status",
+    "safetensors_path",
+    "extraction_timestamp",
+    "runtime_seconds",
+    "tensors",
+    "uor_address_note"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Semantic version of this schema.",
+      "example": "0.1.0"
+    },
+    "uor_stage": {
+      "type": "string",
+      "description": "UOR-FORGE pipeline stage that produced this artefact.",
+      "example": "forge/extract"
+    },
+    "uor_donor": {
+      "type": "string",
+      "description": "HuggingFace model id of the fine-tuned teacher model.",
+      "example": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+    },
+    "base_model": {
+      "type": "string",
+      "description": "HuggingFace model id of the base model used to compute deltas.",
+      "example": "meta-llama/Llama-3.1-8B"
+    },
+    "vector_target": {
+      "type": "string",
+      "description": "The behavioural target that the extracted vectors encode.",
+      "example": "system1_system2_mode_switch"
+    },
+    "patching_mode": {
+      "type": "string",
+      "enum": ["dare_targeted", "dry_run"],
+      "description": "Whether this was a live DARE extraction or a dry-run."
+    },
+    "device": {
+      "type": "string",
+      "description": "Compute device used.",
+      "example": "cuda"
+    },
+    "dtype": {
+      "type": "string",
+      "description": "Model floating-point precision.",
+      "example": "bfloat16"
+    },
+    "dare_p": {
+      "type": "number",
+      "description": "DARE drop probability. Fraction of delta weights zeroed.",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "dare_rescale": {
+      "type": "number",
+      "description": "DARE rescale factor applied to surviving weights. Equals 1/(1-p).",
+      "minimum": 1.0
+    },
+    "top_n_components": {
+      "type": "integer",
+      "description": "Number of top-ranked Stage 1 components included in extraction.",
+      "minimum": 1
+    },
+    "signal_rank_threshold": {
+      "type": "integer",
+      "description": "Maximum Stage 1 rank included (components with rank > this are excluded).",
+      "minimum": 1
+    },
+    "num_tensors": {
+      "type": "integer",
+      "description": "Number of delta tensors saved to the safetensors file.",
+      "minimum": 0
+    },
+    "total_parameters": {
+      "type": "integer",
+      "description": "Total number of scalar parameters across all extracted tensors.",
+      "minimum": 0
+    },
+    "total_nonzero_parameters": {
+      "type": "integer",
+      "description": "Number of non-zero parameters after DARE sparsification.",
+      "minimum": 0
+    },
+    "overall_sparsity": {
+      "type": "number",
+      "description": "Fraction of parameters zeroed across all tensors (0.0 = dense, 1.0 = all zero).",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "layer_head_map_path": {
+      "type": "string",
+      "description": "Absolute path to the Stage 1 layer_head_map_deepseek.json consumed."
+    },
+    "layer_head_map_status": {
+      "type": "string",
+      "description": "Value of _status field in the consumed layer_head_map.",
+      "example": "LIVE"
+    },
+    "safetensors_path": {
+      "type": "string",
+      "description": "Absolute path to the output safetensors file."
+    },
+    "extraction_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of when extraction completed."
+    },
+    "runtime_seconds": {
+      "type": "number",
+      "description": "Wall-clock time in seconds for the full extraction run.",
+      "minimum": 0
+    },
+    "tensors": {
+      "type": "array",
+      "description": "Per-tensor UOR metadata records.",
+      "items": { "$ref": "#/definitions/UORMetaRecord" }
+    },
+    "uor_address_note": {
+      "type": "string",
+      "description": "Human-readable note about the placeholder status of uor_address fields."
+    }
+  },
+  "definitions": {
+    "UORMetaRecord": {
+      "type": "object",
+      "required": [
+        "tensor_key",
+        "donor",
+        "vector_target",
+        "layer",
+        "component_type",
+        "head",
+        "source_layers",
+        "uor_address",
+        "patch_effect_mean",
+        "rank",
+        "dare_p",
+        "dare_rescale",
+        "sparsity_achieved",
+        "tensor_shape",
+        "tensor_dtype",
+        "content_hash",
+        "extraction_timestamp"
+      ],
+      "properties": {
+        "tensor_key": {
+          "type": "string",
+          "description": "Key used in the safetensors file for this tensor.",
+          "example": "L12_H15_delta"
+        },
+        "donor": {
+          "type": "string",
+          "description": "Source teacher model identifier.",
+          "example": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+        },
+        "vector_target": {
+          "type": "string",
+          "description": "Behavioural target this tensor encodes.",
+          "example": "system1_system2_mode_switch"
+        },
+        "layer": {
+          "type": "integer",
+          "description": "Zero-indexed transformer layer.",
+          "minimum": 0
+        },
+        "component_type": {
+          "type": "string",
+          "enum": ["attn_head", "mlp"],
+          "description": "Whether this tensor is from an attention head or MLP layer."
+        },
+        "head": {
+          "type": ["integer", "null"],
+          "description": "Zero-indexed attention head index. Null for MLP tensors.",
+          "minimum": 0
+        },
+        "source_layers": {
+          "type": "array",
+          "description": "List of transformer layers that contributed to this tensor.",
+          "items": { "type": "integer" }
+        },
+        "uor_address": {
+          "type": "string",
+          "description": "Placeholder UOR coordinate address. Format: uor://<namespace>/<layer>/<component>/<head>. Full resolution pending cat9 coordinate schema.",
+          "example": "uor://forge.identify/deepseek-r1-distill-8b/L12/attn/H15"
+        },
+        "patch_effect_mean": {
+          "type": "number",
+          "description": "Mean patch effect score from Stage 1 for this component."
+        },
+        "rank": {
+          "type": "integer",
+          "description": "Stage 1 rank of this component (1 = highest mode-switching signal).",
+          "minimum": 1
+        },
+        "dare_p": {
+          "type": "number",
+          "description": "DARE drop probability applied to this tensor.",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "dare_rescale": {
+          "type": "number",
+          "description": "DARE rescale factor applied to surviving weights.",
+          "minimum": 1.0
+        },
+        "sparsity_achieved": {
+          "type": "number",
+          "description": "Actual fraction of weights zeroed after DARE (may differ from p due to sampling).",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "tensor_shape": {
+          "type": "array",
+          "description": "Shape of the saved tensor.",
+          "items": { "type": "integer" }
+        },
+        "tensor_dtype": {
+          "type": "string",
+          "description": "Data type of the saved tensor.",
+          "example": "float32"
+        },
+        "content_hash": {
+          "type": "string",
+          "description": "SHA-256 hex digest of the tensor bytes for integrity verification.",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "extraction_timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 UTC timestamp when this tensor was extracted."
+        }
+      }
+    }
+  }
+}

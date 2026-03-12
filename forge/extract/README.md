@@ -6,6 +6,83 @@ The `extract` stage draws high-signal reasoning vectors from each registered tea
 
 Extraction is the most computationally intensive stage in the pipeline. It operates directly on teacher model weights and must produce outputs that are fully addressable — every vector that exits this stage carries a valid UOR coordinate, or it is discarded. Unaddressed vectors are not passed downstream under any circumstances (see FORGE.md, Invariant 2).
 
+## Stage 2a — DARE Extraction: DeepSeek-R1-Distill-8B Mode-Switching Circuits
+
+The first extraction experiment targets the mode-switching circuits identified in Stage 1 (`forge/identify/layer_head_map_deepseek.json`). It applies **targeted DARE** to extract sparse, circuit-localised delta tensors from `DeepSeek-R1-Distill-Llama-8B`.
+
+### Script: `extract_deepseek.py`
+
+Implements the full extraction pipeline: Stage 1 artefact validation → DARE sparsification → UOR metadata wrapping → safetensors serialisation.
+
+### What is DARE?
+
+**DARE (Drop And REscale)** (Yu et al., 2023) is a weight-delta sparsification method. Given a fine-tuned model and a base model, it:
+
+1. Computes the delta: `Δ = θ_ft - θ_base`
+2. Randomly drops (zeros) a fraction `p` of delta weights via a Bernoulli mask
+3. Rescales surviving weights by `1/(1-p)` to preserve expected magnitude
+
+In UOR-FORGE, DARE is applied in a **targeted** variant: only the weight matrices corresponding to the high-signal circuits from Stage 1 are processed. All other weight matrices are excluded entirely.
+
+### Stage 1 Gate (Hard Exit)
+
+The script reads `forge/identify/layer_head_map_deepseek.json` and enforces the following invariant before proceeding:
+
+```
+if _status == "PENDING_LIVE_RUN"  →  hard exit (sys.exit(1))
+if patching_mode == "dry_run"     →  hard exit (sys.exit(1))
+```
+
+Stage 2 must not run on synthetic Stage 1 data.
+
+### UOR Metadata Envelope
+
+Each extracted tensor is wrapped with a `UORMetaRecord` containing:
+
+| Field | Description |
+|---|---|
+| `tensor_key` | Stable key in the safetensors file (e.g., `L12_H15_delta`) |
+| `donor` | Source teacher model identifier |
+| `vector_target` | Behavioural target (`system1_system2_mode_switch`) |
+| `layer` | Transformer layer index |
+| `component_type` | `attn_head` or `mlp` |
+| `head` | Head index (null for MLP) |
+| `uor_address` | Placeholder UOR coordinate (see note below) |
+| `patch_effect_mean` | Stage 1 patch effect score |
+| `rank` | Stage 1 rank (1 = highest mode-switching signal) |
+| `dare_p` | Drop probability applied |
+| `dare_rescale` | Rescale factor `1/(1-p)` |
+| `sparsity_achieved` | Actual fraction zeroed after DARE |
+| `content_hash` | SHA-256 of tensor bytes for integrity |
+
+> **Note on `uor_address`:** Fields are currently placeholder coordinates in the format `uor://forge.identify/deepseek-r1-distill-8b/L{layer}/{component}/H{head}`. Full resolution against the cat9 topology will be defined in a separate coordinate schema and implemented in `forge/merge/`.
+
+### Usage
+
+```bash
+# Dry run — validates full pipeline logic without loading the model
+python extract_deepseek.py --dry-run
+
+# Full live run (requires ~32 GB VRAM for both models)
+python extract_deepseek.py --device cuda --dtype bfloat16
+
+# Custom DARE parameters
+python extract_deepseek.py --device cuda --dare-p 0.85 --top-n 30
+```
+
+### Outputs
+
+| Output | Format | Consumed By |
+|---|---|---|
+| `deepseek_delta_uor.safetensors` | safetensors | `forge/merge/` |
+| `deepseek_delta_uor_meta.json` | JSON (schema: `schema_uor_meta.json`) | `forge/merge/`, `forge/eval/` |
+
+### References
+
+Yu, L., Yu, B., Yu, H., Huang, F., & Li, Y. (2023). **Language Model Arithmetic**. *arXiv:2311.03099*. https://arxiv.org/abs/2311.03099
+
+---
+
 ## What This Stage Does
 
 The `extract` stage performs three operations per teacher:
